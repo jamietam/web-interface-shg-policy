@@ -1,32 +1,17 @@
 #  ------------------------------------------------------------------------
 # CREATE RESULTS.CSV FILE FOR SHG POLICY MODULE WEB INTERFACE -------------
 #  ------------------------------------------------------------------------
+args <- commandArgs(trailingOnly = TRUE)
+
+setwd( "/home/jamietam/scenarios" )
+# setwd("C:/Users/jamietam/Dropbox/CISNET/Policy_Module/Website")
 library(reshape)
 library(data.table)
 
-args <- commandArgs(trailingOnly = TRUE)
-# args = c(1,1,1,0,0,0,0)
+# args = c(1,0,0,0,0,0)
 
-# Specify clean air policy parameters
-Iwp=as.numeric(args[1]) ### indicator of workplace policy to be implemented 1-yes, 0-no
-Ir=as.numeric(args[2])  ### indicator of restaurants policy to be implemented 1-yes, 0-no
-Ib=as.numeric(args[3])  ### indicator of bars policy to be implemented 1-yes, 0-no
-pacwp=as.numeric(args[4])  ### percentage already covered by workplace clean air laws
-pacr=as.numeric(args[5])   ### percentage already covered by restaurants clean air laws
-pacb=as.numeric(args[6])   ### percentage already covered by bars clean air laws
-iter = as.numeric(args[7])
-
-# setwd("/home/jamietam/scenarios_parallel")
-setwd(paste0("/home/jamietam/scenarios_parallel_",iter,sep=""))
-# setwd("C:/Users/jamietam/Dropbox/CISNET/Policy_Module/Website")
-
-# Select policy years to include in final file
-enactpolicy = c(2015,2016,2018,2020)
-# enactpolicy=c(2015)
 
 # Read in policy module output data
-# baselineM <- read.csv('baseline_prevalences.csv')
-# baselineF <- read.csv('baseline_prevalences.csv')
 # prevalencesM <- read.csv(paste0('prevalences_males_2015.csv'), header=TRUE) 
 # prevalencesF <- read.csv(paste0('prevalences_females_2015.csv'), header=TRUE)
 
@@ -51,6 +36,17 @@ tobaccodeaths_males_former <- acm_males_former[,-1] - acm_males_never[,-1]
 tobaccodeaths_females_current <- acm_females_current[,-1] - acm_females_never[,-1]
 tobaccodeaths_females_former <- acm_females_former[,-1] - acm_females_never[,-1]
 
+# Specify clean air policy parameters
+Iwp=as.numeric(args[1]) ### indicator of workplace policy to be implemented 1-yes, 0-no
+Ir=as.numeric(args[2])  ### indicator of restaurants policy to be implemented 1-yes, 0-no
+Ib=as.numeric(args[3])  ### indicator of bars policy to be implemented 1-yes, 0-no
+pacwp=as.numeric(args[4])  ### percentage already covered by workplace clean air laws
+pacr=as.numeric(args[5])   ### percentage already covered by restaurants clean air laws
+pacb=as.numeric(args[6])   ### percentage already covered by bars clean air laws
+
+# Select policy years to include in final file
+enactpolicy = c(2015,2016,2018,2020)
+# enactpolicy=c(2015)
 # Specify age groups to examine
 agegroups = c('12-17','18-24','25-44','45-64','65p','18-99')
 agegroupstart = c(12,18,25,45,65,18)
@@ -77,21 +73,19 @@ smokerprevs <- function(age,year,smokpopbaseM,smokpoppolicyM,smokpopbaseF,smokpo
 # Get cumulative death count by year --------------------------------------
 getcumulativedeaths <- function(dataframe,specifyyear){
   theseyearsonly <- dataframe[dataframe$year<=specifyyear,] 
-  deaths <- colSums(theseyearsonly[c("tobaccodeathsM_baseline", "tobaccodeathsM_policy", 
-  "deaths_avoided_males","tobaccodeathsF_baseline","tobaccodeathsF_policy",
-  "deaths_avoided_females","tobaccodeaths_baseline","tobaccodeaths_policy","deaths_avoided")], na.rm = TRUE)
+  deaths <- colSums(theseyearsonly[c("tobaccodeathsM_baseline", "tobaccodeathsM_policy", "deaths_avoided_males","tobaccodeathsF_baseline","tobaccodeathsF_policy","deaths_avoided_females","tobaccodeaths_baseline","tobaccodeaths_policy","deaths_avoided")], na.rm = TRUE)
   return(deaths)
 }
 
 #  ------------------------------------------------------------------------
 # Function to generate results for each year ------------------------------
 #  ------------------------------------------------------------------------
-createresultsfile <- function(population, popmales, popfemales, prevalencesM, prevalencesF, baselineM, baselineF, policy_year,agegroups,agegroupstart, agegroupend){
+createresultsfile <- function(population, popmales, popfemales, prevalencesM, prevalencesF, policy_year,agegroups,agegroupstart, agegroupend){
   # Split policy module output into baseline and policy scenarios -----------
-  baselineM <- baselineM[(baselineM$year>=startingyear & baselineM$year<=endingyear),] 
-  baselineF <- baselineF[(baselineF$year>=startingyear & baselineF$year<=endingyear),] 
-  policyM <- prevalencesM[(prevalencesM$year>=startingyear & prevalencesM$year<=endingyear),]
-  policyF <- prevalencesF[(prevalencesF$year>=startingyear & prevalencesF$year<=endingyear),]
+  baselineM <- prevalencesM[(prevalencesM$policy_number==0 & prevalencesM$year>=startingyear & prevalencesM$year<=endingyear),] 
+  baselineF <- prevalencesF[(prevalencesF$policy_number==0 & prevalencesF$year>=startingyear & prevalencesF$year<=endingyear),] 
+  policyM <- prevalencesM[(prevalencesM$policy_number==1 & prevalencesM$year>=startingyear & prevalencesM$year<=endingyear),]
+  policyF <- prevalencesF[(prevalencesF$policy_number==1 & prevalencesF$year>=startingyear & prevalencesF$year<=endingyear),]
   
   baselineM_former <- baselineM
   baselineF_former <- baselineF
@@ -343,17 +337,15 @@ createresultsfile <- function(population, popmales, popfemales, prevalencesM, pr
 # Write final prevalences dataframes to CSV -------------------------------
 #  ------------------------------------------------------------------------
 for (i in 1:length(enactpolicy)){
-  prevalencesM <- read.csv(paste0('prevalences_males_w',Iwp,'_r',Ir,'_b',Ib,'_w',pacwp,'_r',pacr, '_b',pacb,'_',enactpolicy[i],'.csv'), header=TRUE) # Read in policy module output data
+  prevalencesM <- read.csv(paste0('cleanairresults/prevresults/prevalences_males_w',Iwp,'_r',Ir,'_b',Ib,'_w',pacwp,'_r',pacr, '_b',pacb,'_',enactpolicy[i],'.csv'), header=TRUE) # Read in policy module output data
   prevalencesM <- prevalencesM[order(prevalencesM$year,prevalencesM$age),]# Sort by year, age, policy
-  prevalencesF <- read.csv(paste0('prevalences_females_w',Iwp,'_r',Ir,'_b',Ib,'_w',pacwp,'_r',pacr, '_b',pacb,'_',enactpolicy[i],'.csv'), header=TRUE) 
+  prevalencesF <- read.csv(paste0('cleanairresults/prevresults/prevalences_females_w',Iwp,'_r',Ir,'_b',Ib,'_w',pacwp,'_r',pacr, '_b',pacb,'_',enactpolicy[i],'.csv'), header=TRUE) 
   prevalencesF <- prevalencesF[order(prevalencesF$year,prevalencesF$age),]# Sort by year, age, policy
-  baselineM <- read.csv('/cleanairresults/prevresults/baseline_prevalences_males.csv', header=TRUE)
-  baselineF <- read.csv('/cleanairresults/prevresults/baseline_prevalences_females.csv', header=TRUE)
   
-  finalprevs <- createresultsfile(population,popmales,popfemales,prevalencesM,prevalencesF,baselineM,baselineF,enactpolicy[i],agegroups,agegroupstart,agegroupend)[1]
+  finalprevs <- createresultsfile(population,popmales,popfemales,prevalencesM,prevalencesF,enactpolicy[i],agegroups,agegroupstart,agegroupend)[1]
   write.table(finalprevs,paste0('results_w',Iwp,'_r',Ir,'_b',Ib,'_w',pacwp,'_r',pacr, '_b',pacb,'.csv'),col.names=FALSE,row.names=FALSE,sep=',',quote=FALSE,append='TRUE')
   
-  deaths_df <- createresultsfile(population,popmales,popfemales,prevalencesM,prevalencesF,baselineM,baselineF,enactpolicy[i],agegroups,agegroupstart,agegroupend)[2]
+  deaths_df <- createresultsfile(population,popmales,popfemales,prevalencesM,prevalencesF,enactpolicy[i],agegroups,agegroupstart,agegroupend)[2]
   write.table(deaths_df,paste0('deaths_w',Iwp,'_r',Ir,'_b',Ib,'_w',pacwp,'_r',pacr, '_b',pacb,'.csv'),col.names=FALSE,row.names=FALSE,sep=',',quote=FALSE,append='TRUE')
   
   print(paste0("policy for the year ", enactpolicy[i], " appended to files"))

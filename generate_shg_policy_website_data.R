@@ -16,13 +16,10 @@ pacr=as.numeric(args[5])   ### percentage already covered by restaurants clean a
 pacb=as.numeric(args[6])   ### percentage already covered by bars clean air laws
 iter = as.numeric(args[7])
 
-# setwd("/home/jamietam/scenarios_parallel")
 setwd(paste0("/home/jamietam/scenarios_parallel_",iter,sep=""))
-# setwd("C:/Users/jamietam/Dropbox/CISNET/Policy_Module/Website")
 
 # Select policy years to include in final file
 enactpolicy = c(2015,2016,2018,2020)
-# enactpolicy=c(2015)
 
 # Read in policy module output data
 # baselineM <- read.csv('baseline_prevalences.csv')
@@ -343,31 +340,32 @@ createresultsfile <- function(population, popmales, popfemales, prevalencesM, pr
 # Write final prevalences dataframes to CSV -------------------------------
 #  ------------------------------------------------------------------------
 for (i in 1:length(enactpolicy)){
-  prevalencesM <- read.csv(paste0('prevalences_males_w',Iwp,'_r',Ir,'_b',Ib,'_w',pacwp,'_r',pacr, '_b',pacb,'_',enactpolicy[i],'.csv'), header=TRUE) # Read in policy module output data
+  prevalencesM <- read.csv(paste0('prevalences_males_w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'_',enactpolicy[i],'.csv'), header=TRUE) # Read in policy module output data
   prevalencesM <- prevalencesM[order(prevalencesM$year,prevalencesM$age),]# Sort by year, age, policy
-  prevalencesF <- read.csv(paste0('prevalences_females_w',Iwp,'_r',Ir,'_b',Ib,'_w',pacwp,'_r',pacr, '_b',pacb,'_',enactpolicy[i],'.csv'), header=TRUE) 
+  prevalencesF <- read.csv(paste0('prevalences_females_w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'_',enactpolicy[i],'.csv'), header=TRUE) 
   prevalencesF <- prevalencesF[order(prevalencesF$year,prevalencesF$age),]# Sort by year, age, policy
-  baselineM <- read.csv('/cleanairresults/prevresults/baseline_prevalences_males.csv', header=TRUE)
-  baselineF <- read.csv('/cleanairresults/prevresults/baseline_prevalences_females.csv', header=TRUE)
+  baselineM <- read.csv('baseline_prevalences_males.csv', header=TRUE)
+  baselineF <- read.csv('baseline_prevalences_females.csv', header=TRUE)
   
   finalprevs <- createresultsfile(population,popmales,popfemales,prevalencesM,prevalencesF,baselineM,baselineF,enactpolicy[i],agegroups,agegroupstart,agegroupend)[1]
-  write.table(finalprevs,paste0('results_w',Iwp,'_r',Ir,'_b',Ib,'_w',pacwp,'_r',pacr, '_b',pacb,'.csv'),col.names=FALSE,row.names=FALSE,sep=',',quote=FALSE,append='TRUE')
+  write.table(finalprevs,paste0('results_w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'.csv'),col.names=FALSE,row.names=FALSE,sep=',',quote=FALSE,append='TRUE')
   
   deaths_df <- createresultsfile(population,popmales,popfemales,prevalencesM,prevalencesF,baselineM,baselineF,enactpolicy[i],agegroups,agegroupstart,agegroupend)[2]
-  write.table(deaths_df,paste0('deaths_w',Iwp,'_r',Ir,'_b',Ib,'_w',pacwp,'_r',pacr, '_b',pacb,'.csv'),col.names=FALSE,row.names=FALSE,sep=',',quote=FALSE,append='TRUE')
+  write.table(deaths_df,paste0('deaths_w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'.csv'),col.names=FALSE,row.names=FALSE,sep=',',quote=FALSE,append='TRUE')
   
   print(paste0("policy for the year ", enactpolicy[i], " appended to files"))
 }
 
 # Add header row
-finalprevs <- read.csv(paste0('results_w',Iwp,'_r',Ir,'_b',Ib,'_w',pacwp,'_r',pacr, '_b',pacb,'.csv'), header=FALSE)
-deaths_df <- read.csv(paste0('deaths_w',Iwp,'_r',Ir,'_b',Ib,'_w',pacwp,'_r',pacr, '_b',pacb,'.csv'), header=FALSE)
+finalprevs <- read.csv(paste0('results_w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'.csv'), header=FALSE)
+deaths_df <- read.csv(paste0('deaths_w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'.csv'), header=FALSE)
 
 colnames(finalprevs) <- c("year","age","cohort","males_baseline","females_baseline","males_policy","females_policy","both_baseline","both_policy", "policy_year")
 colnames(deaths_df) <- c("year", "cumulativedeaths_avoided_males", "cumulativedeaths_avoided_females", "cumulativedeaths_avoided", "policy_year" )
 
-write.csv(finalprevs, file=paste0('results_w',Iwp,'_r',Ir,'_b',Ib,'_w',pacwp,'_r',pacr, '_b',pacb,'.csv'), row.names=FALSE)
-print(paste0('results_w',Iwp,'_r',Ir,'_b',Ib,'_w',pacwp,'_r',pacr, '_b',pacb,'.csv ', 'is ready.'))
+write.csv(finalprevs, file=paste0('results_w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'.csv'), row.names=FALSE)
+print(paste0('results_w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'.csv ', 'is ready.'))
 
-write.csv(deaths_df, file=paste0('deaths_w',Iwp,'_r',Ir,'_b',Ib,'_w',pacwp,'_r',pacr, '_b',pacb,'.csv'), row.names=FALSE)
-print(paste0('deaths_w',Iwp,'_r',Ir,'_b',Ib,'_w',pacwp,'_r',pacr, '_b',pacb,'.csv ', 'is ready.'))
+write.csv(deaths_df, file=paste0('deaths_w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'.csv'), row.names=FALSE)
+print(paste0('deaths_w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'.csv ', 'is ready.'))
+

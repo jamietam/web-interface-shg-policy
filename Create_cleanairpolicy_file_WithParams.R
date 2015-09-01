@@ -96,10 +96,10 @@ for (y in 1:length(sexes)){
   filehead='init_modifier; cess_modifier; init_decay_rate; cess_decay_rate; init_age_modifier; cess_age_modifier; init_age_lower_limit; init_age_upper_limit; cess_age_lower_limit; cess_age_upper_limit; init_policy_deploy_year; cess_policy_deploy_year'
   policyscenario=paste(initmod,'; ',cessmod,'; ',inidecayrate,'; ',cessdecayrate,'; ',initagemod,'; ',cessagemod,'; ',initagelower,'; ',initageupper,'; ',cessagelower,'; ',cessageupper,'; ',initdeploy,'; ',cessdeploy,sep="")
 
-  write.table(filehead,paste0('inputscleanair_',(sexes[y]),'_w',Iwp,'_r',Ir,'_b',Ib,'_w',pacwp,'_r',pacr, '_b',pacb,'_',year,'.csv'),col.names=FALSE,row.names=FALSE,quote=FALSE,eol='\n',)
-  write.table(policyscenario,paste0('inputscleanair_',(sexes[y]),'_w',Iwp,'_r',Ir,'_b',Ib,'_w',pacwp,'_r',pacr, '_b',pacb,'_',year,'.csv'),col.names=FALSE,row.names=FALSE,quote=FALSE,eol='',append='TRUE')
+  write.table(filehead,paste0('inputscleanair_',(sexes[y]),'_w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'_',year,'.csv'),col.names=FALSE,row.names=FALSE,quote=FALSE,eol='\n',)
+  write.table(policyscenario,paste0('inputscleanair_',(sexes[y]),'_w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2),'_b',format(pacb,nsmall=2),'_',year,'.csv'),col.names=FALSE,row.names=FALSE,quote=FALSE,eol='',append='TRUE')
 
-  print(paste0('inputscleanair_',(sexes[y]),'_w',Iwp,'_r',Ir,'_b',Ib,'_w',pacwp,'_r',pacr, '_b',pacb,'_',year,'.csv',' has been created.')) 
+  print(paste0('inputscleanair_',(sexes[y]),'_w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'_',year,'.csv',' has been created.')) 
 }  
 
   

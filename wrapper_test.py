@@ -1,4 +1,6 @@
 import os
+import time
+
 numThreads = 2
 for i in xrange(numThreads):
    dir = "/home/jamietam/shg-policy-module_parallel/"
@@ -7,10 +9,11 @@ for i in xrange(numThreads):
    os.system(cmd)
    os.system(cmd2)
 
+time.sleep(20) # Wait for 20 seconds
 
 # specify which parameters to use for each thread
 # scen=(Iwp, Ir, Ib, pacwp, pacr, pacb)
-scen1 = (1,1,1,0.0,1.0,0.5)
+scen1 = (1,1,1,0.50,0.50,0.50)
 scen2 = (1,1,1,0.75,0.75,0.75)
 scenario_set = (scen1,scen2)
 

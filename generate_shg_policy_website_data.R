@@ -316,18 +316,18 @@ createresultsfile <- function(population, popmales, popfemales, prevalencesM, pr
   for (r in 1:nrow(deaths_df)){
     deaths_df$cumulativedeathsM_baseline[r] <- getcumulativedeaths(deaths_df, deaths_df$year[r])[1]
     deaths_df$cumulativedeathsM_policy[r] <- getcumulativedeaths(deaths_df, deaths_df$year[r])[2]
-    deaths_df$cumulativedeaths_avoided_males[r] <- getcumulativedeaths(deaths_df, deaths_df$year[r])[3]
+    deaths_df$deaths_avoided_males[r] <- getcumulativedeaths(deaths_df, deaths_df$year[r])[3]
     
     deaths_df$cumulativedeathsF_baseline[r] <- getcumulativedeaths(deaths_df, deaths_df$year[r])[4]
     deaths_df$cumulativedeathsF_policy[r] <- getcumulativedeaths(deaths_df, deaths_df$year[r])[5]
-    deaths_df$cumulativedeaths_avoided_females[r] <- getcumulativedeaths(deaths_df, deaths_df$year[r])[6]
+    deaths_df$deaths_avoided_females[r] <- getcumulativedeaths(deaths_df, deaths_df$year[r])[6]
     
     deaths_df$cumulativedeaths_baseline[r] <- getcumulativedeaths(deaths_df, deaths_df$year[r])[7]
     deaths_df$cumulativedeaths_policy[r] <- getcumulativedeaths(deaths_df, deaths_df$year[r])[8]
-    deaths_df$cumulativedeaths_avoided[r] <- getcumulativedeaths(deaths_df, deaths_df$year[r])[9]  
+    deaths_df$deaths_avoided_both[r] <- getcumulativedeaths(deaths_df, deaths_df$year[r])[9]  
   } 
   
-  lessvars <- c("year","cumulativedeaths_avoided_males", "cumulativedeaths_avoided_females", "cumulativedeaths_avoided")
+  lessvars <- c("year","deaths_avoided_males", "deaths_avoided_females", "deaths_avoided_both")
   deaths_df <- deaths_df[lessvars]
   deaths_df$policy_year <- policy_year
   
@@ -361,7 +361,7 @@ finalprevs <- read.csv(paste0('results_w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,
 deaths_df <- read.csv(paste0('deaths_w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'.csv'), header=FALSE)
 
 colnames(finalprevs) <- c("year","age","cohort","males_baseline","females_baseline","males_policy","females_policy","both_baseline","both_policy", "policy_year")
-colnames(deaths_df) <- c("year", "cumulativedeaths_avoided_males", "cumulativedeaths_avoided_females", "cumulativedeaths_avoided", "policy_year" )
+colnames(deaths_df) <- c("year", "deaths_avoided_males", "deaths_avoided_females", "deaths_avoided_both", "policy_year" )
 
 write.csv(finalprevs, file=paste0('results_w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'.csv'), row.names=FALSE)
 print(paste0('results_w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'.csv ', 'is ready.'))

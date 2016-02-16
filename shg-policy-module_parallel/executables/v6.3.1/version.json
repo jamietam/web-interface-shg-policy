@@ -1,0 +1,70 @@
+{
+  "exe_files": [
+    {
+      "path": "lbc_smokehist_linux.exe", 
+      "md5_hash": "dd9b3c454ccfe5e5cc383c0f8f8bc92f"
+    }, 
+    {
+      "path": "lbc_smokehist_osx.exe", 
+      "md5_hash": "e37da764a4b68e67ad4d47f8584c2796"
+    }, 
+    {
+      "path": "lbc_smokehist_win.exe", 
+      "md5_hash": "ce7ad205adb4a188ba124a3103f492f2"
+    }
+  ], 
+  "version": "6.3.1", 
+  "previous_commit": "49ea1ad06682a9e318048b6bb5b520bc6c67485d", 
+  "input_files": [
+    {
+      "path": "data\\10_28_2014\\lbc_shg_cessation10282014.txt", 
+      "version": "0.1.1", 
+      "md5_hash": "38cd80b7c06c4c1c6c9d50c2d5c8a3b4"
+    }, 
+    {
+      "path": "data\\10_28_2014\\lbc_shg_cpd10282014.txt", 
+      "version": "0.1.1", 
+      "md5_hash": "bcfcabd68a4ebb262fad858712a39566"
+    }, 
+    {
+      "path": "data\\10_28_2014\\lbc_shg_initiation10282014.txt", 
+      "version": "0.1.1", 
+      "md5_hash": "3027a616abe6acf92266be928627cec4"
+    }, 
+    {
+      "path": "data\\10_28_2014\\lbc_smokehist_ac_mortality.txt", 
+      "version": "0.1.1", 
+      "md5_hash": "6c7a6dc5e6a843a222030f0d684fa081"
+    }, 
+    {
+      "path": "data\\10_28_2014\\lbc_smokehist_oc_mortality.txt", 
+      "version": "0.1.1", 
+      "md5_hash": "8b37e86678e95497f9ebb56ac41666b3"
+    }, 
+    {
+      "path": "data\\6.2.x\\lbc_smokehist_cessation.txt", 
+      "version": "0.0.1", 
+      "md5_hash": "b073302f5a907f41106503cc070adeae"
+    }, 
+    {
+      "path": "data\\6.2.x\\lbc_smokehist_cpd.txt", 
+      "version": "0.0.1", 
+      "md5_hash": "c45b7032d54d0e39467378a044fabd46"
+    }, 
+    {
+      "path": "data\\6.2.x\\lbc_smokehist_cpdintensityprobs.txt", 
+      "version": "0.0.1", 
+      "md5_hash": "50a526950d03242fb336f061085a62d9"
+    }, 
+    {
+      "path": "data\\6.2.x\\lbc_smokehist_initiation.txt", 
+      "version": "0.0.1", 
+      "md5_hash": "fd3f1272d2102e16b056077ebaa97f54"
+    }, 
+    {
+      "path": "data\\6.2.x\\lbc_smokehist_oc_mortality.txt", 
+      "version": "0.0.1", 
+      "md5_hash": "ead066152dcd736bfef8eb738e2bbc04"
+    }
+  ]
+}

@@ -12,54 +12,48 @@ dirscen = '/home/jamietam/scenarios_parallel_'+iter1+'/'
 dirweb = '/home/jamietam/web-interface-shg-policy/'## Directory contains 'Age_effects_male_cleanair_021815.csv', 'Age_effects_female_cleanair_021$
 dirresults = '/home/jamietam/mla_results/'
 
-mla_age = [19,21,25] ### indicator of workplace policy to be implemented 1-yes, 0-no
-pac19 = [0.00] ### percentage already covered by restaurants clean air laws
-pac21 = [0.00,0.25,0.50,0.75,1.00] ### percentage already covered by bars clean air laws
+mla_age_set = [19,21,25] ### indicator of workplace policy to be implemented 1-yes, 0-no
+pac19_set = [0.00] ### percentage already covered by restaurants clean air laws
+pac21_set = [0.00] ### percentage already covered by bars clean air laws
 years_set = [2016,2017,2018,2019,2020] ## Year of policy implementation
 
 count=0
-totalset = 2
-for Iwp in mla_age:
-	for Ir in Ir_set:
-		for Ib in Ib_set:
-			for pacwp in pacwp_set:
-				for pacr in pacr_set:
-					for pacb in pacb_set:
-						for year in years_set:
-							scen=(Iwp, Ir, Ib, float(pacwp), float(pacr), float(pacb), year)          
-							print "scenario: ", scen
-	#						os.chdir(dirweb) # change to directory with age effects modifier male and female files
-							# Create policy inputs file
-	#						os.system("Rscript Create_cleanairpolicy_file_WithParams.R %s %s %s %0.2f %0.2f %0.2f %s" % scen)
-							
-							# Males
-	#						cmd1="mv inputscleanair_males_w%s_r%s_b%s_w%0.2f_r%0.2f_b%0.2f_%s.csv " % scen # move file to policy module inputs folder
-	#						cmd1=cmd1+dirinputs+"policies.csv"
-	#						os.system(cmd1)
-	#						os.chdir(dirinputs) 
-	#						os.system("cp demographics_males.csv demographics.csv")
-	#						os.chdir(dirsim)
-	#						os.system("python policy_shg.py") # run policy module
-	#						cmd2="mv prevalences.csv "+dirscen+"prevalences_males_w%s_r%s_b%s_w%0.2f_r%0.2f_b%0.2f_%s.csv" % scen
-	#						os.system(cmd2) 
-	#						print "male output file saved ", year
-							# Females
-	#						os.chdir(dirweb)
-	#						cmd3="mv inputscleanair_females_w%s_r%s_b%s_w%0.2f_r%0.2f_b%0.2f_%s.csv " % scen
-	#						cmd3=cmd3+dirinputs+"policies.csv"
-	#						os.system(cmd3)
-	#						os.chdir(dirinputs)
-	#						os.system("cp demographics_females.csv demographics.csv")
-	#						os.chdir(dirsim)
-	#						os.system("python policy_shg.py")
-	#						cmd4="mv prevalences.csv "+dirscen+"prevalences_females_w%s_r%s_b%s_w%0.2f_r%0.2f_b%0.2f_%s.csv" % scen
-	#						os.system(cmd4) 
-	#						print "female output file saved ", year
-							
-						params = (Iwp,Ir,Ib,float(pacwp),float(pacr),float(pacb),iter1)
-						print "params: ", params[0:6]
-						os.chdir(dirweb)
-						os.system("Rscript generate_shg_policy_website_data.R %s %s %s %0.2f %0.2f %0.2f %s" % params)
-						
-						count = count+1
-						print "results generated for file ", count, " of ", totalset
+totalset = 5
+for mla_age in mla_age_set:
+    for pac19 in pac19_set:
+        for pac21 in pac21_set:
+            for year in years_set:
+                scen=(age, float(pac19), float(pac21), year)
+                print "scenario: ", scen
+                os.chdir(dirweb) # change to directory with age effects modifier male and female files
+                # Create policy inputs file
+                os.system("Rscript Create_MLApolicy_file_WithParams.R %s %0.2f %0.2f %s" % scen)
+                # Males
+                cmd1="mv inputsmla_males_%s_pac19_%0.2f_pac21_%0.2f_%s.csv " % scen # move file to policy module inputs folder
+                cmd1=cmd1+dirinputs+"policies.csv"
+                os.system(cmd1)
+                os.chdir(dirinputs) 
+                os.system("cp demographics_males.csv demographics.csv")
+                os.chdir(dirsim)
+                os.system("python policy_shg.py") # run policy module
+                cmd2="mv prevalences.csv "+dirscen+"prevalences_males_%s_pac19_%0.2f_pac21_%0.2f_%s.csv" % scen
+                os.system(cmd2)
+                print "male output file saved ", year
+                # Females
+                os.chdir(dirweb)
+                cmd3="mv inputsmla_females_%s_pac19_%0.2f_pac21_%0.2f_%s.csv " % scen
+                cmd3=cmd3+dirinputs+"policies.csv"
+                os.system(cmd3)
+                os.chdir(dirinputs)
+                os.system("cp demographics_females.csv demographics.csv")
+                os.chdir(dirsim)
+                os.system("python policy_shg.py")
+                cmd4="mv prevalences.csv "+dirscen+"prevalences_females_%s_pac19_%0.2f_pac21_%0.2f_%s.csv" % scen
+                os.system(cmd4)
+                print "female output file saved ", year
+            params = (age,float(pac19),float(pac21),iter1)
+            print "params: ", params[0:3]
+            os.chdir(dirweb)
+            os.system("Rscript generate_shg_policy_website_data.R %s %0.2f %0.2f" % params)
+            count = count+1
+            print "results generated for file ", count, " of ", totalset

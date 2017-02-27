@@ -1,4 +1,0 @@
-Mako
-pandas
-ipdb
-matplotlib

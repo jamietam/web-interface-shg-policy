@@ -15,10 +15,10 @@ dirresults = dirweb+'cleanairresults/'
 Iwp_set = [1] ### indicator of workplace policy to be implemented 1-yes, 0-no
 Ir_set = [1] ### indicator of restaurants policy to be implemented 1-yes, 0-no
 Ib_set = [1] ### indicator of bars policy to be implemented 1-yes, 0-no
-pacwp_set = [0.00,0.25,0.50,0.75,1.00] ### percentage already covered by workplace clean air laws
+pacwp_set = [0.00] ### percentage already covered by workplace clean air laws
 pacr_set = [0.25] ### percentage already covered by restaurants clean air laws
-pacb_set = [0.00] ### percentage already covered by bars clean air laws
-years_set = [2015,2016,2018,2020] ## Year of policy implementation
+pacb_set = [0.00,0.25,0.50,0.75,1.00] ### percentage already covered by bars clean air laws
+years_set = [2016,2017,2018,2019,2020] ## Year of policy implementation
 
 count=0
 totalset = 5

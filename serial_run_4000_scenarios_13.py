@@ -3,7 +3,7 @@ import csv
 import sys
 
 # Run scenarios in parallel and serially within each thread
-iter1 = str(2)
+iter1 = str(13)
 print "iteration: ", iter1
 
 dirsim='/home/jamietam/shg-policy-module_parallel_'+iter1+'/' # Directory contains 'policy_shg.py'
@@ -14,10 +14,10 @@ dirresults = dirweb+'cleanairresults/'
 
 Iwp_set = [1] ### indicator of workplace policy to be implemented 1-yes, 0-no
 Ir_set = [1] ### indicator of restaurants policy to be implemented 1-yes, 0-no
-Ib_set = [1] ### indicator of bars policy to be implemented 1-yes, 0-no
-pacwp_set = [0.00] ### percentage already covered by workplace clean air laws
-pacr_set = [0.50] ### percentage already covered by restaurants clean air laws
-pacb_set = [0.00,0.25,0.50,0.75,1.00] ### percentage already covered by bars clean air laws
+Ib_set = [0] ### indicator of bars policy to be implemented 1-yes, 0-no
+pacwp_set = [0.00,0.25,0.50,0.75,1.00] ### percentage already covered by workplace clean air laws
+pacr_set = [1.00] ### percentage already covered by restaurants clean air laws
+pacb_set = [0.00] ### percentage already covered by bars clean air laws
 years_set = [2016,2017,2018,2019,2020] ## Year of policy implementation
 
 count=0

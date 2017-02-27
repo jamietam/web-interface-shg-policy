@@ -9,14 +9,13 @@ for i in xrange(numThreads):
    os.system(cmd)
    os.system(cmd2)
 
-time.sleep(90) # Wait for 90 seconds
+#time.sleep(30) # Wait for 30 seconds
 
-for j in xrange(numThreads):
-   cmd3 = "python /home/jamietam/web-interface-shg-policy/serial_run_4000_scenarios_%s.py > " % (str(j))
-   cmd3 = cmd3+"/home/jamietam/log-%s 2>> /home/jamietam/std.out-log-%s &" % (str(j),str(j))
+#for j in xrange(numThreads):
+ #  cmd3 = "sudo python /home/jamietam/web-interface-shg-policy/tax_scenarios_%s.py > " % (str(j))
+  # cmd3 = cmd3+"/home/jamietam/log-%s 2>> /home/jamietam/std.out-log-%s &" % (str(j),str(j))
 
-   out = "echo submitting run %s" % str(j)
-   os.system(out)
-   os.system(cmd3)
-
+ #  out = "echo submitting run %s" % str(j)   
+ #  os.system(out)
+ #  os.system(cmd3)
 

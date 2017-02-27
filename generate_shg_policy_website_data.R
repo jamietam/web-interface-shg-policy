@@ -212,9 +212,9 @@ createdeathsfile <- function(policy_year,smokpopbaseM,formerpopbaseM,smokpoppoli
 # Write final prevalences dataframes to CSV -------------------------------
 #  ------------------------------------------------------------------------
 for (i in 1:length(enactpolicy)){
-  prevalencesM <- read.csv(paste0('prevalences_males_w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'_',enactpolicy[i],'.csv'), header=TRUE) # Read in policy module output data
+  prevalencesM <- read.csv(paste0('prevs/prevalences_males_w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'_',enactpolicy[i],'.csv'), header=TRUE) # Read in policy module output data
   prevalencesM <- prevalencesM[order(prevalencesM$year,prevalencesM$age),]# Sort by year, age, policy
-  prevalencesF <- read.csv(paste0('prevalences_females_w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'_',enactpolicy[i],'.csv'), header=TRUE) 
+  prevalencesF <- read.csv(paste0('prevs/prevalences_females_w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'_',enactpolicy[i],'.csv'), header=TRUE) 
   prevalencesF <- prevalencesF[order(prevalencesF$year,prevalencesF$age),]# Sort by year, age, policy
   baselineM <- read.csv('baseline_prevalences_males.csv', header=TRUE)
   baselineF <- read.csv('baseline_prevalences_females.csv', header=TRUE)

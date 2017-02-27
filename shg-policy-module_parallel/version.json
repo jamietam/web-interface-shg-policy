@@ -1,7 +1,0 @@
-{
-  "name": "https://github.com/CSNW/shg-policy-module",
-  "version": "0.1.1",
-  "dependencies": {
-    "https://github.com/CSNW/smoking-history-generator": "6.3.1"
-  }
-}

@@ -15,13 +15,13 @@ dirresults = dirweb+'cleanairresults/'
 Iwp_set = [1] ### indicator of workplace policy to be implemented 1-yes, 0-no
 Ir_set = [1] ### indicator of restaurants policy to be implemented 1-yes, 0-no
 Ib_set = [1] ### indicator of bars policy to be implemented 1-yes, 0-no
-pacwp_set = [0.00,0.25,0.50,0.75,1.00] ### percentage already covered by workplace clean air laws
+pacwp_set = [0.00] ### percentage already covered by workplace clean air laws
 pacr_set = [0.00] ### percentage already covered by restaurants clean air laws
 pacb_set = [0.00] ### percentage already covered by bars clean air laws
-years_set = [2015,2016,2018,2020] ## Year of policy implementation
+years_set = [2016,2017,2018,2019,2020] ## Year of policy implementation
 
 count=0
-totalset = 5
+totalset = 2
 for Iwp in Iwp_set:
 	for Ir in Ir_set:
 		for Ib in Ib_set:
@@ -31,33 +31,33 @@ for Iwp in Iwp_set:
 						for year in years_set:
 							scen=(Iwp, Ir, Ib, float(pacwp), float(pacr), float(pacb), year)          
 							print "scenario: ", scen
-							os.chdir(dirweb) # change to directory with age effects modifier male and female files
+	#						os.chdir(dirweb) # change to directory with age effects modifier male and female files
 							# Create policy inputs file
-							os.system("Rscript Create_cleanairpolicy_file_WithParams.R %s %s %s %0.2f %0.2f %0.2f %s" % scen)
+	#						os.system("Rscript Create_cleanairpolicy_file_WithParams.R %s %s %s %0.2f %0.2f %0.2f %s" % scen)
 							
 							# Males
-							cmd1="mv inputscleanair_males_w%s_r%s_b%s_w%0.2f_r%0.2f_b%0.2f_%s.csv " % scen # move file to policy module inputs folder
-							cmd1=cmd1+dirinputs+"policies.csv"
-							os.system(cmd1)
-							os.chdir(dirinputs) 
-							os.system("cp demographics_males.csv demographics.csv")
-							os.chdir(dirsim)
-							os.system("python policy_shg.py") # run policy module
-							cmd2="mv prevalences.csv "+dirscen+"prevalences_males_w%s_r%s_b%s_w%0.2f_r%0.2f_b%0.2f_%s.csv" % scen
-							os.system(cmd2) 
-							print "male output file saved ", year
+	#						cmd1="mv inputscleanair_males_w%s_r%s_b%s_w%0.2f_r%0.2f_b%0.2f_%s.csv " % scen # move file to policy module inputs folder
+	#						cmd1=cmd1+dirinputs+"policies.csv"
+	#						os.system(cmd1)
+	#						os.chdir(dirinputs) 
+	#						os.system("cp demographics_males.csv demographics.csv")
+	#						os.chdir(dirsim)
+	#						os.system("python policy_shg.py") # run policy module
+	#						cmd2="mv prevalences.csv "+dirscen+"prevalences_males_w%s_r%s_b%s_w%0.2f_r%0.2f_b%0.2f_%s.csv" % scen
+	#						os.system(cmd2) 
+	#						print "male output file saved ", year
 							# Females
-							os.chdir(dirweb)
-							cmd3="mv inputscleanair_females_w%s_r%s_b%s_w%0.2f_r%0.2f_b%0.2f_%s.csv " % scen
-							cmd3=cmd3+dirinputs+"policies.csv"
-							os.system(cmd3)
-							os.chdir(dirinputs)
-							os.system("cp demographics_females.csv demographics.csv")
-							os.chdir(dirsim)
-							os.system("python policy_shg.py")
-							cmd4="mv prevalences.csv "+dirscen+"prevalences_females_w%s_r%s_b%s_w%0.2f_r%0.2f_b%0.2f_%s.csv" % scen
-							os.system(cmd4) 
-							print "female output file saved ", year
+	#						os.chdir(dirweb)
+	#						cmd3="mv inputscleanair_females_w%s_r%s_b%s_w%0.2f_r%0.2f_b%0.2f_%s.csv " % scen
+	#						cmd3=cmd3+dirinputs+"policies.csv"
+	#						os.system(cmd3)
+	#						os.chdir(dirinputs)
+	#						os.system("cp demographics_females.csv demographics.csv")
+	#						os.chdir(dirsim)
+	#						os.system("python policy_shg.py")
+	#						cmd4="mv prevalences.csv "+dirscen+"prevalences_females_w%s_r%s_b%s_w%0.2f_r%0.2f_b%0.2f_%s.csv" % scen
+	#						os.system(cmd4) 
+	#						print "female output file saved ", year
 							
 						params = (Iwp,Ir,Ib,float(pacwp),float(pacr),float(pacb),iter1)
 						print "params: ", params[0:6]

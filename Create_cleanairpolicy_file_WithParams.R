@@ -3,7 +3,7 @@
 args <- commandArgs(trailingOnly = TRUE)
 
 # setwd("C:/Users/jamietam/Dropbox/CISNET/Policy_Module/")
-# args = c(1,1,1,0,0,0,2015)
+args = c(1,1,1,0,0,0,2015)
 
 Iwp=as.numeric(args[1]) # indicator of workplace policy to be implemented 1-yes, 0-no
 Ir=as.numeric(args[2])  # indicator of restaurants policy to be implemented 1-yes, 0-no

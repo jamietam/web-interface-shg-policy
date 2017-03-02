@@ -12,7 +12,7 @@ pac19=as.numeric(args[2])
 pac21 = as.numeric(args[3])
 iter = as.numeric(args[4])
 
-setwd(paste0("/home/jamietam/scenarios_parallel_",iter,sep=""))
+#setwd(paste0("/home/jamietam/scenarios_parallel_",iter,sep=""))
 
 # Select policy years to include in final file
 enactpolicy = c(2016,2017,2018,2019,2020)
@@ -24,20 +24,35 @@ enactpolicy = c(2016,2017,2018,2019,2020)
 # prevalencesF <- read.csv(paste0('prevalences_females_2015.csv'), header=TRUE)
 
 # Read in Census data
-popmales <- read.csv("censusdata/censuspop_males.csv",header=TRUE)
+popmales <- read.csv(paste0("/home/jamietam/scenarios_parallel_",iter,"/censusdata/censuspop_males.csv",sep=""),header=TRUE)
 popmales <- popmales[,-1] # Remove 1st column "ages"
-popfemales <- read.csv("censusdata/censuspop_females.csv",header=TRUE)
+popfemales <- read.csv(paste0("/home/jamietam/scenarios_parallel_",iter,"/censusdata/censuspop_females.csv",sep=""),header=TRUE)
 popfemales <- popfemales[,-1] # Remove 1st column "ages"
-population <- read.csv("censusdata/censuspopulation_total.csv",header=TRUE)
+population <- read.csv(paste0("/home/jamietam/scenarios_parallel_",iter,"/censusdata/censuspopulation_total.csv",sep=""),header=TRUE)
 population <- population[,-1] # Remove 1st column "ages"
 
 # Read in death rates
-acm_males_current <- read.csv("acmratesbysmokingstatus/acm_males_current.csv",header=TRUE)
-acm_males_former <- read.csv("acmratesbysmokingstatus/acm_males_former.csv",header=TRUE)
-acm_males_never <- read.csv("acmratesbysmokingstatus/acm_males_never.csv",header=TRUE)
-acm_females_current <- read.csv("acmratesbysmokingstatus/acm_females_current.csv",header=TRUE)
-acm_females_former <- read.csv("acmratesbysmokingstatus/acm_females_former.csv",header=TRUE)
-acm_females_never <- read.csv("acmratesbysmokingstatus/acm_females_never.csv",header=TRUE)
+acm_males_current <- read.csv(paste0("/home/jamietam/scenarios_parallel_",iter,"/acmratesbysmokingstatus/acm_males_current.csv",sep=""),header=TRUE)
+acm_males_former <- read.csv(paste0("/home/jamietam/scenarios_parallel_",iter,"/acmratesbysmokingstatus/acm_males_former.csv",sep=""),header=TRUE)
+acm_males_never <- read.csv(paste0("/home/jamietam/scenarios_parallel_",iter,"/acmratesbysmokingstatus/acm_males_never.csv",sep=""),header=TRUE)
+acm_females_current <- read.csv(paste0("/home/jamietam/scenarios_parallel_",iter,"/acmratesbysmokingstatus/acm_females_current.csv",sep=""),header=TRUE)
+acm_females_former <- read.csv(paste0("/home/jamietam/scenarios_parallel_",iter,"/acmratesbysmokingstatus/acm_females_former.csv",sep=""),header=TRUE)
+acm_females_never <- read.csv(paste0("/home/jamietam/scenarios_parallel_",iter,"/acmratesbysmokingstatus/acm_females_never.csv",sep=""),header=TRUE)
+
+#popmales <- read.csv("/censusdata/censuspop_males.csv",header=TRUE)
+#popmales <- popmales[,-1] # Remove 1st column "ages"
+#popfemales <- read.csv("censusdata/censuspop_females.csv",header=TRUE)
+#popfemales <- popfemales[,-1] # Remove 1st column "ages"
+#population <- read.csv("/censusdata/censuspopulation_total.csv",header=TRUE)
+#population <- population[,-1] # Remove 1st column "ages"
+
+# Read in death rates
+#acm_males_current <- read.csv("/acmratesbysmokingstatus/acm_males_current.csv",header=TRUE)
+#acm_males_former <- read.csv("/acmratesbysmokingstatus/acm_males_former.csv",header=TRUE)
+#acm_males_never <- read.csv("/acmratesbysmokingstatus/acm_males_never.csv",header=TRUE)
+#acm_females_current <- read.csv("/acmratesbysmokingstatus/acm_females_current.csv",header=TRUE)
+#acm_females_former <- read.csv("/acmratesbysmokingstatus/acm_females_former.csv",header=TRUE)
+#acm_females_never <- read.csv("/acmratesbysmokingstatus/acm_females_never.csv",header=TRUE)
 
 tobaccodeaths_males_current <- acm_males_current[,-1] - acm_males_never[,-1]
 tobaccodeaths_males_former <- acm_males_former[,-1] - acm_males_never[,-1]
@@ -336,31 +351,31 @@ createresultsfile <- function(population, popmales, popfemales, prevalencesM, pr
 # Write final prevalences dataframes to CSV -------------------------------
 #  ------------------------------------------------------------------------
 for (i in 1:length(enactpolicy)){
-  prevalencesM <- read.csv(paste0('prevalences_males_',format(mla_age),'_pac19_',format(pac19,nsmall=2),'_pac21_',format(pac21,nsmall=2),'_',enactpolicy[i],'.csv'), header=TRUE) # Read in policy module output data
+  prevalencesM <- read.csv(paste0('/home/jamietam/scenarios_parallel_',iter,'/prevalences_males_',format(mla_age),'_pac19_',format(pac19,nsmall=2),'_pac21_',format(pac21,nsmall=2),'_',enactpolicy[i],'.csv'), header=TRUE) # Read in policy module output data
   prevalencesM <- prevalencesM[order(prevalencesM$year,prevalencesM$age),]# Sort by year, age, policy
-  prevalencesF <- read.csv(paste0('prevalences_females_',format(mla_age),'_pac19_',format(pac19,nsmall=2),'_pac21_',format(pac21,nsmall=2),'_',enactpolicy[i],'.csv'), header=TRUE) 
+  prevalencesF <- read.csv(paste0('/home/jamietam/scenarios_parallel_',iter,'/prevalences_females_',format(mla_age),'_pac19_',format(pac19,nsmall=2),'_pac21_',format(pac21,nsmall=2),'_',enactpolicy[i],'.csv'), header=TRUE) 
   prevalencesF <- prevalencesF[order(prevalencesF$year,prevalencesF$age),]# Sort by year, age, policy
-  baselineM <- read.csv('baseline_prevalences_males.csv', header=TRUE)
-  baselineF <- read.csv('baseline_prevalences_females.csv', header=TRUE)
+  baselineM <- read.csv(paste0('/home/jamietam/scenarios_parallel_',iter,'/baseline_prevalences_males.csv', sep=""),header=TRUE)
+  baselineF <- read.csv(paste0('/home/jamietam/scenarios_parallel_',iter,'/baseline_prevalences_females.csv',sep=""), header=TRUE)
   
   finalprevs <- createresultsfile(population,popmales,popfemales,prevalencesM,prevalencesF,baselineM,baselineF,enactpolicy[i],agegroups,agegroupstart,agegroupend)[1]
-  write.table(finalprevs,paste0('results_',format(mla_age),'_pac19_',format(pac19,nsmall=2),'_pac21_',format(pac21,nsmall=2),'.csv'),col.names=FALSE,row.names=FALSE,sep=',',quote=FALSE,append='TRUE')
+  write.table(finalprevs,paste0('/home/jamietam/scenarios_parallel_',iter,'/results_',format(mla_age),'_pac19_',format(pac19,nsmall=2),'_pac21_',format(pac21,nsmall=2),'.csv'),col.names=FALSE,row.names=FALSE,sep=',',quote=FALSE,append='TRUE')
   
   deaths_df <- createresultsfile(population,popmales,popfemales,prevalencesM,prevalencesF,baselineM,baselineF,enactpolicy[i],agegroups,agegroupstart,agegroupend)[2]
-  write.table(deaths_df,paste0('deaths_',format(mla_age),'_pac19_',format(pac19,nsmall=2),'_pac21_',format(pac21,nsmall=2),'.csv'),col.names=FALSE,row.names=FALSE,sep=',',quote=FALSE,append='TRUE')
+  write.table(deaths_df,paste0('/home/jamietam/scenarios_parallel_',iter,'/deaths_',format(mla_age),'_pac19_',format(pac19,nsmall=2),'_pac21_',format(pac21,nsmall=2),'.csv'),col.names=FALSE,row.names=FALSE,sep=',',quote=FALSE,append='TRUE')
   
   print(paste0("policy for the year ", enactpolicy[i], " appended to files"))
 }
 
 # Add header row
-finalprevs <- read.csv(paste0('results_',format(mla_age),'_pac19_',format(pac19,nsmall=2),'_pac21_',format(pac21,nsmall=2),'.csv'), header=FALSE)
-deaths_df <- read.csv(paste0('deaths_',format(mla_age),'_pac19_',format(pac19,nsmall=2),'_pac21_',format(pac21,nsmall=2),'.csv'), header=FALSE)
+finalprevs <- read.csv(paste0('/home/jamietam/scenarios_parallel_',iter,'/results_',format(mla_age),'_pac19_',format(pac19,nsmall=2),'_pac21_',format(pac21,nsmall=2),'.csv'), header=FALSE)
+deaths_df <- read.csv(paste0('/home/jamietam/scenarios_parallel_',iter,'/deaths_',format(mla_age),'_pac19_',format(pac19,nsmall=2),'_pac21_',format(pac21,nsmall=2),'.csv'), header=FALSE)
 
 colnames(finalprevs) <- c("year","age","cohort","males_baseline","females_baseline","males_policy","females_policy","both_baseline","both_policy", "policy_year")
 colnames(deaths_df) <- c("year", "deaths_avoided_males", "deaths_avoided_females", "deaths_avoided_both", "policy_year" )
 
-write.csv(finalprevs, file=paste0('results_',format(mla_age),'_pac19_',format(pac19,nsmall=2),'_pac21_',format(pac21,nsmall=2),'.csv'), row.names=FALSE)
+write.csv(finalprevs, file=paste0('/home/jamietam/scenarios_parallel_',iter,'/results_',format(mla_age),'_pac19_',format(pac19,nsmall=2),'_pac21_',format(pac21,nsmall=2),'.csv'), row.names=FALSE)
 print(paste0('results_',format(mla_age),'_pac19_',format(pac19,nsmall=2),'_pac21_',format(pac21,nsmall=2),'.csv', ' is ready.'))
 
-write.csv(deaths_df, file=paste0('deaths_',format(mla_age),'_pac19_',format(pac19,nsmall=2),'_pac21_',format(pac21,nsmall=2),'.csv'), row.names=FALSE)
+write.csv(deaths_df, file=paste0('/home/jamietam/scenarios_parallel_',iter,'/deaths_',format(mla_age),'_pac19_',format(pac19,nsmall=2),'_pac21_',format(pac21,nsmall=2),'.csv'), row.names=FALSE)
 print(paste0('deaths_',format(mla_age),'_pac19_',format(pac19,nsmall=2),'_pac21_',format(pac21,nsmall=2),'.csv', ' is ready.'))

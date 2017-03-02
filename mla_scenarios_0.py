@@ -13,17 +13,17 @@ dirweb = '/home/jamietam/web-interface-shg-policy/'## Directory contains 'Age_ef
 dirresults = '/home/jamietam/mla_results/'
 
 mla_age_set = [19,21,25] ### indicator of workplace policy to be implemented 1-yes, 0-no
-pac19_set = [0.00] ### percentage already covered by restaurants clean air laws
+pac19_set = [0.25] ### percentage already covered by restaurants clean air laws
 pac21_set = [0.00] ### percentage already covered by bars clean air laws
 years_set = [2016,2017,2018,2019,2020] ## Year of policy implementation
 
 count=0
-totalset = 5
+totalset = 3
 for mla_age in mla_age_set:
     for pac19 in pac19_set:
         for pac21 in pac21_set:
             for year in years_set:
-                scen=(age, float(pac19), float(pac21), year)
+                scen=(mla_age, float(pac19), float(pac21), year)
                 print "scenario: ", scen
                 os.chdir(dirweb) # change to directory with age effects modifier male and female files
                 # Create policy inputs file
@@ -51,9 +51,13 @@ for mla_age in mla_age_set:
                 cmd4="mv prevalences.csv "+dirscen+"prevalences_females_%s_pac19_%0.2f_pac21_%0.2f_%s.csv" % scen
                 os.system(cmd4)
                 print "female output file saved ", year
-            params = (age,float(pac19),float(pac21),iter1)
+            params = (mla_age,float(pac19),float(pac21),iter1)
             print "params: ", params[0:3]
             os.chdir(dirweb)
-            os.system("Rscript generate_shg_policy_website_data.R %s %0.2f %0.2f" % params)
+            os.system("Rscript generate_mla_policy_website_data.R %s %0.2f %0.2f %s" % params)
             count = count+1
             print "results generated for file ", count, " of ", totalset
+os.chdir(dirscen)
+cmd5 = "mv prevalences* deaths* results* "+dirresults
+os.system(cmd5) 
+print "files moved to ", dirresults

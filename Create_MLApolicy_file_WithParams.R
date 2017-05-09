@@ -1,8 +1,8 @@
-## To run the script in linux "Rscript Create_cleanairpolicy_file_WithParams.R 1 1 1 .4 .4 .4 2015" 
+## To run the script in linux "Rscript Create_MLApolicy_file_WithParams.R 19 0.00 0.00 2016" 
 
-# args <- commandArgs(trailingOnly = TRUE)
-setwd("C:/Users/jamietam/Dropbox/GitHub/web-interface-shg-policy/mla")
-args = c(19,1.0,0.0,2016)
+args <- commandArgs(trailingOnly = TRUE)
+# setwd("C:/Users/jamietam/Dropbox/GitHub/web-interface-shg-policy/mla")
+#args = c(19,1.0,0.0,2016)
 
 I19= ifelse(args[1]==19,1,0)
 I21= ifelse(args[1]==21,1,0)

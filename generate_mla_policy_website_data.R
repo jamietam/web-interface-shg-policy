@@ -17,7 +17,6 @@ args <- commandArgs(trailingOnly = TRUE)
 mla_age=as.numeric(args[1])
 pac19=as.numeric(args[2])
 pac21 = as.numeric(args[3])
-iter = as.numeric(args[4])
 setwd("/home/jamietam/web-interface-shg-policy/")
 prevfiles = '/home/jamietam/mla_results/prevs/'
 
@@ -412,7 +411,7 @@ deaths_df <- read.csv(paste0('deaths_',name,'.csv'), header=FALSE)
 
 # colnames(lifeyearsgained) <- c("year","yll_baselineM","yll_policyM","lyg_males","yll_baselineF","yll_policyF","lyg_females", "yll_baseline","yll_policy","lyg_both" ,
 #                                "cyll_baselineM","cyll_policyM","cLYG_males","cyll_baselineF","cyll_policyF","cLYG_females", "cyll_baseline","cyll_policy","cLYG_both" ,"policy_year")
-colnames(lifeyearsgained) <- c("year","cLYG_males", "cLYG_females", "cLYG_both")
+colnames(lifeyearsgained) <- c("year","cLYG_males", "cLYG_females", "cLYG_both", "policy_year")
 
 colnames(finalprevs) <- c("year","age","cohort","males_baseline","females_baseline","males_policy","females_policy","both_baseline","both_policy", "policy_year")
 

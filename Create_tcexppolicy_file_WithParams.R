@@ -2,7 +2,7 @@
 
 args <- commandArgs(trailingOnly = TRUE)
 # setwd("C:/Users/jamietam/Dropbox/GitHub/web-interface-shg-policy/mla")
-# args = c(0.00,1.00,2016)
+args = c(0.00,0.30,2016)
 
 initexp = as.numeric(args[1])
 finalexp = as.numeric(args[2])
@@ -53,10 +53,10 @@ for (y in 1:length(sexes)){
   initdeploy=year
   cessdeploy=year
     
-  for (i in 2:length(ageeffects[,1])) {
+  for (i in 2:100) {
   
     initmod=paste(initmod,',',formatC(initeff[i],4,format="f"),sep="") 
-    cessmod=paste(cessmod,',',formatC(cesseff[i],1,format="f"),sep="")
+    cessmod=paste(cessmod,',',formatC(cesseff[i],4,format="f"),sep="")
     
     inidecayrate=paste(inidecayrate,',',inidecay,sep="")
     cessdecayrate=paste(cessdecayrate,',',cesdecay,sep="")

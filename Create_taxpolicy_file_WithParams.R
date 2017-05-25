@@ -80,6 +80,6 @@ for (y in 1:length(sexes)){
   write.table(filehead,paste0('inputstax_',(sexes[y]),'_',format(initprice,nsmall=2),'_t',format(tax,nsmall=2), '_',year,'.csv'),col.names=FALSE,row.names=FALSE,quote=FALSE,eol='\n',)
   write.table(policyscenario,paste0('inputstax_',(sexes[y]),'_',format(initprice,nsmall=2),'_t',format(tax,nsmall=2),'_',year,'.csv'),col.names=FALSE,row.names=FALSE,quote=FALSE,eol='',append='TRUE')
   
-  print(paste0('inputscleanair_',(sexes[y]),'_',format(initprice,nsmall=2),'_t',format(tax,nsmall=2), '_',year,'.csv',' has been created.')) 
+  print(paste0('inputstax_',(sexes[y]),'_',format(initprice,nsmall=2),'_t',format(tax,nsmall=2), '_',year,'.csv',' has been created.')) 
 
 }

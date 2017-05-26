@@ -5,8 +5,8 @@ library(reshape)
 library(data.table)
 
 # For local testing
-# args = c(19 ,0.00,0.00)
-# prevfiles = 'C:/Users/jamietam/Dropbox/CISNET/policy_module/mla/prevs/'
+# args = c(21 ,0.00,0.00)
+# prevfiles = 'C:/Users/jamietam/Dropbox/Github/web-interface-shg-policy/'
 # mla_age=as.numeric(args[1])
 # pac19=as.numeric(args[2])
 # pac21 = as.numeric(args[3])
@@ -23,29 +23,29 @@ prevfiles = '/home/jamietam/mla_results/prevs/'
 name = paste0(format(mla_age),'_pac19_',format(pac19,nsmall=2),'_pac21_',format(pac21,nsmall=2))
 enactpolicy = c(2016,2017,2018,2019,2020) # Select policy years to include in final file
 
-popmales <- read.csv("censusdata/censuspop_males.csv",header=TRUE) # Read in Census data
+popmales <- read.csv("censusdata/censuspop_males_2100.csv",header=TRUE) # Read in Census data
 popmales <- popmales[,-1] # Remove 1st column "ages"
-popfemales <- read.csv("censusdata/censuspop_females.csv",header=TRUE)
+popfemales <- read.csv("censusdata/censuspop_females_2100.csv",header=TRUE)
 popfemales <- popfemales[,-1] # Remove 1st column "ages"
-population <- read.csv("censusdata/censuspopulation_total.csv",header=TRUE)
+population <- read.csv("censusdata/censuspopulation_total_2100.csv",header=TRUE)
 population <- population[,-1] # Remove 1st column "ages"
 
-acm_males_current <- read.csv("acmratesbysmokingstatus/acm_males_current.csv",header=TRUE) # Read in death rates
+acm_males_current <- read.csv("acmratesbysmokingstatus/acm_males_current_2100.csv",header=TRUE) # Read in death rates
 a <-  1-exp(-acm_males_current) # transform rates to probabilities
 acm_males_current[,2:52] <- a[,2:52] # replace rates with probabilities
-acm_males_former <- read.csv("acmratesbysmokingstatus/acm_males_former.csv",header=TRUE)
+acm_males_former <- read.csv("acmratesbysmokingstatus/acm_males_former_2100.csv",header=TRUE)
 a <-  1-exp(-acm_males_former) 
 acm_males_former[,2:52] <- a[,2:52] 
-acm_males_never <- read.csv("acmratesbysmokingstatus/acm_males_never.csv",header=TRUE)
+acm_males_never <- read.csv("acmratesbysmokingstatus/acm_males_never_2100.csv",header=TRUE)
 a <-  1-exp(-acm_males_never) 
 acm_males_never[,2:52] <- a[,2:52] 
-acm_females_current <- read.csv("acmratesbysmokingstatus/acm_females_current.csv",header=TRUE)
+acm_females_current <- read.csv("acmratesbysmokingstatus/acm_females_current_2100.csv",header=TRUE)
 a <-  1-exp(-acm_females_current) 
 acm_females_current[,2:52] <- a[,2:52] 
-acm_females_former <- read.csv("acmratesbysmokingstatus/acm_females_former.csv",header=TRUE)
+acm_females_former <- read.csv("acmratesbysmokingstatus/acm_females_former_2100.csv",header=TRUE)
 a <-  1-exp(-acm_females_former) 
 acm_females_former[,2:52] <- a[,2:52] 
-acm_females_never <- read.csv("acmratesbysmokingstatus/acm_females_never.csv",header=TRUE)
+acm_females_never <- read.csv("acmratesbysmokingstatus/acm_females_never_2100.csv",header=TRUE)
 a <-  1-exp(-acm_females_never) 
 acm_females_never[,2:52] <- a[,2:52]
 
@@ -54,15 +54,15 @@ tobaccodeaths_males_former <- acm_males_former[,-1] - acm_males_never[,-1]
 tobaccodeaths_females_current <- acm_females_current[,-1] - acm_females_never[,-1]
 tobaccodeaths_females_former <- acm_females_former[,-1] - acm_females_never[,-1]
 
-male_LE_ns<-read.csv('acmratesbysmokingstatus/MaleNeverLE_2010to2060.csv',header=TRUE) # Read in life expectancies
-female_LE_ns<-read.csv('acmratesbysmokingstatus/FemaleNeverLE_2010to2060.csv',header=TRUE)
+male_LE_ns<-read.csv('acmratesbysmokingstatus/MaleNeverLE_2010to2100.csv',header=TRUE) # Read in life expectancies
+female_LE_ns<-read.csv('acmratesbysmokingstatus/FemaleNeverLE_2010to2100.csv',header=TRUE)
 
 agegroups = c('12-17','18-24','25-44','45-64','65p','18-99') # Specify age groups to examine
 agegroupstart = c(12,18,25,45,65,18)
 agegroupend = c(17,24,44,64,99,99)
 
 startingyear = 2010
-endingyear = 2060 
+endingyear = 2100 
 ages = NULL
 for (i in 0:99) {
   ages = rbind(ages, paste("pop_",i,sep=""))
@@ -71,7 +71,10 @@ years = NULL
 for (i in startingyear:endingyear){
   years = rbind(years, paste("yr",i,sep=""))
 }
-
+yrs=NULL
+for (i in startingyear:endingyear){
+  yrs = rbind(yrs, paste0(i,sep=""))
+}
 smokerprevs <- function(age,year,smokpopbaseM,smokpoppolicyM,smokpopbaseF,smokpoppolicyF,population){ # Generate Total smoking prevalences combining both genders
   baseline_smkprev <- (smokpopbaseM[age+1,year-2009] + smokpopbaseF[age+1,year-2009])/population[age+1,year-2009] 
   policy_smkprev <- (smokpoppolicyM[age+1,year-2009] + smokpoppolicyF[age+1,year-2009])/population[age+1,year-2009]       
@@ -133,9 +136,7 @@ createresultsfile <- function(prevalencesM, prevalencesF, baselineM, baselineF, 
                 df <- get(df)
                 df <- melt(df, id.vars=c("age","year"),measure.vars="smoking_prevalence") 
                 df <- cast(df, age ~ year)
-                df <- subset(df, select=cbind("2010","2011","2012","2013","2014","2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025","2026","2027","2028","2029",
-                                              "2030","2031","2032","2033","2034","2035","2036","2037","2038","2039","2040","2041","2042","2043","2044","2045","2046","2047","2048","2049",
-                                              "2050","2051","2052","2053","2054","2055","2056","2057","2058","2059","2060"))
+                df <- subset(df, select=yrs)
                 rownames(df) <- ages
                 colnames(df) <- years                  
                 return(df)
@@ -153,9 +154,7 @@ createresultsfile <- function(prevalencesM, prevalencesF, baselineM, baselineF, 
                        df <- get(df)
                        df <- melt(df, id.vars=c("age","year"),measure.vars="former_prevalence") 
                        df <- cast(df, age ~ year)
-                       df <- subset(df, select=cbind("2010","2011","2012","2013","2014","2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025","2026","2027","2028","2029",
-                                                     "2030","2031","2032","2033","2034","2035","2036","2037","2038","2039","2040","2041","2042","2043","2044","2045","2046","2047","2048","2049",
-                                                     "2050","2051","2052","2053","2054","2055","2056","2057","2058","2059","2060"))
+                       df <- subset(df, select=yrs)
                        rownames(df) <- ages
                        colnames(df) <- years                  
                        return(df)
@@ -393,8 +392,8 @@ for (i in 1:length(enactpolicy)){
   prevalencesF <- read.csv(paste0(prevfiles,'prevalences_females_',name,'_',enactpolicy[i],'.csv'), header=TRUE)
   prevalencesF <- prevalencesF[order(prevalencesF$year,prevalencesF$age),]# Sort by year, age, policy
   
-  baselineM <- read.csv('baseline_prevalences_males.csv', header=TRUE)
-  baselineF <- read.csv('baseline_prevalences_females.csv', header=TRUE)
+  baselineM <- read.csv('baseline_prevalences_males_2100.csv', header=TRUE)
+  baselineF <- read.csv('baseline_prevalences_females_2100.csv', header=TRUE)
   
   dfs <- createresultsfile(prevalencesM,prevalencesF,baselineM,baselineF,enactpolicy[i])
   
@@ -422,7 +421,7 @@ colnames(finalprevs) <- c("year","age","cohort","males_baseline","females_baseli
 colnames(deaths_df) <- c("year", "deaths_avoided_males", "deaths_avoided_females", "deaths_avoided_both", "policy_year" )
 
 write.csv(lifeyearsgained, file=paste0('lyg_',name,'.csv'), row.names=FALSE)
-print(paste0('lyg',name,'.csv', ' is ready.'))
+print(paste0('lyg_',name,'.csv', ' is ready.'))
 
 write.csv(finalprevs, file=paste0('results_',name,'.csv'), row.names=FALSE)
 print(paste0('results_',name,'.csv', ' is ready.'))

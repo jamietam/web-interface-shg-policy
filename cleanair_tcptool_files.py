@@ -7,11 +7,11 @@ dirweb = '/home/jamietam/web-interface-shg-policy/'## Directory contains 'Age_ef
 dirresults = '/home/jamietam/cleanair_results/'
 
 Iwp_set = [1] ### indicator of workplace policy to be implemented 1-yes, 0-no
-Ir_set = [0] ### indicator of restaurants policy to be implemented 1-yes, 0-no
+Ir_set = [1] ### indicator of restaurants policy to be implemented 1-yes, 0-no
 Ib_set = [1] ### indicator of bars policy to be implemented 1-yes, 0-no
-pacwp_set = [0.00,0.25,0.50,0.75,1.00] ### percentage already covered by workplace clean air laws
-pacr_set = [0.00] ### percentage already covered by restaurants clean air laws
-pacb_set = [0.00,0.25,0.50,0.75,1.00] ### percentage already covered by bars clean air laws
+pacwp_set = [1.00] ### percentage already covered by workplace clean air laws
+pacr_set = [0.00,0.25,0.50,0.75,1.00] ### percentage already covered by restaurants clean air laws
+pacb_set = [0.50,0.75,1.00] ### percentage already covered by bars clean air laws
 
 os.chdir(dirweb) # change to main directory
 

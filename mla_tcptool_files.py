@@ -7,8 +7,8 @@ dirweb = '/home/jamietam/web-interface-shg-policy/'## Directory contains 'Age_ef
 dirresults = '/home/jamietam/mla_results/'
 
 mla_age_set = [19,21,25] ### indicator of workplace policy to be implemented 1-yes, 0-no
-pac19_set = [0.00] ### percentage already covered by restaurants clean air laws
-pac21_set = [0.25,0.50,0.75,1.00] ### percentage already covered by bars clean air laws
+pac19_set = [0.00,0.25,0.50,0.75,1.00] ### percentage already covered by restaurants clean air laws
+pac21_set = [0.00,0.25,0.50,0.75,1.00] ### percentage already covered by bars clean air laws
 #years_set = [2016,2017,2018,2019,2020] ## Year of policy implementation
 
 os.chdir(dirweb) # change to main directory

@@ -6,8 +6,8 @@ import sys
 dirweb = '/home/jamietam/web-interface-shg-policy/'## Directory contains 'Age_effects_male_cleanair_021815.csv', 'Age_effects_female_cleanair_021$
 dirresults = '/home/jamietam/tcexp_results/'
 
-initexp_set = [0.00] 
-finalexp_set = [0.10,0.20,0.30,0.40,0.50,0.60,0.70,0.80,0.90,1.00] 
+initexp_set = [0.90] 
+finalexp_set = [1.00] 
 #years_set = [2016,2017,2018,2019,2020] ## Year of policy implementation
 
 os.chdir(dirweb) # change to main directory

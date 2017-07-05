@@ -6,12 +6,12 @@ library(data.table)
 
 # # Specify policy parameters
 args <- commandArgs(trailingOnly = TRUE)
-initprice=as.numeric(args[1]) ### indicator of workplace policy to be implemented 1-ye
-tax=as.numeric(args[2])  ### indicator of restaurants policy to be implemented 1-yes, 
+initexp=as.numeric(args[1])
+finalexp=as.numeric(args[2])
 setwd("/home/jamietam/web-interface-shg-policy/")
-prevfiles = '/home/jamietam/tax_results/prevs/'
+prevfiles = '/home/jamietam/tcexp_results/prevs/'
 
-name = paste0(format(initprice,nsmall=2),'_t',format(tax,nsmall=2))
+name = paste0('initexp',format(initexp,nsmall=2),'_policyexp',format(finalexp,nsmall=2))
 enactpolicy = c(2016,2017,2018,2019,2020) # Select policy years to include in final file
 
 popmales <- read.csv("censusdata/censuspop_males.csv",header=TRUE) # Read in Census data

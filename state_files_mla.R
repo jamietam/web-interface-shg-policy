@@ -1,7 +1,5 @@
 # Update main directory
-# mainDir <- "C:/Users/jamietam/Google Drive/TCP Tool state results/"
-# inputsDir <- "C:/Users/jamietam/Google Drive/TCP Tool state results/"
-mainDir <- "/home/jamietam/source_data/"
+mainDir <- "/home/cornerstonenw/source_data/"
 inputsDir <- "/home/jamietam/web-interface-shg-policy/"
 #  ------------------------------------------------------------------------
 # 1. Generate prevalence results.zip file for a specific state ------------

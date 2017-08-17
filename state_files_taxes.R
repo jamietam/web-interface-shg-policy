@@ -1,7 +1,7 @@
 # Update main directory
 #mainDir <- "C:/Users/jamietam/Google Drive/TCP Tool state results/"
 #inputsDir <- "C:/Users/jamietam/Google Drive/TCP Tool state results/"
-mainDir <- "/home/jamietam/source_data/"
+mainDir <- "/home/cornerstonenw/source_data/"
 inputsDir <- "/home/jamietam/web-interface-shg-policy/"
 initprices <- c(4.00,4.50,5.00,5.50,6.00,6.50,7.00,7.50,8.00,8.50,9.00,9.50,10.00,10.50)
 taxes <- c(0.50,1.00,1.50,2.00,2.50,3.00,3.50,4.00,4.50,5.00,5.50,6.00,6.50,7.00)

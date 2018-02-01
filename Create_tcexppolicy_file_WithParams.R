@@ -17,10 +17,10 @@ geteffects <- function(x){ #x = funding level
 }
 
 # Policy inputs -----------------------------------------------------------
-cesseff = 1 + (geteffects(finalexp)[2] - geteffects(initexp)[2]) # Increases cessation probabilities by 10% when going from 0% to 100% CDC recs
+cesseff = (geteffects(finalexp)[2] - geteffects(initexp)[2]) # Increases cessation probabilities by 10% when going from 0% to 100% CDC recs
 cesseff = rep(cesseff,100) # assume same effect for all ages
 
-initeff = 1 - (geteffects(finalexp)[1] - geteffects(initexp)[1]) # Decreases initiation probabilities by 12.5% when going from 0% to 100% CDC recs
+initeff = (geteffects(finalexp)[1] - geteffects(initexp)[1]) # Decreases initiation probabilities by 12.5% when going from 0% to 100% CDC recs
 initeff = rep(initeff,100) # assume same effect for all ages
 
 inidecay=0.0

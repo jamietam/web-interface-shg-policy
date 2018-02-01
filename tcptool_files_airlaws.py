@@ -6,11 +6,11 @@ import sys
 dirweb = '/home/jamietam/web-interface-shg-policy/'## Directory contains 'Age_effects_male_cleanair_021815.csv', 'Age_effects_female_cleanair_021$
 dirresults = '/home/jamietam/cleanair_results/'
 
-Iwp_set = [1] ### indicator of workplace policy to be implemented 1-yes, 0-no
-Ir_set = [0] ### indicator of restaurants policy to be implemented 1-yes, 0-no
-Ib_set = [1] ### indicator of bars policy to be implemented 1-yes, 0-no
+Iwp_set = [0,1] ### indicator of workplace policy to be implemented 1-yes, 0-no
+Ir_set = [0,1] ### indicator of restaurants policy to be implemented 1-yes, 0-no
+Ib_set = [0,1] ### indicator of bars policy to be implemented 1-yes, 0-no
 pacwp_set = [0.00,0.25,0.50,0.75,1.00] ### percentage already covered by workplace clean air laws
-pacr_set = [0.00] ### percentage already covered by restaurants clean air laws
+pacr_set = [0.00,0.25,0.50,0.75,1.00] ### percentage already covered by restaurants clean air laws
 pacb_set = [0.00,0.25,0.50,0.75,1.00] ### percentage already covered by bars clean air laws
 
 os.chdir(dirweb) # change to main directory
@@ -24,6 +24,9 @@ for Iwp in Iwp_set:
                                 for pacr in pacr_set:
                                         for pacb in pacb_set:
         					scen=(Iwp, Ir, Ib, float(pacwp), float(pacr), float(pacb))
+						if Iwp==0 and pacwp>0.00: continue
+						if Ir==0 and pacr>0.00: continue
+						if Ib==0 and pacb>0.00: continue
 						print "scenario: ", scen
 						os.system("Rscript generate_cleanair_policy_website_data.R %s %s %s %0.2f %0.2f %0.2f" % scen)
 					        count = count+1

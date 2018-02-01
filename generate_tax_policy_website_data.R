@@ -1,51 +1,54 @@
 #  ------------------------------------------------------------------------
-# CREATE RESULTS.CSV FILE FOR SHG POLICY MODULE WEB INTERFACE -------------
+# CREATE CSV FILES FOR SHG POLICY MODULE WEB INTERFACE --------------------
 #  ------------------------------------------------------------------------
 library(reshape)
 library(data.table)
 
+# # Specify policy parameters
 args <- commandArgs(trailingOnly = TRUE)
+initprice=as.numeric(args[1]) ### indicator of workplace policy to be implemented 1-ye
+tax=as.numeric(args[2])  ### indicator of restaurants policy to be implemented 1-yes, 
+setwd("/home/jamietam/web-interface-shg-policy/")
+prevfiles = '/home/jamietam/tax_results/prevs/'
 
-# Specify tax policy parameters
-initprice=as.numeric(args[1]) ### indicator of workplace policy to be implemented 1-yes, 0-no
-tax=as.numeric(args[2])  ### indicator of restaurants policy to be implemented 1-yes, 0-no
-#year=as.numeric(args[3])  ### indicator of bars policy to be implemented 1-yes, 0-no
-iter = as.numeric(args[3])
+name = paste0(format(initprice,nsmall=2),'_t',format(tax,nsmall=2))
+enactpolicy = c(2016,2017,2018,2019,2020) # Select policy years to include in final file
 
-setwd(paste0("/home/jamietam/scenarios_parallel_",iter,sep=""))
-
-# Select policy years to include in final file
-enactpolicy = c(2016,2017,2018,2019,2020)
-
-# Read in policy module output data
-# baselineM <- read.csv('baseline_prevalences.csv')
-# baselineF <- read.csv('baseline_prevalences.csv')
-# prevalencesM <- read.csv(paste0('prevalences_males_2015.csv'), header=TRUE) 
-# prevalencesF <- read.csv(paste0('prevalences_females_2015.csv'), header=TRUE)
-
-# Read in Census data
-popmales <- read.csv("censusdata/censuspop_males.csv",header=TRUE)
+popmales <- read.csv("censusdata/censuspop_males.csv",header=TRUE) # Read in Census data
 popmales <- popmales[,-1] # Remove 1st column "ages"
 popfemales <- read.csv("censusdata/censuspop_females.csv",header=TRUE)
 popfemales <- popfemales[,-1] # Remove 1st column "ages"
 population <- read.csv("censusdata/censuspopulation_total.csv",header=TRUE)
 population <- population[,-1] # Remove 1st column "ages"
 
-# Read in death rates
-acm_males_current <- read.csv("acmratesbysmokingstatus/acm_males_current.csv",header=TRUE)
+acm_males_current <- read.csv("acmratesbysmokingstatus/acm_males_current.csv",header=TRUE) # Read in death rates
+a <-  1-exp(-acm_males_current) # transform rates to probabilities
+acm_males_current[,2:52] <- a[,2:52] # replace rates with probabilities
 acm_males_former <- read.csv("acmratesbysmokingstatus/acm_males_former.csv",header=TRUE)
+a <-  1-exp(-acm_males_former) 
+acm_males_former[,2:52] <- a[,2:52] 
 acm_males_never <- read.csv("acmratesbysmokingstatus/acm_males_never.csv",header=TRUE)
+a <-  1-exp(-acm_males_never) 
+acm_males_never[,2:52] <- a[,2:52] 
 acm_females_current <- read.csv("acmratesbysmokingstatus/acm_females_current.csv",header=TRUE)
+a <-  1-exp(-acm_females_current) 
+acm_females_current[,2:52] <- a[,2:52] 
 acm_females_former <- read.csv("acmratesbysmokingstatus/acm_females_former.csv",header=TRUE)
+a <-  1-exp(-acm_females_former) 
+acm_females_former[,2:52] <- a[,2:52] 
 acm_females_never <- read.csv("acmratesbysmokingstatus/acm_females_never.csv",header=TRUE)
+a <-  1-exp(-acm_females_never) 
+acm_females_never[,2:52] <- a[,2:52]
 
 tobaccodeaths_males_current <- acm_males_current[,-1] - acm_males_never[,-1]
 tobaccodeaths_males_former <- acm_males_former[,-1] - acm_males_never[,-1]
 tobaccodeaths_females_current <- acm_females_current[,-1] - acm_females_never[,-1]
 tobaccodeaths_females_former <- acm_females_former[,-1] - acm_females_never[,-1]
 
-# Specify age groups to examine
-agegroups = c('12-17','18-24','25-44','45-64','65p','18-99')
+male_LE_ns<-read.csv('acmratesbysmokingstatus/MaleNeverLE_2010to2060.csv',header=TRUE) # Read in life expectancies
+female_LE_ns<-read.csv('acmratesbysmokingstatus/FemaleNeverLE_2010to2060.csv',header=TRUE)
+
+agegroups = c('12-17','18-24','25-44','45-64','65p','18-99') # Specify age groups to examine
 agegroupstart = c(12,18,25,45,65,18)
 agegroupend = c(17,24,44,64,99,99)
 
@@ -60,15 +63,13 @@ for (i in startingyear:endingyear){
   years = rbind(years, paste("yr",i,sep=""))
 }
 
-# Generate Total smoking prevalences combining both genders ---------------
-smokerprevs <- function(age,year,smokpopbaseM,smokpoppolicyM,smokpopbaseF,smokpoppolicyF,population){ ## Ages 0-99, Years 2010-2060
-  baseline_smkprev <- (smokpopbaseM[age+1,year-2009] + smokpopbaseF[age+1,year-2009])/population[age+1,year-2009]
+smokerprevs <- function(age,year,smokpopbaseM,smokpoppolicyM,smokpopbaseF,smokpoppolicyF,population){ # Generate Total smoking prevalences combining both genders
+  baseline_smkprev <- (smokpopbaseM[age+1,year-2009] + smokpopbaseF[age+1,year-2009])/population[age+1,year-2009] 
   policy_smkprev <- (smokpoppolicyM[age+1,year-2009] + smokpoppolicyF[age+1,year-2009])/population[age+1,year-2009]       
   return(c(baseline_smkprev, policy_smkprev))
 }
 
-# Get cumulative death count by year --------------------------------------
-getcumulativedeaths <- function(dataframe,specifyyear){
+getcumulativedeaths <- function(dataframe,specifyyear){ # Get cumulative death count by year
   theseyearsonly <- dataframe[dataframe$year<=specifyyear,] 
   deaths <- colSums(theseyearsonly[c("tobaccodeathsM_baseline", "tobaccodeathsM_policy", 
                                      "deaths_avoided_males","tobaccodeathsF_baseline","tobaccodeathsF_policy",
@@ -76,10 +77,16 @@ getcumulativedeaths <- function(dataframe,specifyyear){
   return(deaths)
 }
 
+getcumulativelifeyears <- function(dataframe,specifyyear){ # Get cumulative lifeyear count by year
+  theseyearsonly <- dataframe[dataframe$year<=specifyyear,] 
+  deaths <- colSums(theseyearsonly[c("yll_baselineM", "yll_policyM", "lyg_males", "yll_baselineF", "yll_policyF", "lyg_females",
+                                     "yll_baseline", "yll_policy", "lyg_both")], na.rm = TRUE)
+  return(deaths)
+}
 #  ------------------------------------------------------------------------
 # Function to generate results for each year ------------------------------
 #  ------------------------------------------------------------------------
-createresultsfile <- function(population, popmales, popfemales, prevalencesM, prevalencesF, baselineM, baselineF, policy_year,agegroups,agegroupstart, agegroupend){
+createresultsfile <- function(prevalencesM, prevalencesF, baselineM, baselineF, policy_year){
   # Split policy module output into baseline and policy scenarios -----------
   baselineM <- baselineM[(baselineM$year>=startingyear & baselineM$year<=endingyear),] 
   baselineF <- baselineF[(baselineF$year>=startingyear & baselineF$year<=endingyear),] 
@@ -151,16 +158,15 @@ createresultsfile <- function(population, popmales, popfemales, prevalencesM, pr
   
   # Multiply census population by age-specific prevalences ----------
   
-  # Baseline scenario, Males - Number of smokers
-  smokpopbaseM <- matrix(ncol=ncol(popmales),nrow=nrow(popmales)) 
+  smokpopbaseM <- matrix(ncol=ncol(popmales),nrow=nrow(popmales))    # Baseline scenario, Males - Number of smokers
   for (x in 1:ncol(popmales)){
     for (y in 1:nrow(popmales)) {
       z <- as.numeric(popmales[y,x])%o% as.numeric(baselineM[y,x])
       smokpopbaseM[y,x] <- z
     }
   }
-  # Baseline scenario, Males - Number of former smokers
-  formerpopbaseM <- matrix(ncol=ncol(popmales),nrow=nrow(popmales)) 
+
+  formerpopbaseM <- matrix(ncol=ncol(popmales),nrow=nrow(popmales))   # Baseline scenario, Males - Number of former smokers
   for (x in 1:ncol(popmales)){
     for (y in 1:nrow(popmales)) {
       z <- as.numeric(popmales[y,x])%o% as.numeric(baselineM_former[y,x])
@@ -168,16 +174,15 @@ createresultsfile <- function(population, popmales, popfemales, prevalencesM, pr
     }
   }
   
-  # Baseline scenario, Females - Number of smokers
-  smokpopbaseF <- matrix(ncol=ncol(popfemales),nrow=nrow(popfemales)) 
+  smokpopbaseF <- matrix(ncol=ncol(popfemales),nrow=nrow(popfemales))   # Baseline scenario, Females - Number of smokers
   for (x in 1:ncol(popfemales)){
     for (y in 1:nrow(popfemales)) {
       z <- as.numeric(popfemales[y,x])%o% as.numeric(baselineF[y,x])
       smokpopbaseF[y,x] <- z
     }
   }
-  # Baseline scenario, Females - Number of former smokers
-  formerpopbaseF <- matrix(ncol=ncol(popfemales),nrow=nrow(popfemales)) 
+
+  formerpopbaseF <- matrix(ncol=ncol(popfemales),nrow=nrow(popfemales))   # Baseline scenario, Females - Number of former smokers
   for (x in 1:ncol(popfemales)){
     for (y in 1:nrow(popfemales)) {
       z <- as.numeric(popfemales[y,x])%o% as.numeric(baselineF_former[y,x])
@@ -185,8 +190,7 @@ createresultsfile <- function(population, popmales, popfemales, prevalencesM, pr
     }
   }
   
-  # Policy scenario, Males - Number of smokers
-  smokpoppolicyM <- matrix(ncol=ncol(popmales),nrow=nrow(popmales))
+  smokpoppolicyM <- matrix(ncol=ncol(popmales),nrow=nrow(popmales))   # Policy scenario, Males - Number of smokers
   for (x in 1:ncol(popmales)){
     for (y in 1:nrow(popmales)) {
       z <- as.numeric(popmales[y,x])%o% as.numeric(policyM[y,x])
@@ -194,24 +198,23 @@ createresultsfile <- function(population, popmales, popfemales, prevalencesM, pr
     }
   }
   
-  # Policy scenario, Males - Number of former smokers
-  formerpoppolicyM <- matrix(ncol=ncol(popmales),nrow=nrow(popmales))
+  formerpoppolicyM <- matrix(ncol=ncol(popmales),nrow=nrow(popmales))   # Policy scenario, Males - Number of former smokers
   for (x in 1:ncol(popmales)){
     for (y in 1:nrow(popmales)) {
       z <- as.numeric(popmales[y,x])%o% as.numeric(policyM_former[y,x])
       formerpoppolicyM[y,x] <- z
     }
   }
-  # Policy scenario, Females -  Number of smokers
-  smokpoppolicyF <- matrix(ncol=ncol(popfemales),nrow=nrow(popfemales)) 
+
+  smokpoppolicyF <- matrix(ncol=ncol(popfemales),nrow=nrow(popfemales))   # Policy scenario, Females -  Number of smokers
   for (x in 1:ncol(popfemales)){
     for (y in 1:nrow(popfemales)) {
       z <- as.numeric(popfemales[y,x])%o% as.numeric(policyF[y,x])
       smokpoppolicyF[y,x] <- z
     }
   }
-  # Policy scenario, Females -  Number of former smokers
-  formerpoppolicyF <- matrix(ncol=ncol(popfemales),nrow=nrow(popfemales)) 
+
+  formerpoppolicyF <- matrix(ncol=ncol(popfemales),nrow=nrow(popfemales))   # Policy scenario, Females -  Number of former smokers
   for (x in 1:ncol(popfemales)){
     for (y in 1:nrow(popfemales)) {
       z <- as.numeric(popfemales[y,x])%o% as.numeric(policyF_former[y,x])
@@ -327,40 +330,93 @@ createresultsfile <- function(population, popmales, popfemales, prevalencesM, pr
   deaths_df <- deaths_df[lessvars]
   deaths_df$policy_year <- policy_year
   
-  list_dfs <- list(finalprevs,deaths_df)
+  # Create life years gained dataframe
+  lyg = data.frame()
+  for (y in startingyear:endingyear){
+    temp = data.frame()
+    for (a in 1:length(ages)){
+      yll_baselineM <- as.integer(tobaccodeaths_males_current[a,y-2009]*smokpopbaseM[a,y-2009]*male_LE_ns[a,y-2009] + tobaccodeaths_males_former[a,y-2009]*formerpopbaseM[a,y-2009]*male_LE_ns[a,y-2009])
+      yll_policyM <- as.integer(tobaccodeaths_males_current[a,y-2009]*smokpoppolicyM[a,y-2009]*male_LE_ns[a,y-2009] + tobaccodeaths_males_former[a,y-2009]*formerpoppolicyM[a,y-2009]*male_LE_ns[a,y-2009])
+      lyg_males <- yll_baselineM -yll_policyM
+      
+      yll_baselineF <- as.integer(tobaccodeaths_females_current[a,y-2009]*smokpopbaseF[a,y-2009]*female_LE_ns[a,y-2009] + tobaccodeaths_females_former[a,y-2009]*formerpopbaseF[a,y-2009]*female_LE_ns[a,y-2009])
+      yll_policyF <- as.integer(tobaccodeaths_females_current[a,y-2009]*smokpoppolicyF[a,y-2009]*female_LE_ns[a,y-2009] + tobaccodeaths_females_former[a,y-2009]*formerpoppolicyF[a,y-2009]*female_LE_ns[a,y-2009])
+      lyg_females <- yll_baselineF - yll_policyF
+      
+      yll_baseline <- yll_baselineM+yll_baselineF
+      yll_policy <- yll_policyM+yll_policyF
+      lyg_both <- yll_baseline-yll_policy
+      temp = rbind(temp, c(yll_baselineM, yll_policyM, lyg_males, yll_baselineF, yll_policyF, lyg_females, yll_baseline, yll_policy, lyg_both))
+    }
+    lifeyears <- colSums(temp)
+    lyg <- rbind(lyg, c(y,lifeyears))
+  }
+  names(lyg)<- c("year","yll_baselineM", "yll_policyM", "lyg_males", "yll_baselineF", "yll_policyF", "lyg_females",
+                       "yll_baseline", "yll_policy", "lyg_both") 
+  for (r in 1:nrow(lyg)){
+    lyg$cumulativeM_baseline[r] <- getcumulativelifeyears(lyg, lyg$year[r])[1]
+    lyg$cumulativeM_policy[r] <- getcumulativelifeyears(lyg, lyg$year[r])[2]
+    lyg$cumulativeLYG_males[r] <- getcumulativelifeyears(lyg, lyg$year[r])[3]
+    
+    lyg$cumulativeF_baseline[r] <- getcumulativelifeyears(lyg, lyg$year[r])[4]
+    lyg$cumulativeF_policy[r] <- getcumulativelifeyears(lyg, lyg$year[r])[5]
+    lyg$cumulativeLYG_females[r] <- getcumulativelifeyears(lyg, lyg$year[r])[6]
+    
+    lyg$cumulative_baseline[r] <- getcumulativelifeyears(lyg, lyg$year[r])[7]
+    lyg$cumulative_policy[r] <- getcumulativelifeyears(lyg, lyg$year[r])[8]
+    lyg$cumulativeLYG_both[r] <- getcumulativelifeyears(lyg, lyg$year[r])[9]  
+  } 
+  
+  lessvars <- c("year","cumulativeLYG_males", "cumulativeLYG_females", "cumulativeLYG_both")
+  lyg <- lyg[lessvars]
+  lyg$policy_year <- policy_year
+  
+  list_dfs <- list(finalprevs,deaths_df,lyg)
   return(list_dfs)
 }
 
-
 #  ------------------------------------------------------------------------
-# Write final prevalences dataframes to CSV -------------------------------
+# Write final dataframes to CSV -------------------------------------------
 #  ------------------------------------------------------------------------
 for (i in 1:length(enactpolicy)){
-  prevalencesM <- read.csv(paste0('prevalences_males_',format(initprice,nsmall=2),'_t',format(tax,nsmall=2), '_',enactpolicy[i],'.csv'), header=TRUE) # Read in policy module output data
+  prevalencesM <- read.csv(paste0(prevfiles,'prevalences_males_',name,'_',enactpolicy[i],'.csv'), header=TRUE) # Read in policy module output data
   prevalencesM <- prevalencesM[order(prevalencesM$year,prevalencesM$age),]# Sort by year, age, policy
-  prevalencesF <- read.csv(paste0('prevalences_females_',format(initprice,nsmall=2),'_t',format(tax,nsmall=2), '_',enactpolicy[i],'.csv'), header=TRUE) 
+  prevalencesF <- read.csv(paste0(prevfiles,'prevalences_females_',name,'_',enactpolicy[i],'.csv'), header=TRUE)
   prevalencesF <- prevalencesF[order(prevalencesF$year,prevalencesF$age),]# Sort by year, age, policy
+  
   baselineM <- read.csv('baseline_prevalences_males.csv', header=TRUE)
   baselineF <- read.csv('baseline_prevalences_females.csv', header=TRUE)
   
-  finalprevs <- createresultsfile(population,popmales,popfemales,prevalencesM,prevalencesF,baselineM,baselineF,enactpolicy[i],agegroups,agegroupstart,agegroupend)[1]
-  write.table(finalprevs,paste0('results_',format(initprice,nsmall=2),'_t',format(tax,nsmall=2), '.csv'),col.names=FALSE,row.names=FALSE,sep=',',quote=FALSE,append='TRUE')
+  dfs <- createresultsfile(prevalencesM,prevalencesF,baselineM,baselineF,enactpolicy[i])
   
-  deaths_df <- createresultsfile(population,popmales,popfemales,prevalencesM,prevalencesF,baselineM,baselineF,enactpolicy[i],agegroups,agegroupstart,agegroupend)[2]
-  write.table(deaths_df,paste0('deaths_',format(initprice,nsmall=2),'_t',format(tax,nsmall=2), '.csv'),col.names=FALSE,row.names=FALSE,sep=',',quote=FALSE,append='TRUE')
+  write.table(dfs[1],paste0('results_',name,'.csv'),col.names=FALSE,row.names=FALSE,sep=',',quote=FALSE,append='TRUE')
+  write.table(dfs[2],paste0('deaths_',name,'.csv'),col.names=FALSE,row.names=FALSE,sep=',',quote=FALSE,append='TRUE')
+  write.table(dfs[3],paste0('lyg_',name,'.csv'),col.names=FALSE,row.names=FALSE,sep=',',quote=FALSE,append='TRUE')
   
   print(paste0("policy for the year ", enactpolicy[i], " appended to files"))
 }
 
-# Add header row
-finalprevs <- read.csv(paste0('results_',format(initprice,nsmall=2),'_t',format(tax,nsmall=2),'.csv'), header=FALSE)
-deaths_df <- read.csv(paste0('deaths_',format(initprice,nsmall=2), '_t',format(tax,nsmall=2),'.csv'), header=FALSE)
+lifeyearsgained <- read.csv(paste0('lyg_',name,'.csv'),header=FALSE) 
+finalprevs <- read.csv(paste0('results_',name,'.csv'), header=FALSE)
+deaths_df <- read.csv(paste0('deaths_',name,'.csv'), header=FALSE)
+
+# colnames(lifeyearsgained) <- c("year","yll_baselineM","yll_policyM","lyg_males","yll_baselineF","yll_policyF","lyg_females", "yll_baseline","yll_policy","lyg_both" ,
+#                                "cyll_baselineM","cyll_policyM","cLYG_males","cyll_baselineF","cyll_policyF","cLYG_females", "cyll_baseline","cyll_policy","cLYG_both" ,"policy_year")
+colnames(lifeyearsgained) <- c("year","cLYG_males", "cLYG_females", "cLYG_both", "policy_year")
 
 colnames(finalprevs) <- c("year","age","cohort","males_baseline","females_baseline","males_policy","females_policy","both_baseline","both_policy", "policy_year")
+
+# colnames(deaths_df)<- c("year","tobdeathsM_baseline", "tobdeathsM_policy", "deaths_avoided_males", "tobdeathsF_baseline", "tobdeathsF_policy", "deaths_avoided_females",
+#                      "tobdeaths_baseline", "tobdeaths_policy", "deaths_avoided","cdeathsM_baseline","cdeathsM_policy","cdeaths_avoided_males",
+#                      "cdeathsF_baseline","cdeathsF_policy","cdeaths_avoided_females", "cdeaths_baseline", "cdeaths_policy","cdeaths_avoided_both", "policy_year" )
+
 colnames(deaths_df) <- c("year", "deaths_avoided_males", "deaths_avoided_females", "deaths_avoided_both", "policy_year" )
 
-write.csv(finalprevs, file=paste0('results_',format(initprice,nsmall=2),'_t',format(tax,nsmall=2), '.csv'), row.names=FALSE)
-print(paste0('results_',format(initprice,nsmall=2),'_t',format(tax,nsmall=2),'.csv ', 'is ready.'))
+write.csv(lifeyearsgained, file=paste0('lyg_',name,'.csv'), row.names=FALSE)
+print(paste0('lyg_',name,'.csv', ' is ready.'))
 
-write.csv(deaths_df, file=paste0('deaths_',format(initprice,nsmall=2),'_t',format(tax,nsmall=2), '.csv'), row.names=FALSE)
-print(paste0('deaths_',format(initprice,nsmall=2),'_t',format(tax,nsmall=2), '.csv ', 'is ready.'))
+write.csv(finalprevs, file=paste0('results_',name,'.csv'), row.names=FALSE)
+print(paste0('results_',name,'.csv', ' is ready.'))
+
+write.csv(deaths_df, file=paste0('deaths_',name,'.csv'), row.names=FALSE)
+print(paste0('deaths_',name,'.csv', ' is ready.'))

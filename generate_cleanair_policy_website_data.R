@@ -17,7 +17,7 @@ pacb=as.numeric(args[6])   # percentage already covered by bars clean air laws
 name = paste0('w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2))
 
 setwd("/home/jamietam/web-interface-shg-policy/")
-prevfiles = '/home/jamietam/cleanair_results/prevs/'
+prevfiles = '/home/jamietam/cleanair_results/'
 
 enactpolicy = c(2016,2017,2018,2019,2020) # Select policy years to include in final file
 

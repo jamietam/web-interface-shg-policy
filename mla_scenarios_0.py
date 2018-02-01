@@ -12,9 +12,9 @@ dirscen = '/home/jamietam/scenarios_parallel_'+iter1+'/'
 dirweb = '/home/jamietam/web-interface-shg-policy/'## Directory contains 'Age_effects_male_cleanair_021815.csv', 'Age_effects_female_cleanair_021$
 dirresults = '/home/jamietam/mla_results/'
 
-mla_age_set = [19,21,25] ### indicator of workplace policy to be implemented 1-yes, 0-no
-pac19_set = [0.25] ### percentage already covered by restaurants clean air laws
-pac21_set = [0.00] ### percentage already covered by bars clean air laws
+mla_age_set = [19] ### indicator of workplace policy to be implemented 1-yes, 0-no
+pac19_set = [0.00] ### percentage already covered by restaurants clean air laws
+pac21_set = [0.75] ### percentage already covered by bars clean air laws
 years_set = [2016,2017,2018,2019,2020] ## Year of policy implementation
 
 count=0
@@ -33,7 +33,7 @@ for mla_age in mla_age_set:
                 cmd1=cmd1+dirinputs+"policies.csv"
                 os.system(cmd1)
                 os.chdir(dirinputs) 
-                os.system("cp demographics_males.csv demographics.csv")
+                os.system("cp demographics_males_2100.csv demographics.csv")
                 os.chdir(dirsim)
                 os.system("python policy_shg.py") # run policy module
                 cmd2="mv prevalences.csv "+dirscen+"prevalences_males_%s_pac19_%0.2f_pac21_%0.2f_%s.csv" % scen
@@ -45,7 +45,7 @@ for mla_age in mla_age_set:
                 cmd3=cmd3+dirinputs+"policies.csv"
                 os.system(cmd3)
                 os.chdir(dirinputs)
-                os.system("cp demographics_females.csv demographics.csv")
+                os.system("cp demographics_females_2100.csv demographics.csv")
                 os.chdir(dirsim)
                 os.system("python policy_shg.py")
                 cmd4="mv prevalences.csv "+dirscen+"prevalences_females_%s_pac19_%0.2f_pac21_%0.2f_%s.csv" % scen

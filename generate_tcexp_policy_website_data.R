@@ -4,28 +4,19 @@
 library(reshape)
 library(data.table)
 
-# For local testing
-args = c(19 ,0.00,0.00)
-prevfiles = 'C:/Users/jamietam/Dropbox/CISNET/policy_module/mla/prevs/'
-mla_age=as.numeric(args[1])
-pac19=as.numeric(args[2])
-pac21 = as.numeric(args[3])
-setwd("C:/Users/jamietam/Dropbox/Github/web-interface-shg-policy/")
-
 # # Specify policy parameters
-# args <- commandArgs(trailingOnly = TRUE)
-# mla_age=as.numeric(args[1])
-# pac19=as.numeric(args[2])
-# pac21 = as.numeric(args[3])
-# setwd("/home/jamietam/web-interface-shg-policy/")
-# prevfiles = '/home/jamietam/mla_results/prevs/'
+args <- commandArgs(trailingOnly = TRUE)
+initexp=as.numeric(args[1])
+finalexp=as.numeric(args[2])
+setwd("/home/jamietam/web-interface-shg-policy/")
+prevfiles = '/home/jamietam/tcexp_results/'
 
-name = paste0(format(mla_age),'_pac19_',format(pac19,nsmall=2),'_pac21_',format(pac21,nsmall=2))
+name = paste0('initexp',format(initexp,nsmall=2),'_policyexp',format(finalexp,nsmall=2))
 enactpolicy = c(2016,2017,2018,2019,2020) # Select policy years to include in final file
 
-popmales <- read.csv("censusdata/censuspop_males_2100.csv",header=TRUE) # Read in Census data
+popmales <- read.csv("censusdata/censuspop_males.csv",header=TRUE) # Read in Census data
 popmales <- popmales[,-1] # Remove 1st column "ages"
-popfemales <- read.csv("censusdata/censuspop_females_2100.csv",header=TRUE)
+popfemales <- read.csv("censusdata/censuspop_females.csv",header=TRUE)
 popfemales <- popfemales[,-1] # Remove 1st column "ages"
 population <- read.csv("censusdata/censuspopulation_total.csv",header=TRUE)
 population <- population[,-1] # Remove 1st column "ages"
@@ -62,7 +53,7 @@ agegroupstart = c(12,18,25,45,65,18)
 agegroupend = c(17,24,44,64,99,99)
 
 startingyear = 2010
-endingyear = 2100 
+endingyear = 2060 
 ages = NULL
 for (i in 0:99) {
   ages = rbind(ages, paste("pop_",i,sep=""))
@@ -71,10 +62,7 @@ years = NULL
 for (i in startingyear:endingyear){
   years = rbind(years, paste("yr",i,sep=""))
 }
-yrs=NULL
-for (i in startingyear:endingyear){
-  yrs = rbind(yrs, paste0(i,sep=""))
-}
+
 smokerprevs <- function(age,year,smokpopbaseM,smokpoppolicyM,smokpopbaseF,smokpoppolicyF,population){ # Generate Total smoking prevalences combining both genders
   baseline_smkprev <- (smokpopbaseM[age+1,year-2009] + smokpopbaseF[age+1,year-2009])/population[age+1,year-2009] 
   policy_smkprev <- (smokpoppolicyM[age+1,year-2009] + smokpoppolicyF[age+1,year-2009])/population[age+1,year-2009]       
@@ -136,7 +124,9 @@ createresultsfile <- function(prevalencesM, prevalencesF, baselineM, baselineF, 
                 df <- get(df)
                 df <- melt(df, id.vars=c("age","year"),measure.vars="smoking_prevalence") 
                 df <- cast(df, age ~ year)
-                df <- subset(df, select=yrs)
+                df <- subset(df, select=cbind("2010","2011","2012","2013","2014","2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025","2026","2027","2028","2029",
+                                              "2030","2031","2032","2033","2034","2035","2036","2037","2038","2039","2040","2041","2042","2043","2044","2045","2046","2047","2048","2049",
+                                              "2050","2051","2052","2053","2054","2055","2056","2057","2058","2059","2060"))
                 rownames(df) <- ages
                 colnames(df) <- years                  
                 return(df)
@@ -154,7 +144,9 @@ createresultsfile <- function(prevalencesM, prevalencesF, baselineM, baselineF, 
                        df <- get(df)
                        df <- melt(df, id.vars=c("age","year"),measure.vars="former_prevalence") 
                        df <- cast(df, age ~ year)
-                       df <- subset(df, select=yrs)
+                       df <- subset(df, select=cbind("2010","2011","2012","2013","2014","2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025","2026","2027","2028","2029",
+                                                     "2030","2031","2032","2033","2034","2035","2036","2037","2038","2039","2040","2041","2042","2043","2044","2045","2046","2047","2048","2049",
+                                                     "2050","2051","2052","2053","2054","2055","2056","2057","2058","2059","2060"))
                        rownames(df) <- ages
                        colnames(df) <- years                  
                        return(df)

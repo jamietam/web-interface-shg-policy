@@ -24,6 +24,6 @@ name = paste0(format(mla_age),'_pac19_',format(pac19,nsmall=2),'_pac21_',format(
 enactpolicy = c(2016,2017,2018,2019,2020) # Select policy years to include in final file
 cohorts = c(2000,2010,2020)
 startingyear = 2010
-endingyear = 2060 
+endingyear = 2100
 
 source('make_results_lyg_deaths_files.R', echo=TRUE)

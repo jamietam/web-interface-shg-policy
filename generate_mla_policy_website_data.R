@@ -26,4 +26,4 @@ cohorts = c(2000,2010,2020)
 startingyear = 2010
 endingyear = 2100
 
-source('make_results_lyg_deaths_files.R', echo=TRUE)
+source('make_results_lyg_deaths_files.R', echo=FALSE)

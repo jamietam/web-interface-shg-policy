@@ -1,6 +1,11 @@
 # Update main directory
-mainDir <- "/home/cornerstonenw/source_data/"
+mainDir <- "/home/jamietam/source_dataFeb2018/"
 inputsDir <- "/home/jamietam/web-interface-shg-policy/"
+
+minages <- c(19,21,25)
+pac19_set <- c(0.00, 0.25, 0.50, 0.75,1.00)
+pac21_set <- c(0.00, 0.25, 0.50, 0.75,1.00)
+
 #  ------------------------------------------------------------------------
 # 1. Generate prevalence results.zip file for a specific state ------------
 #  ------------------------------------------------------------------------
@@ -9,24 +14,10 @@ createresultsfiles <- function(stateabbrev){
   dir.create(file.path(mainDir, stateabbrev,"mla")) # create the folder if it does not exist already
   dir.create(file.path(mainDir, stateabbrev,"mla","results"))
   setwd(file.path(mainDir))
-  for (v1 in c(19,21,25)) {
-    for (v2 in c(0.00, 0.25, 0.50, 0.75,1.00)) {
-      if (v2 == 0.00) {
-        list = c(0.00,0.25,0.50,0.75,1.00)
-      }
-      if (v2 == 0.25) {
-        list = c(0.00,0.25,0.50,0.75)
-      }
-      if (v2 == 0.50) {
-        list = c(0.00,0.25,0.50)
-      }
-      if (v2 == 0.75) {
-        list = c(0.00,0.25)
-      }
-      if (v2 == 1.00) {
-        list = c(0.00)
-      }
-      for (v3 in list) {
+  for (v1 in minages) {
+    for (v2 in pac19_set) {
+      for (v3 in pac21_set) {
+        if ((v2 + v3) > 1.00) next
         args <- c(v1, v2, v3)
         # Specify tax policy parameters
         mla_age = as.numeric(args[1])
@@ -165,24 +156,10 @@ createdeathsfiles <- function(stateabbrev){
   dir.create(file.path(mainDir, stateabbrev,"mla")) # create the folder if it does not exist already
   dir.create(file.path(mainDir, stateabbrev,"mla","deaths"))
   setwd(file.path(mainDir))
-  for (v1 in c(19,21,25)) {
-    for (v2 in c(0.00, 0.25, 0.50, 0.75,1.00)) {
-      if (v2 == 0.00) {
-        list = c(0.00,0.25,0.50,0.75,1.00)
-      }
-      if (v2 == 0.25) {
-        list = c(0.00,0.25,0.50,0.75)
-      }
-      if (v2 == 0.50) {
-        list = c(0.00,0.25,0.50)
-      }
-      if (v2 == 0.75) {
-        list = c(0.00,0.25)
-      }
-      if (v2 == 1.00) {
-        list = c(0.00)
-      }
-      for (v3 in list) {
+  for (v1 in minages) {
+    for (v2 in pac19_set) {
+      for (v3 in pac21_set) {
+        if ((v2 + v3) > 1.00) next
         args <- c(v1, v2, v3)
         # Specify tax policy parameters
         mla_age = as.numeric(args[1])
@@ -194,13 +171,11 @@ createdeathsfiles <- function(stateabbrev){
         state <- read.csv(paste0(mainDir,'US/mla/deaths/deaths_',format(mla_age),'_pac19_',format(pac19,nsmall=2),'_pac21_',format(pac21,nsmall=2),'.csv'),check.names=FALSE,sep=",")
         
         # Calculate scaling factors for each age group and sex
-        B_SF<- as.numeric(as.character(data[stateabbrev,"Both"]))/ as.numeric(as.character(data["US","Both"]))
         M_SF<- as.numeric(as.character(data[stateabbrev,"Male"]))/ as.numeric(as.character(data["US","Male"]))
         F_SF<- as.numeric(as.character(data[stateabbrev,"Female"]))/ as.numeric(as.character(data["US","Female"]))
         
-        state$deaths_avoided_both<-B_SF*state$deaths_avoided_both
-        state$deaths_avoided_males<-M_SF*state$deaths_avoided_males
-        state$deaths_avoided_females<-F_SF*state$deaths_avoided_females
+        state$deaths_avoided_males<-round(M_SF*state$deaths_avoided_males,2)
+        state$deaths_avoided_females<-round(F_SF*state$deaths_avoided_females,2)
         
         write.csv(state, file=paste0(mainDir,stateabbrev,'/mla/deaths/','deaths_',format(mla_age),'_pac19_',format(pac19,nsmall=2),'_pac21_',format(pac21,nsmall=2),'.csv'), row.names=FALSE)
       }
@@ -217,24 +192,10 @@ createlygfiles <- function(stateabbrev){
   dir.create(file.path(mainDir, stateabbrev,"mla")) # create the folder if it does not exist already
   dir.create(file.path(mainDir, stateabbrev,"mla","lyg"))
   setwd(file.path(mainDir))
-  for (v1 in c(19,21,25)) {
-    for (v2 in c(0.00, 0.25, 0.50, 0.75,1.00)) {
-      if (v2 == 0.00) {
-        list = c(0.00,0.25,0.50,0.75,1.00)
-      }
-      if (v2 == 0.25) {
-        list = c(0.00,0.25,0.50,0.75)
-      }
-      if (v2 == 0.50) {
-        list = c(0.00,0.25,0.50)
-      }
-      if (v2 == 0.75) {
-        list = c(0.00,0.25)
-      }
-      if (v2 == 1.00) {
-        list = c(0.00)
-      }
-      for (v3 in list) {
+  for (v1 in minages) {
+    for (v2 in pac19_set) {
+      for (v3 in pac21_set) {
+        if ((v2 + v3) > 1.00) next
         args <- c(v1, v2, v3)
         # Specify tax policy parameters
         mla_age = as.numeric(args[1])
@@ -246,13 +207,11 @@ createlygfiles <- function(stateabbrev){
         state <- read.csv(paste0(mainDir,'US/mla/lyg/lyg_',format(mla_age),'_pac19_',format(pac19,nsmall=2),'_pac21_',format(pac21,nsmall=2),'.csv'),check.names=FALSE,sep=",")
         
         # Calculate scaling factors for each age group and sex
-        B_SF<- as.numeric(as.character(data[stateabbrev,"Both"]))/ as.numeric(as.character(data["US","Both"]))
         M_SF<- as.numeric(as.character(data[stateabbrev,"Male"]))/ as.numeric(as.character(data["US","Male"]))
         F_SF<- as.numeric(as.character(data[stateabbrev,"Female"]))/ as.numeric(as.character(data["US","Female"]))
         
-        state$cLYG_both<-B_SF*state$cLYG_both
-        state$cLYG_males<-M_SF*state$cLYG_males
-        state$cLYG_females<-F_SF*state$cLYG_females
+        state$cLYG_males<-round(M_SF*state$cLYG_males,2)
+        state$cLYG_females<-round(F_SF*state$cLYG_females,2)
         
         write.csv(state, file=paste0(mainDir,stateabbrev,'/mla/lyg/','lyg_',format(mla_age),'_pac19_',format(pac19,nsmall=2),'_pac21_',format(pac21,nsmall=2),'.csv'), row.names=FALSE)
       }
@@ -264,18 +223,18 @@ createlygfiles <- function(stateabbrev){
 #  3. Loop through all 50 states + DC -------------------------------------
 #  ------------------------------------------------------------------------
 
-allstates <- c( "AL","AK", "AZ", "AR", "CA", "CO","CT", "DE", "DC","FL", "GA","HI","ID","IL","IN","IA","KS","KY","LA",
-               "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR",
-               "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT","VA", "WA","WV","WI", "WY" )
-
-for (i in c(1:length(allstates))){
-  createresultsfiles(allstates[i]) # generates the results file for the state specified using the createresultsfile function
-  createdeathsfiles(allstates[i]) # generates the deaths file for the state specified 
-  createlygfiles(allstates[i]) # generates the lyg file for the state specified 
-}
+# allstates <- c( "AL","AK", "AZ", "AR", "CA", "CO","CT", "DE", "DC","FL", "GA","HI","ID","IL","IN","IA","KS","KY","LA",
+#                "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR",
+#                "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT","VA", "WA","WV","WI", "WY" )
 # 
-# createresultsfiles("AL")
-# createdeathsfiles("AL")
-# createlygfiles("AL")
+# for (i in c(1:length(allstates))){
+#   createresultsfiles(allstates[i]) # generates the results file for the state specified using the createresultsfile function
+#   createdeathsfiles(allstates[i]) # generates the deaths file for the state specified 
+#   createlygfiles(allstates[i]) # generates the lyg file for the state specified 
+# }
+# 
+createresultsfiles("AL")
+createdeathsfiles("AL")
+createlygfiles("AL")
 
 

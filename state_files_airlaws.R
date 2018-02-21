@@ -1,6 +1,14 @@
 # Update main directory
-mainDir <- "/home/cornerstonenw/source_data/"
+mainDir <- "/home/jamietam/source_dataFeb2018/"
 inputsDir <- "/home/jamietam/web-interface-shg-policy/"
+
+Iwp_set =c(0,1)
+Ir_set =c(0,1)
+Ib_set =c(0,1)
+pacwp_set = c(0, 0.25, 0.5, 0.75, 1)
+pacr_set = c(0, 0.25, 0.5, 0.75, 1)
+pacb_set = c(0, 0.25, 0.5, 0.75, 1)
+
 #  ------------------------------------------------------------------------
 # 1. Generate prevalence results.zip file for a specific state ------------
 #  ------------------------------------------------------------------------
@@ -9,16 +17,16 @@ createresultsfiles <- function(stateabbrev){
   dir.create(file.path(mainDir, stateabbrev,"airlaws")) # create the folder if it does not exist already
   dir.create(file.path(mainDir, stateabbrev,"airlaws","results"))
   setwd(file.path(mainDir))
-  for (v1 in 0:1) {
-    for (v2 in 0:1) {
-      for(v3 in 0:1) {
-        for (v4 in c(0, 0.25, 0.5, 0.75, 1)) {
-          for (v5 in c(0, 0.25, 0.5, 0.75, 1)) {
-            for (v6 in c(0, 0.25, 0.5, 0.75, 1)) {
+  for (v1 in Iwp_set) {
+    for (v2 in Ir_set) {
+      for(v3 in Ib_set) {
+        for (v4 in pacwp_set) {
+          for (v5 in pacr_set) {
+            for (v6 in pacb_set) {
               args <- c(v1, v2, v3, v4, v5, v6)
-	      if (v1==0 & v4>0.00) next
-	      if (v2==0 & v5>0.00) next
-	      if (v3==0 & v6>0.00) next
+	            if (v1==0 & v4>0.00) next
+	            if (v2==0 & v5>0.00) next
+	            if (v3==0 & v6>0.00) next
               # Specify clean air policy parameters
               Iwp=as.numeric(args[1]) ### indicator of workplace policy to be implemented 1-yes, 0-no
               Ir=as.numeric(args[2])  ### indicator of restaurants policy to be implemented 1-yes, 0-no
@@ -26,18 +34,6 @@ createresultsfiles <- function(stateabbrev){
               pacwp=as.numeric(args[4])  ### percentage already covered by workplace clean air laws
               pacr=as.numeric(args[5])   ### percentage already covered by restaurants clean air laws
               pacb=as.numeric(args[6])   ### percentage already covered by bars clean air laws
-              
-              # read in data for U.S. and for specific state
-              test <- tryCatch(read.csv(paste0(mainDir,'US/airlaws/results/results_w',Iwp,'_r',Ir,'_b',Ib,'_w',
-                                               format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'.csv', sep=""),check.names=FALSE),
-                               error = function(e) e)
-              
-              if(!inherits(test, "error")) {
-                state <- read.csv(paste0('US/airlaws/results/results_w',Iwp,'_r',Ir,'_b',Ib,'_w',
-                                         format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'.csv', sep=""),check.names=FALSE)
-              } else {
-                next
-              }
               
               # Read in data
               data <- read.csv(paste0(inputsDir,'prevalence2015.csv'),check.names=FALSE,row.names=1)
@@ -170,16 +166,16 @@ createdeathsfiles <- function(stateabbrev){
   dir.create(file.path(mainDir, stateabbrev,"airlaws")) # create the folder if it does not exist already
   dir.create(file.path(mainDir, stateabbrev,"airlaws","deaths"))
   setwd(file.path(mainDir))
-  for (v1 in 0:1) {
-    for (v2 in 0:1) {
-      for(v3 in 0:1) {
-        for (v4 in c(0, 0.25, 0.5, 0.75, 1)) {
-          for (v5 in c(0, 0.25, 0.5, 0.75, 1)) {
-            for (v6 in c(0, 0.25, 0.5, 0.75, 1)) {
+  for (v1 in Iwp_set) {
+    for (v2 in Ir_set) {
+      for(v3 in Ib_set) {
+        for (v4 in pacwp_set) {
+          for (v5 in pacr_set) {
+            for (v6 in pacb_set) {
               args <- c(v1, v2, v3, v4, v5, v6)
-              if (v1==0&v4>0.00) next
-              if (v2==0&v5>0.00) next
-              if (v3==0&v6>0.00) next
+              if (v1==0 & v4>0.00) next
+              if (v2==0 & v5>0.00) next
+              if (v3==0 & v6>0.00) next
               # Specify clean air policy parameters
               Iwp=as.numeric(args[1]) ### indicator of workplace policy to be implemented 1-yes, 0-no
               Ir=as.numeric(args[2])  ### indicator of restaurants policy to be implemented 1-yes, 0-no
@@ -188,31 +184,17 @@ createdeathsfiles <- function(stateabbrev){
               pacr=as.numeric(args[5])   ### percentage already covered by restaurants clean air laws
               pacb=as.numeric(args[6])   ### percentage already covered by bars clean air laws
               
-              # read in data for U.S. and for specific state
-              test <- tryCatch(read.csv(paste0(mainDir,'US/airlaws/deaths/deaths_w',Iwp,'_r',Ir,'_b',Ib,'_w',
-                                               format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'.csv', sep=""),check.names=FALSE),
-                               error = function(e) e)
-              
-              if(!inherits(test, "error")) {
-                state <- read.csv(paste0('US/airlaws/deaths/deaths_w',Iwp,'_r',Ir,'_b',Ib,'_w',
-                                         format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'.csv', sep=""),check.names=FALSE)
-              } else {
-                next
-              }
-              
               # Read in data
               data <- read.csv(paste0(inputsDir,'popsizes.csv'),check.names=FALSE,row.names=1)
               state <- read.csv(paste0('US/airlaws/deaths/deaths_w',Iwp,'_r',Ir,'_b',Ib,'_w',
                                        format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'.csv'),check.names=FALSE,sep=",")
   
               # Calculate scaling factors for each age group and sex
-              B_SF<- as.numeric(as.character(data[stateabbrev,"Both"]))/ as.numeric(as.character(data["US","Both"]))
               M_SF<- as.numeric(as.character(data[stateabbrev,"Male"]))/ as.numeric(as.character(data["US","Male"]))
               F_SF<- as.numeric(as.character(data[stateabbrev,"Female"]))/ as.numeric(as.character(data["US","Female"]))
               
-              state$deaths_avoided_both<-B_SF*state$deaths_avoided_both
-              state$deaths_avoided_males<-M_SF*state$deaths_avoided_males
-              state$deaths_avoided_females<-F_SF*state$deaths_avoided_females
+              state$deaths_avoided_males<-round(M_SF*state$deaths_avoided_males,2)
+              state$deaths_avoided_females<-round(F_SF*state$deaths_avoided_females,2)
               
               write.csv(state, file=paste0(mainDir,stateabbrev,'/airlaws/deaths/','deaths_w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'.csv'), row.names=FALSE)
       }}}}}}
@@ -227,16 +209,16 @@ createlygfiles <- function(stateabbrev){
   dir.create(file.path(mainDir, stateabbrev,"airlaws")) # create the folder if it does not exist already
   dir.create(file.path(mainDir, stateabbrev,"airlaws","lyg"))
   setwd(file.path(mainDir))
-  for (v1 in 0:1) {
-    for (v2 in 0:1) {
-      for(v3 in 0:1) {
-        for (v4 in c(0, 0.25, 0.5, 0.75, 1)) {
-          for (v5 in c(0, 0.25, 0.5, 0.75, 1)) {
-            for (v6 in c(0, 0.25, 0.5, 0.75, 1)) {
+  for (v1 in Iwp_set) {
+    for (v2 in Ir_set) {
+      for(v3 in Ib_set) {
+        for (v4 in pacwp_set) {
+          for (v5 in pacr_set) {
+            for (v6 in pacb_set) {
               args <- c(v1, v2, v3, v4, v5, v6)
-              if (v1==0&v4>0.00) next
-              if (v2==0&v5>0.00) next
-              if (v3==0&v6>0.00) next              
+              if (v1==0 & v4>0.00) next
+              if (v2==0 & v5>0.00) next
+              if (v3==0 & v6>0.00) next          
               # Specify clean air policy parameters
               Iwp=as.numeric(args[1]) ### indicator of workplace policy to be implemented 1-yes, 0-no
               Ir=as.numeric(args[2])  ### indicator of restaurants policy to be implemented 1-yes, 0-no
@@ -244,32 +226,18 @@ createlygfiles <- function(stateabbrev){
               pacwp=as.numeric(args[4])  ### percentage already covered by workplace clean air laws
               pacr=as.numeric(args[5])   ### percentage already covered by restaurants clean air laws
               pacb=as.numeric(args[6])   ### percentage already covered by bars clean air laws
-              
-              # read in data for U.S. and for specific state
-              test <- tryCatch(read.csv(paste0(mainDir,'US/airlaws/lyg/lyg_w',Iwp,'_r',Ir,'_b',Ib,'_w',
-                                               format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'.csv', sep=""),check.names=FALSE),
-                               error = function(e) e)
-              
-              if(!inherits(test, "error")) {
-                state <- read.csv(paste0(mainDir,'US/airlaws/lyg/lyg_w',Iwp,'_r',Ir,'_b',Ib,'_w',
-                                         format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'.csv', sep=""),check.names=FALSE)
-              } else {
-                next
-              }
-              
+
               # Read in data
               data <- read.csv(paste0(inputsDir,'popsizes.csv'),row.names=1,check.names=FALSE)
               state <- read.csv(paste0('US/airlaws/lyg/lyg_w',Iwp,'_r',Ir,'_b',Ib,'_w',
                                  format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'.csv'),check.names=FALSE,sep=",")
 
               # Calculate scaling factors for each age group and sex
-              B_SF<- as.numeric(as.character(data[stateabbrev,"Both"]))/ as.numeric(as.character(data["US","Both"]))
               M_SF<- as.numeric(as.character(data[stateabbrev,"Male"]))/ as.numeric(as.character(data["US","Male"]))
               F_SF<- as.numeric(as.character(data[stateabbrev,"Female"]))/ as.numeric(as.character(data["US","Female"]))
               
-              state$cLYG_both<-B_SF*state$cLYG_both
-              state$cLYG_males<-M_SF*state$cLYG_males
-              state$cLYG_females<-F_SF*state$cLYG_females
+              state$cLYG_males<-round(M_SF*state$cLYG_males,2)
+              state$cLYG_females<-round(F_SF*state$cLYG_females,2)
         
               write.csv(state, file=paste0(mainDir,stateabbrev,'/airlaws/lyg/','lyg_w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'.csv'), row.names=FALSE)
       }}}}}}
@@ -278,9 +246,9 @@ createlygfiles <- function(stateabbrev){
 #  ------------------------------------------------------------------------
 #  4. Loop through all 50 states + DC -------------------------------------
 #  ------------------------------------------------------------------------
-allstates <- c("AL","AK", "AZ", "AR", "CA", "CO","CT", "DE", "DC","FL", "GA","HI","ID","IL","IN","IA","KS","KY","LA","ME", "MD", 
-"MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
- "SD", "TN", "TX", "UT", "VT","VA", "WA","WV","WI", "WY" )
+# allstates <- c("AL","AK", "AZ", "AR", "CA", "CO","CT", "DE", "DC","FL", "GA","HI","ID","IL","IN","IA","KS","KY","LA","ME", "MD", 
+# "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
+#  "SD", "TN", "TX", "UT", "VT","VA", "WA","WV","WI", "WY" )
 
 #for (i in c(1:length(allstates))){
 #  createresultsfiles(allstates[i]) # generates the results file for the state specified using the createresultsfile function

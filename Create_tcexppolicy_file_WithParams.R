@@ -2,7 +2,6 @@
 
 args <- commandArgs(trailingOnly = TRUE)
 # setwd("C:/Users/jamietam/Dropbox/GitHub/web-interface-shg-policy/mla")
-args = c(0.00,0.30,2016)
 
 initexp = as.numeric(args[1])
 finalexp = as.numeric(args[2])
@@ -11,8 +10,8 @@ year = as.numeric(args[3]) # year of policy implementation
 name = paste0('initexp',format(initexp,nsmall=2),'_policyexp',format(finalexp,nsmall=2),'_',year)
 
 geteffects <- function(x){ #x = funding level
-  ycess = 0.3940805133*x^4 - 0.9200149349*x^3 + 0.6071506451*x^2 + 0.0190352116*x - 0.0002057556
-  yinit = 0.3932628863*x^4 - 0.9641575962*x^3 + 0.6483267630*x^2 + 0.0473525464*x + 0.0002134081
+  yinit = 0.3940805133*x^4 - 0.9200149349*x^3 + 0.6071506451*x^2 + 0.0190352116*x - 0.0002057556
+  ycess = 0.3932628863*x^4 - 0.9641575962*x^3 + 0.6483267630*x^2 + 0.0473525464*x + 0.0002134081
   return(c(max(yinit,0),max(ycess,0))) # effects cannot be negative.
 }
 

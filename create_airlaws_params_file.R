@@ -1,4 +1,4 @@
-## To run the script in linux "Rscript Create_cleanairpolicy_file_WithParams.R 1 1 1 .4 .4 .4 2015" 
+## To run the script in linux "Rscript create_airlaws_params_file.R 1 1 1 .4 .4 .4 2015" 
 
 args <- commandArgs(trailingOnly = TRUE)
 
@@ -37,10 +37,10 @@ cleanaircesseff <- function(cesseff,pacwp,pacr,pacb,Iwp,Ir,Ib){
 for (y in 1:length(sexes)){
   # Read in calibrated modifiers
   if (y==1){
-    agemodifiers=read.csv("Age_effects_males_cleanair_021815.csv", header=FALSE)
+    agemodifiers=read.csv("age_effects_males_airlaws.csv", header=FALSE)
   }
   if (y==2){
-    agemodifiers=read.csv("Age_effects_females_cleanair_021815.csv", header=FALSE)    
+    agemodifiers=read.csv("age_effects_females_airlaws.csv", header=FALSE)    
   }
   # Policy inputs -----------------------------------------------------------
   inieff=0.1  ### Reduces initiation effect from 1 to 0.9 
@@ -96,10 +96,10 @@ for (y in 1:length(sexes)){
   filehead='init_modifier; cess_modifier; init_decay_rate; cess_decay_rate; init_age_modifier; cess_age_modifier; init_age_lower_limit; init_age_upper_limit; cess_age_lower_limit; cess_age_upper_limit; init_policy_deploy_year; cess_policy_deploy_year'
   policyscenario=paste(initmod,'; ',cessmod,'; ',inidecayrate,'; ',cessdecayrate,'; ',initagemod,'; ',cessagemod,'; ',initagelower,'; ',initageupper,'; ',cessagelower,'; ',cessageupper,'; ',initdeploy,'; ',cessdeploy,sep="")
 
-  write.table(filehead,paste0('inputscleanair_',(sexes[y]),'_w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'_',year,'.csv'),col.names=FALSE,row.names=FALSE,quote=FALSE,eol='\n',)
-  write.table(policyscenario,paste0('inputscleanair_',(sexes[y]),'_w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2),'_b',format(pacb,nsmall=2),'_',year,'.csv'),col.names=FALSE,row.names=FALSE,quote=FALSE,eol='',append='TRUE')
+  write.table(filehead,paste0('inputsairlaws_',(sexes[y]),'_w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'_',year,'.csv'),col.names=FALSE,row.names=FALSE,quote=FALSE,eol='\n',)
+  write.table(policyscenario,paste0('inputsairlaws_',(sexes[y]),'_w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2),'_b',format(pacb,nsmall=2),'_',year,'.csv'),col.names=FALSE,row.names=FALSE,quote=FALSE,eol='',append='TRUE')
 
-  print(paste0('inputscleanair_',(sexes[y]),'_w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'_',year,'.csv',' has been created.')) 
+  print(paste0('inputsairlaws_',(sexes[y]),'_w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2),'_',year,'.csv',' has been created.')) 
 }  
 
   

@@ -1,5 +1,3 @@
-## To run the script in linux "Rscript Create_cleanairpolicy_file_WithParams.R 1 1 1 .4 .4 .4 2015" 
-
 args <- commandArgs(trailingOnly = TRUE)
 
 # setwd("C:/Users/jamietam/Dropbox/CISNET/Policy_Module/")

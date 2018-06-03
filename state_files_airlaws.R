@@ -1,14 +1,3 @@
-# Update main directory
-mainDir <- "/home/jamietam/source_dataFeb2018/"
-inputsDir <- "/home/jamietam/web-interface-shg-policy/"
-
-Iwp_set =c(0,1)
-Ir_set =c(0,1)
-Ib_set =c(0,1)
-pacwp_set = c(0, 0.25, 0.5, 0.75, 1)
-pacr_set = c(0, 0.25, 0.5, 0.75, 1)
-pacb_set = c(0, 0.25, 0.5, 0.75, 1)
-
 #  ------------------------------------------------------------------------
 # 1. Generate prevalence results.zip file for a specific state ------------
 #  ------------------------------------------------------------------------
@@ -243,21 +232,5 @@ createlygfiles <- function(stateabbrev){
       }}}}}}
   return(paste0("lyg .csv files generated for ",stateabbrev))
 }
-#  ------------------------------------------------------------------------
-#  4. Loop through all 50 states + DC -------------------------------------
-#  ------------------------------------------------------------------------
-# allstates <- c("AL","AK", "AZ", "AR", "CA", "CO","CT", "DE", "DC","FL", "GA","HI","ID","IL","IN","IA","KS","KY","LA","ME", "MD", 
-# "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
-#  "SD", "TN", "TX", "UT", "VT","VA", "WA","WV","WI", "WY" )
-
-#for (i in c(1:length(allstates))){
-#  createresultsfiles(allstates[i]) # generates the results file for the state specified using the createresultsfile function
-#  createdeathsfiles(allstates[i]) # generates the deaths file for the state specified 
-# createlygfiles(allstates[i]) # generates the lyg file for the state specified 
-#}
- 
-createresultsfiles("AL")
-createdeathsfiles("AL")
-createlygfiles("AL")
 
 

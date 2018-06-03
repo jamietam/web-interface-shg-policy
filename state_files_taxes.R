@@ -1,12 +1,3 @@
-# Update main directory
-mainDir <- "/home/jamietam/source_dataFeb2018/"
-inputsDir <- "/home/jamietam/web-interface-shg-policy/"
-# mainDir <- "C:/Users/jamietam/Dropbox/Github/web-interface-shg-policy/source_data/"
-# inputsDir <- "C:/Users/jamietam/Dropbox/Github/web-interface-shg-policy/"
-
-initprices <- c(4.00,4.50,5.00,5.50,6.00,6.50,7.00,7.50,8.00,8.50,9.00,9.50,10.00,10.50)
-taxes <- c(1.00,1.50,2.00,2.50,3.00,3.50,4.00,4.50,5.00)
-
 #  -----------------------------------------------------------------------
 # 1. Generate prevalence results.zip file for a specific state ------------
 #  ------------------------------------------------------------------------
@@ -204,20 +195,3 @@ createlygfiles <- function(stateabbrev){
       }}
   return(paste0("lyg .csv files generated for ",stateabbrev))
 }
-#  ------------------------------------------------------------------------
-#  3. Loop through all 50 states + DC -------------------------------------
-#  ------------------------------------------------------------------------
-
-allstates <- c("AL","AK", "AZ", "AR", "CA", "CO","CT", "DE", "DC","FL", "GA","HI","ID","IL","IN","IA","KS","KY","LA",
-                "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR",
-                "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT","VA", "WA","WV","WI", "WY" )
-# 
-# for (i in c(1:length(allstates))){
-#   createresultsfiles(allstates[i]) # generates the results file for the state specified using the createresultsfile function
-#   createdeathsfiles(allstates[i]) # generates the deaths file for the state specified 
-#   createlygfiles(allstates[i]) # generates the lyg file for the state specified 
-# }
-# 
-createresultsfiles("AL")
-createdeathsfiles("AL")
-createlygfiles("AL")

@@ -1,8 +1,3 @@
-# Update main directory
-mainDir <- "/home/cornerstonenw/source_data/"
-inputsDir <- "/home/jamietam/web-interface-shg-policy/"
-initexp <- c(0.00,0.10,0.20,0.30,0.40,0.50,0.60,0.70,0.80,0.90)
-finalexp <- c(0.10,0.20,0.30,0.40,0.50,0.60,0.70,0.80,0.90,1.00)
 #  -----------------------------------------------------------------------
 # 1. Generate prevalence results.zip file for a specific state ------------
 #  ------------------------------------------------------------------------
@@ -13,7 +8,7 @@ createresultsfiles <- function(stateabbrev){
   setwd(file.path(mainDir))
   for (v1 in initexp) {
     for (v2 in finalexp) {
-      args <- c(v1, v2)
+      #args <- c(v1, v2)
       if(v1>=v2) next
       # Specify tax policy parameters
       init = as.numeric(args[1]) # initial price per pack
@@ -152,7 +147,7 @@ createdeathsfiles <- function(stateabbrev){
   for (v1 in initexp) {
     for (v2 in finalexp) {
       args <- c(v1, v2)
-      if(v1>=v2) next
+      #if(v1>=v2) next
       # Specify tax policy parameters
       init = as.numeric(args[1]) 
       final = as.numeric(args[2]) 
@@ -162,12 +157,11 @@ createdeathsfiles <- function(stateabbrev){
       state <- read.csv(paste0(mainDir,'US/tcexp/deaths/deaths_initexp',format(init,nsmall=2),'_policyexp',format(final,nsmall=2),'.csv'),check.names=FALSE,sep=",")
 
       # Calculate scaling factors for each age group and sex
-      B_SF<- as.numeric(as.character(data[stateabbrev,"Both"]))/ as.numeric(as.character(data["US","Both"]))
       M_SF<- as.numeric(as.character(data[stateabbrev,"Male"]))/ as.numeric(as.character(data["US","Male"]))
       F_SF<- as.numeric(as.character(data[stateabbrev,"Female"]))/ as.numeric(as.character(data["US","Female"]))
-            state$deaths_avoided_both<-B_SF*state$deaths_avoided_both
-      state$deaths_avoided_males<-M_SF*state$deaths_avoided_males
-      state$deaths_avoided_females<-F_SF*state$deaths_avoided_females
+            
+      state$deaths_avoided_males<-round(M_SF*state$deaths_avoided_males,2)
+      state$deaths_avoided_females<-round(F_SF*state$deaths_avoided_females,2)
       
       write.csv(state, file=paste0(mainDir,stateabbrev,'/tcexp/deaths/','deaths_initexp',format(init,nsmall=2),'_policyexp',format(final,nsmall=2),'.csv'), row.names=FALSE)
       }}
@@ -175,7 +169,7 @@ createdeathsfiles <- function(stateabbrev){
 }
 
 #  ------------------------------------------------------------------------
-# 2. Generate lyg file for a specific state ------------------------
+# 3. Generate lyg file for a specific state ------------------------
 #  ------------------------------------------------------------------------
 createlygfiles <- function(stateabbrev){
   dir.create(file.path(mainDir, stateabbrev)) # create the folder if it does not exist already
@@ -185,7 +179,7 @@ createlygfiles <- function(stateabbrev){
   for (v1 in initexp) {
     for (v2 in finalexp) {
       args <- c(v1, v2)
-      if(v1>=v2) next
+      #if(v1>=v2) next
       # Specify tax policy parameters
       init = as.numeric(args[1]) 
       final = as.numeric(args[2])
@@ -195,31 +189,13 @@ createlygfiles <- function(stateabbrev){
       state <- read.csv(paste0(mainDir,'US/tcexp/lyg/lyg_initexp',format(init,nsmall=2),'_policyexp',format(final,nsmall=2),'.csv'),check.names=FALSE,sep=",")
 
       # Calculate scaling factors for each age group and sex
-      B_SF<- as.numeric(as.character(data[stateabbrev,"Both"]))/ as.numeric(as.character(data["US","Both"]))
       M_SF<- as.numeric(as.character(data[stateabbrev,"Male"]))/ as.numeric(as.character(data["US","Male"]))
       F_SF<- as.numeric(as.character(data[stateabbrev,"Female"]))/ as.numeric(as.character(data["US","Female"]))
       
-      state$cLYG_both<-B_SF*state$cLYG_both
-      state$cLYG_males<-M_SF*state$cLYG_males
-      state$cLYG_females<-F_SF*state$cLYG_females
+      state$cLYG_males<-round(M_SF*state$cLYG_males,2)
+      state$cLYG_females<-round(F_SF*state$cLYG_females,2)
+      
       write.csv(state, file=paste0(mainDir,stateabbrev,'/tcexp/lyg/','lyg_initexp',format(init,nsmall=2),'_policyexp',format(final,nsmall=2),'.csv'), row.names=FALSE)
       }}
   return(paste0("lyg .csv files generated for ",stateabbrev))
 }
-#  ------------------------------------------------------------------------
-#  3. Loop through all 50 states + DC -------------------------------------
-#  ------------------------------------------------------------------------
-
-allstates <- c("AK", "AZ", "AR", "CA", "CO","CT", "DE", "DC","FL", "GA","HI","ID","IL","IN","IA","KS","KY","LA",
-                "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR",
-                "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT","VA", "WA","WV","WI", "WY" )
-
-for (i in c(1:length(allstates))){
-  createresultsfiles(allstates[i]) # generates the results file for the state specified using the createresultsfile function
-  createdeathsfiles(allstates[i]) # generates the deaths file for the state specified 
-  createlygfiles(allstates[i]) # generates the lyg file for the state specified 
-}
-
-#createresultsfiles("AL")
-#createdeathsfiles("AL")
-#createlygfiles("AL")

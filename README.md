@@ -6,8 +6,9 @@
 - Contact jamietam@umich.edu with questions
 
 ## Requirements
-- The [SHG policy module](https://github.com/CSNW/shg-policy-module)
-  - The Smoking History Generator `v.6.3.3`
+- Contact shg-distrib@lung.cisnet-group.org to request
+  -`smoking-history-generator v.6.3.3` 
+  -`shg-policy-module v0.1.2`
 - `R version 3.2.3`
 - `python version 2.7.12`
 

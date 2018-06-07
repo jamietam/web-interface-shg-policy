@@ -6,9 +6,8 @@
 - Contact jamietam@umich.edu with questions
 
 ## Requirements
-- Contact shg-distrib@lung.cisnet-group.org to request
-  -`smoking-history-generator v.6.3.3` 
-  -`shg-policy-module v0.1.2`
+-`smoking-history-generator v.6.3.3` (contact shg-distrib@lung.cisnet-group.org for requests)
+-`shg-policy-module v0.1.2`(contact shg-distrib@lung.cisnet-group.org for requests)
 - `R version 3.2.3`
 - `python version 2.7.12`
 

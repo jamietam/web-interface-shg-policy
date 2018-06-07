@@ -1,5 +1,8 @@
 ## The Tobacco Control Policy (TCP) tool
-- This repository is used to run the Smoking History Generator (SHG) Policy Module and generate results for the [TCP tool](http://www.tobaccopolicyeffects.org).
+- This repository is used to run the Smoking History Generator (SHG) Policy Module and generate results for the [TCP tool](http://www.tobaccopolicyeffects.org)
+- The TCP tool is a web-based user interface for a tobacco policy microsimulation model developed by the [Cancer Intervention and Surveillance Modeling Network (CISNET)](http://cisnet.cancer.gov) Lung consortium. 
+
+## Help
 - Contact jamietam@umich.edu with questions
 
 ## Requirements

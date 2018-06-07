@@ -4,12 +4,13 @@
 
 ## Help
 - Contact jamietam@umich.edu with questions
+- Contact shg-distrib@lung.cisnet-group.org to request copies of the `smoking-history-generator v.6.3.3` and `shg-policy-module v0.1.2`
 
 ## Requirements
--`smoking-history-generator v.6.3.3` (contact shg-distrib@lung.cisnet-group.org for requests)
--`shg-policy-module v0.1.2`(contact shg-distrib@lung.cisnet-group.org for requests)
 - `R version 3.2.3`
 - `python version 2.7.12`
+- `smoking-history-generator v.6.3.3`
+- `shg-policy-module v0.1.2`
 
 ## Overview
 <strong>1) Choose a policy to simulate</strong>

@@ -40,7 +40,7 @@ The code in this repository is currently set up to run policy scenarios in paral
   - `tcexp`: run `python scenarios_tcexp.py`, `Rscript tcptool_tcexp_data.R`
   - `mla`: run `python scenarios_mla.py`, `Rscript tcptool_mla_data.R`
 
-<strong>4) Check for errors across the results files</strong> 
+<strong>5) Check for errors across the results files</strong> 
   - run `Rscript check_files_for_errors.R` to check results in the `source_data` directory for missing policy scenarios, missing rows of data, negative sum of deaths avoided across all cohorts, and whether the ratio of deaths avoided between men and women is greater than 2
   
 ## Help

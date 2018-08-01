@@ -38,13 +38,13 @@ The code in this repository is currently set up to run policy scenarios in paral
     - premature deaths avoided (`deaths_w1_r1_b1_pacw0.00_pacr0.00_pacb0.00.csv`)
     - life-years gained (`lyg_w1_r1_b1_pacw0.00_pacr0.00_pacb0.00.csv`)
   
-<strong>4) Repeat steps 1-3 for remaining policies
+<strong>4) Repeat steps 1-3 for remaining tobacco control policies</strong>
   - `taxes`: run `python scenarios_taxes.py`, `Rscript tcptool_taxes_data.R`
   - `tcexp`: run `python scenarios_tcexp.py`, `Rscript tcptool_tcexp_data.R`
   - `mla`: run `python scenarios_mla.py` , `Rscript tcptool_mla_data.R`
 
-<strong>4) Check for errors across the results files in the `source_data` directory</strong> 
-  - run `Rscript check_files_for_errors.R` to check for missing policy scenarios, missing rows of data, negative sum of deaths avoided across all cohorts, and whether ratio of deaths avoided between men and women is greater than 2
+<strong>4) Check for errors across the results files</strong> 
+  - run `Rscript check_files_for_errors.R` to check results in the `source_data` directory for missing policy scenarios, missing rows of data, negative sum of deaths avoided across all cohorts, and whether the ratio of deaths avoided between men and women is greater than 2
   
 ## Help
 - Contact jamietam@umich.edu with questions

@@ -9,18 +9,15 @@
 - `shg-policy-module v0.1.2`
 
 ## Setup
-The code in this repository is currently set up to run policy scenarios in parallel across 20 cores, with error and log files for each. Run-time varies depending on the number of individuals simulated per birth cohort (~1 min to simulate 200,000 individuals from a single birth cohort). There are 300 birth cohorts simulated per scenario, except for MLA which simulates 380 birth cohorts. When spread across 20 cores, this drastically reduces the total amount of time needed to generate a full set of results. Because of the large number of files generated that need to be organized, the directory structure on your machine must be set up accordingly. 
+The code in this repository is currently set up to run policy scenarios in parallel across 20 cores, with error and log files for each. Total run-time varies depending on the number of individuals generated per birth cohort (~1 min to simulate 200,000 individuals from a single birth cohort). There are 300 birth cohorts simulated per scenario, except for MLA which simulates 380 birth cohorts. When spread across 20 cores, this dramatically reduces the total amount of time needed to generate a full set of results. Because of the large number of files generated that need to be organized, the directory structure on your machine must be set up accordingly. 
 
-- Create directories one level above the web-interface-shg-policy repository to store each set of results: 
+- Create directories one level above this repository to store each set of results: 
   - `airlaws_results`, `taxes_results`, `tcexp_results`, `mla_results` to store each policy's results
-  - `source_data` for state-level data
+  - `source_data` for state-level and US data
   - `shg-policy-module-parallel` as a copy of `shg-policy-module v0.1.2`. To run the model across 20 cores, create 20 copies of shg-policy-module-parallel directory with `python wrapper.py`. 
 
-- Make necessary changes to the file paths referenced in the python and R scripts:
-  - airlaws: `scenarios_airlaws.py` and `tcptool_airlaws_data.py`
-  - taxes: `scenarios_taxes.py` and `tcptool_taxes_data.py`
-  - tcexp: `scenarios_tcexp.py` and `tcptool_tcexp_data.py`
-  - mla: `scenarios_mla.py` and `tcptool_mla_data.py`
+- Make necessary changes to the file paths referenced in these python and R scripts:
+  - `scenarios_airlaws.py`, `scenarios_taxes.py`, `scenarios_tcexp.py`, `scenarios_mla.py`, `tcptool_airlaws_data.py`,`tcptool_taxes_data.py`, `tcptool_tcexp_data.py`,  `tcptool_mla_data.py`, and `check_files_for_errors.R`
 
 ## Overview
 <strong>1) Choose one tobacco control policy to simulate results for</strong>
@@ -41,7 +38,7 @@ The code in this repository is currently set up to run policy scenarios in paral
 <strong>4) Repeat steps 1-3 for remaining tobacco control policies</strong>
   - `taxes`: run `python scenarios_taxes.py`, `Rscript tcptool_taxes_data.R`
   - `tcexp`: run `python scenarios_tcexp.py`, `Rscript tcptool_tcexp_data.R`
-  - `mla`: run `python scenarios_mla.py` , `Rscript tcptool_mla_data.R`
+  - `mla`: run `python scenarios_mla.py`, `Rscript tcptool_mla_data.R`
 
 <strong>4) Check for errors across the results files</strong> 
   - run `Rscript check_files_for_errors.R` to check results in the `source_data` directory for missing policy scenarios, missing rows of data, negative sum of deaths avoided across all cohorts, and whether the ratio of deaths avoided between men and women is greater than 2

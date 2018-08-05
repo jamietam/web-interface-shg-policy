@@ -21,7 +21,7 @@ The code in this repository is currently set up to run policy scenarios in paral
 
 ## Overview
 <strong>1) Choose one tobacco control policy to simulate results for</strong>
-  - `airlaws`: implement and enforce smoke-free air laws up to three venues (1080 possible scenarios)
+  - `airlaws`: implement and enforce smoke-free air laws up to three venues (1080 possible scenarios / runtime ~14 days)
   - `taxes`: raise the price of a pack of cigarettes via taxes (635 possible scenarios)
   - `tcexp`: increase the level of tobacco control program expenditures (280 possible scenarios)
   - `mla`: raise the minimum age of legal access to tobacco (225 possible scenarios)

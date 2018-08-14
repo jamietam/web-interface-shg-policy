@@ -13,7 +13,7 @@ print("AIRLAWS CHECK")
 dnum = length(list.files(paste0(where,'/airlaws/deaths')))
 lnum = length(list.files(paste0(where,'/airlaws/lyg')))
 rnum = length(list.files(paste0(where,'/airlaws/results')))
-if (dnum!=219 | lnum!=219 | rnum !=219){
+if (dnum!=216 | lnum!=216 | rnum !=216){
   print(paste0('deathsnum=', dnum, ' | lygnum=', lnum, ' | resultsnum=', rnum))
 }
 

@@ -203,14 +203,10 @@ createresultsfile <- function(prevalencesM, prevalencesF, baselineM, baselineF, 
     }
   }  
   for(row in 1:length(finalprevs$age)) { 
-    finalprevs$both_baseline[row] <- round(smokerprevs(finalprevs$age[row], finalprevs$year[row],smokpopbaseM,smokpoppolicyM,smokpopbaseF,smokpoppolicyF,population)[1],4)
-    finalprevs$both_policy[row] <- round(smokerprevs(finalprevs$age[row], finalprevs$year[row],smokpopbaseM,smokpoppolicyM,smokpopbaseF,smokpoppolicyF,population)[2],4)    
+    finalprevs$both_baseline[row] <- smokerprevs(finalprevs$age[row], finalprevs$year[row],smokpopbaseM,smokpoppolicyM,smokpopbaseF,smokpoppolicyF,population)[1]
+    finalprevs$both_policy[row] <- smokerprevs(finalprevs$age[row], finalprevs$year[row],smokpopbaseM,smokpoppolicyM,smokpopbaseF,smokpoppolicyF,population)[2]    
   }
-  finalprevs$males_baseline <- round(finalprevs$males_baseline,4)
-  finalprevs$females_baseline  <- round(finalprevs$females_baseline,4)
-  finalprevs$males_policy	<- round(finalprevs$males_policy,4)
-  finalprevs$females_policy <- round(finalprevs$females_policy,4)
-  
+
   # Get smoking prevalences by age group ------------------------------------
   finalprevs_agegroups = data.frame()
   for (x in 1:length(agegroups)){
@@ -256,7 +252,7 @@ createresultsfile <- function(prevalencesM, prevalencesF, baselineM, baselineF, 
     prevbase <- as.data.frame(smokprevbase,row.names= c(startingyear:endingyear))
     prevpolicy<- as.data.frame(smokprevpolicy,row.names= c(startingyear:endingyear))
     
-    thisagegroup <- cbind(c(startingyear:endingyear),agegroups[x], "ALL", round(prevbaseM,4), round(prevbaseM_former,4), round(prevbaseF,4), round(prevbaseF_former,4),round(prevpolicyM,4), round(prevpolicyM_former,4),round(prevpolicyF,4),round(prevpolicyF_former,4), round(prevbase,4), round(prevpolicy,4))
+    thisagegroup <- cbind(c(startingyear:endingyear),agegroups[x], "ALL", prevbaseM, prevbaseM_former, prevbaseF, prevbaseF_former,prevpolicyM, prevpolicyM_former,prevpolicyF,prevpolicyF_former, prevbase, prevpolicy)
     finalprevs_agegroups <- rbind(finalprevs_agegroups,thisagegroup)
     
   }
@@ -266,6 +262,7 @@ createresultsfile <- function(prevalencesM, prevalencesF, baselineM, baselineF, 
                                    "both_baseline","both_policy")
   finalprevs <- subset(finalprevs, cohort %in% cohorts) 
   finalprevs <- rbind(finalprevs,finalprevs_agegroups) 
+  finalprevs <- cbind(finalprevs[,1:3], round(finalprevs[,4:13],8))
   finalprevs$policy_year <- policy_year
   
   # Create death counts dataframe -------------------------------------------
@@ -471,8 +468,8 @@ for (i in 1:length(enactpolicy)){
   prevalencesF <- read.csv(paste0(prevfiles,'prevalences_females_',name,'_',enactpolicy[i],'.csv'), header=TRUE)
   prevalencesF <- prevalencesF[order(prevalencesF$year,prevalencesF$age),]# Sort by year, age, policy
   
-  baselineM <- read.csv(paste0('baseline_prevalences_males_',endingyear,'.csv'), header=TRUE)
-  baselineF <- read.csv(paste0('baseline_prevalences_females_',endingyear,'.csv'), header=TRUE)
+  baselineM <- read.csv(paste0('baseline_prevalences_males_',endingyear,'_200000.csv'), header=TRUE)
+  baselineF <- read.csv(paste0('baseline_prevalences_females_',endingyear,'_200000.csv'), header=TRUE)
   
   dfs <- createresultsfile(prevalencesM,prevalencesF,baselineM,baselineF,enactpolicy[i])
   

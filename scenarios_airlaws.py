@@ -10,8 +10,8 @@ import time
 dirweb = '/home/jamietam/web-interface-shg-policy/'# Directory contains age effects files
 dirresults = '/home/jamietam/airlaws_results/'
 
-scenarioDict = {'19':{'Iwp':[1],
-                      'Ir':[1],
+scenarioDict = {'19':{'Iwp':[0],
+                      'Ir':[0],
                       'Ib':[1],
                       'pacwp':[0.00],
                       'pacr':[0.00],
@@ -86,3 +86,5 @@ if __name__ == '__main__':
 
     pool.close() #closes the pool and prevents you from submitting any more jobs
     pool.join() # waits for all the jobs to finish before moving onto the next line of code
+
+## NEXT STEP: Generate TCP tool files at US-level with tcptool_airlaws_data.R

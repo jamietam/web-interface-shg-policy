@@ -4,7 +4,7 @@
 ## 3) whether the sum of deaths avoided for all cohorts is negative under 2016 policy scenarios
 ## 4) whether the ratio of deaths avoided between men and women is greater than 2
 
-where =  paste0("/home/jamietam/source_dataFeb2018/US")
+where =  paste0("/home/jamietam/source_dataAug2018/US")
 setwd(where)
 
 print("AIRLAWS CHECK")
@@ -13,7 +13,7 @@ print("AIRLAWS CHECK")
 dnum = length(list.files(paste0(where,'/airlaws/deaths')))
 lnum = length(list.files(paste0(where,'/airlaws/lyg')))
 rnum = length(list.files(paste0(where,'/airlaws/results')))
-if (dnum!=219 | lnum!=219 | rnum !=219){
+if (dnum!=216 | lnum!=216 | rnum !=216){
   print(paste0('deathsnum=', dnum, ' | lygnum=', lnum, ' | resultsnum=', rnum))
 }
 
@@ -99,7 +99,7 @@ for (initprice in initprices) {
 print("TCEXP CHECK")
 
 initexp <- c(0.00,0.10,0.20,0.30,0.40,0.50,0.60,0.70,0.80,0.90)
-finalexp <- c(0.00,0.20,0.30,0.40,0.50,0.60,0.70,0.80,0.90,1.00)
+finalexp <- c(0.00,0.10,0.20,0.30,0.40,0.50,0.60,0.70,0.80,0.90,1.00)
 
 # check if any scenarios are missing
 dnum = length(list.files(paste0(where,'/tcexp/deaths')))
@@ -127,12 +127,17 @@ for (v1 in initexp) {
      if (sum(as.numeric(dtest[,'deaths_avoided_females']))<0 | sum(as.numeric(dtest[,'deaths_avoided_males']))<0){
        print(paste0(name," NEGATIVE TOTAL DEATHS"))
      }
-     if ((2*sum(as.numeric(dtest[,'deaths_avoided_females'])))< sum(dtest[,'deaths_avoided_males'])){
-       print(paste0(name, " DEATH RATIO > 2"))
-       print(sum(as.numeric(dtest[,'deaths_avoided_females'])))
+     if (v1>=0.00) {
+     print(paste0("females:",as.numeric(dtest[51,'deaths_avoided_females']),"|males:",as.numeric(dtest[51,'deaths_avoided_males'])))
      }
   }
 }
+
+  # if ((2*sum(as.numeric(dtest[,'deaths_avoided_females'])))< sum(dtest[,'deaths_avoided_males'])){
+    # print(paste0(name, " DEATH RATIO > 2"))
+       print(paste0("females:",sum(as.numeric(dtest[,'deaths_avoided_females'])),"|males:",sum(as.numeric(dtest[,'deaths_avoided_males'])))
+    # }
+
 
 print("MLA CHECK")
 

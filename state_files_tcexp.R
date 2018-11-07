@@ -1,3 +1,11 @@
+library(reshape)
+library(data.table)
+
+mainDir <- "/home/jamietam/source_dataAug2018/"
+inputsDir <- "/home/jamietam/web-interface-shg-policy/"
+initexp <- c(0.00,0.10,0.20,0.30,0.40,0.50,0.60,0.70,0.80,0.90)
+finalexp <- c(0.00,0.10,0.20,0.30,0.40,0.50,0.60,0.70,0.80,0.90,1.00)
+
 #  -----------------------------------------------------------------------
 # 1. Generate prevalence results.zip file for a specific state ------------
 #  ------------------------------------------------------------------------
@@ -8,8 +16,8 @@ createresultsfiles <- function(stateabbrev){
   setwd(file.path(mainDir))
   for (v1 in initexp) {
     for (v2 in finalexp) {
-      #args <- c(v1, v2)
-      if(v1>=v2) next
+      args <- c(v1, v2)
+      if (v1>0 & (v2<=v1)) next
       # Specify tax policy parameters
       init = as.numeric(args[1]) # initial price per pack
       final = as.numeric(args[2]) # federal tax increase
@@ -147,7 +155,7 @@ createdeathsfiles <- function(stateabbrev){
   for (v1 in initexp) {
     for (v2 in finalexp) {
       args <- c(v1, v2)
-      #if(v1>=v2) next
+      if (v1>0 & (v2<=v1)) next
       # Specify tax policy parameters
       init = as.numeric(args[1]) 
       final = as.numeric(args[2]) 
@@ -179,7 +187,7 @@ createlygfiles <- function(stateabbrev){
   for (v1 in initexp) {
     for (v2 in finalexp) {
       args <- c(v1, v2)
-      #if(v1>=v2) next
+      if (v1>0 & (v2<=v1)) next
       # Specify tax policy parameters
       init = as.numeric(args[1]) 
       final = as.numeric(args[2])
@@ -199,3 +207,19 @@ createlygfiles <- function(stateabbrev){
       }}
   return(paste0("lyg .csv files generated for ",stateabbrev))
 }
+
+# LOOP THROUGH AND GENERATE STATE LEVEL FILES
+allstates <- c("AK", "AZ", "AR", "CA", "CO","CT", "DE", "DC","FL", "GA","HI","ID","IL","IN","IA","KS","KY","LA","ME",
+"MD","MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI",
+"SC", "SD", "TN", "TX", "UT", "VT","VA", "WA","WV","WI", "WY" )
+
+#allstates <- c("AL")
+
+for (i in c(1:length(allstates))){
+  createresultsfiles(allstates[i]) # generates the results file for the state specified using the createresultsfile$
+  createdeathsfiles(allstates[i]) # generates the deaths file for the state specified
+ createlygfiles(allstates[i]) # generates the lyg file for the state specified
+}
+
+
+

@@ -468,8 +468,8 @@ for (i in 1:length(enactpolicy)){
   prevalencesF <- read.csv(paste0(prevfiles,'prevalences_females_',name,'_',enactpolicy[i],'.csv'), header=TRUE)
   prevalencesF <- prevalencesF[order(prevalencesF$year,prevalencesF$age),]# Sort by year, age, policy
   
-  baselineM <- read.csv(paste0('baseline_prevalences_males_',endingyear,'_200000.csv'), header=TRUE)
-  baselineF <- read.csv(paste0('baseline_prevalences_females_',endingyear,'_200000.csv'), header=TRUE)
+  baselineM <- read.csv(paste0('baseline_prevalences_males_',endingyear,'_500000.csv'), header=TRUE)
+  baselineF <- read.csv(paste0('baseline_prevalences_females_',endingyear,'_500000.csv'), header=TRUE)
   
   dfs <- createresultsfile(prevalencesM,prevalencesF,baselineM,baselineF,enactpolicy[i])
   

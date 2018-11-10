@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import os
 import csv
 import sys
@@ -7,16 +5,170 @@ from itertools import product
 import multiprocessing as mp
 import time
 
+cohortsize = 200000
+lastcohort = 2060
 dirweb = '/home/jamietam/web-interface-shg-policy/'# Directory contains age effects files
 dirresults = '/home/jamietam/airlaws_results/'
 
-scenarioDict = {'19':{'Iwp':[0],
+scenarioDict = {'0':{'Iwp':[0],
+                      'Ir':[0],
+                      'Ib':[0],
+                      'pacwp':[0.00],
+                      'pacr':[0.00],
+                      'pacb':[0.00],
+                      'years':[2016,2017,2018,2019,2020]
+                      },
+                '1':{'Iwp':[0],
                       'Ir':[0],
                       'Ib':[1],
                       'pacwp':[0.00],
                       'pacr':[0.00],
+                      'pacb':[0.00,0.25,0.50,0.75,1.00],
+                      'years':[2016,2017,2018,2019,2020]
+                      }
+                '2':{'Iwp':[0],
+                      'Ir':[1],
+                      'Ib':[0],
+                      'pacwp':[0.00],
+                      'pacr':[0.00,0.25,0.50,0.75,1.00],
                       'pacb':[0.00],
-                      'years':[2016]
+                      'years':[2016,2017,2018,2019,2020]
+                      },
+                '3':{'Iwp':[1],
+                      'Ir':[0],
+                      'Ib':[0],
+                      'pacwp':[0.00,0.25,0.50,0.75,1.00],
+                      'pacr':[0.00],
+                      'pacb':[0.00],
+                      'years':[2016,2017,2018,2019,2020]
+                      },
+                '4':{'Iwp':[1],
+                      'Ir':[1],
+                      'Ib':[0],
+                      'pacwp':[0.00,0.25,0.50,0.75,1.00],
+                      'pacr':[0.00,0.25],
+                      'pacb':[0.00],
+                      'years':[2016,2017,2018,2019,2020]
+                      },
+               '5':{'Iwp':[1],
+                      'Ir':[1],
+                      'Ib':[0],
+                      'pacwp':[0.00,0.25,0.50,0.75,1.00],
+                      'pacb':[0.50, 0.75,1.00],
+                      'pacr':[0.00],
+                      'years':[2016,2017,2018,2019,2020]
+                      },
+               '6':{'Iwp':[1],
+                      'Ir':[0],
+                      'Ib':[1],
+                      'pacwp':[0.00,0.25,0.50,0.75,1.00],
+                      'pacb':[0.00],
+                      'pacr':[0.00,0.25],
+                      'years':[2016,2017,2018,2019,2020]
+                      },
+                '7':{'Iwp':[1],
+                      'Ir':[0],
+                      'Ib':[1],
+                      'pacwp':[0.00,0.25,0.50,0.75,1.00],
+                      'pacr':[0.00],
+                      'pacb':[0.50,0.75,1.00],
+                      'years':[2016,2017,2018,2019,2020]
+                      },
+               '8':{'Iwp':[0],
+                      'Ir':[1],
+                      'Ib':[1],
+                      'pacwp':[0.00],
+                      'pacb':[0.00,0.25,0.50, 0.75,1.00],
+                      'pacr':[0.00,0.25],
+                      'years':[2016,2017,2018,2019,2020]
+                      },
+               '9':{'Iwp':[0],
+                      'Ir':[1],
+                      'Ib':[1],
+                      'pacwp':[0.00],
+                      'pacb':[0.00,0.25,0.50, 0.75,1.00],
+                      'pacr':[0.50,0.75,1.00],
+                      'years':[2016,2017,2018,2019,2020]
+                      },
+               '10':{'Iwp':[1],
+                      'Ir':[1],
+                      'Ib':[1],
+                      'pacwp':[0.00,0.25,0.50,0.75,1.00],
+                      'pacb':[0.00,0.25],
+                      'pacr':[0.00],
+                      'years':[2016,2017,2018,2019,2020]
+                      },
+               '11':{'Iwp':[1],
+                      'Ir':[1],
+                      'Ib':[1],
+                      'pacwp':[0.00,0.25,0.50,0.75,1.00],
+                      'pacb':[0.50, 0.75,1.00],
+                      'pacr':[0.00],
+                      'years':[2016,2017,2018,2019,2020]
+                      },
+                '12':{'Iwp':[1],
+                      'Ir':[1],
+                      'Ib':[1],
+                      'pacwp':[0.00,0.25,0.50,0.75,1.00],
+                      'pacb':[0.00,0.25],
+                      'pacr':[0.25],
+                      'years':[2016,2017,2018,2019,2020]
+                      },
+               '13':{'Iwp':[1],
+                      'Ir':[1],
+                      'Ib':[1],
+                      'pacwp':[0.00,0.25,0.50,0.75,1.00],
+                      'pacb':[0.50, 0.75,1.00],
+                      'pacr':[0.25],
+                      'years':[2016,2017,2018,2019,2020]
+                      },
+                '14':{'Iwp':[1],
+                      'Ir':[1],
+                      'Ib':[1],
+                      'pacwp':[0.00,0.25,0.50,0.75,1.00],
+                      'pacb':[0.00,0.25],
+                      'pacr':[0.50],
+                      'years':[2016,2017,2018,2019,2020]
+                      },
+               '15':{'Iwp':[1],
+                      'Ir':[1],
+                      'Ib':[1],
+                      'pacwp':[0.00,0.25,0.50,0.75,1.00],
+                      'pacb':[0.50, 0.75,1.00],
+                      'pacr':[0.50],
+                      'years':[2016,2017,2018,2019,2020]
+                      },
+                '16':{'Iwp':[1],
+                      'Ir':[1],
+                      'Ib':[1],
+                      'pacwp':[0.00,0.25,0.50,0.75,1.00],
+                      'pacb':[0.00,0.25],
+                      'pacr':[0.75],
+                      'years':[2016,2017,2018,2019,2020]
+                      },
+               '17':{'Iwp':[1],
+                      'Ir':[1],
+                      'Ib':[1],
+                      'pacwp':[0.00,0.25,0.50,0.75,1.00],
+                      'pacb':[0.50, 0.75,1.00],
+                      'pacr':[0.75],
+                      'years':[2016,2017,2018,2019,2020]
+                      },
+                '18':{'Iwp':[1],
+                      'Ir':[1],
+                      'Ib':[1],
+                      'pacwp':[0.00,0.25,0.50,0.75,1.00],
+                      'pacb':[0.00,0.25],
+                      'pacr':[1.00],
+                      'years':[2016,2017,2018,2019,2020]
+                      },
+                '19':{'Iwp':[1],
+                      'Ir':[1],
+                      'Ib':[1],
+                      'pacwp':[0.00,0.25,0.50,0.75,1.00],
+                      'pacb':[0.50,0.75,1.00],
+                      'pacr':[1.00],
+                      'years':[2016,2017,2018,2019,2020]
                       }
                 }
 
@@ -39,7 +191,8 @@ def policyrun (Iwp_set,Ir_set,Ib_set,pacwp_set,pacr_set,pacb_set,years_set,direc
     	cmd1=cmd1+dirinputs+"policies.csv"
     	os.system(cmd1)
     	os.chdir(dirinputs)
-    	os.system("cp demographics_males_500000.csv demographics.csv")
+        demoM ="cp "+dirweb+"demographics_males_"+cohortsize+".csv demographics$
+        os.system(demoM)
     	os.chdir(dirsim)
 
     	runitM = "python policy_shg.py >> ../logM{0}.txt 2>> ../errorM{0}.txt".format(directory) ### NAME THESE AS THE SCENARIO
@@ -54,7 +207,8 @@ def policyrun (Iwp_set,Ir_set,Ib_set,pacwp_set,pacr_set,pacb_set,years_set,direc
     	cmd3=cmd3+dirinputs+"policies.csv"
     	os.system(cmd3)
     	os.chdir(dirinputs)
-    	os.system("cp demographics_females_500000.csv demographics.csv")
+        demoF ="cp "+dirweb+"demographics_females_"+cohortsize+".csv demographi$
+        os.system(demoF)
     	os.chdir(dirsim)
 
     	runitF = "python policy_shg.py >> ../logF{0}.txt 2>> ../errorF{0}.txt".format(directory)

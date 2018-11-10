@@ -5,6 +5,8 @@ from itertools import product
 import multiprocessing as mp
 import time
 
+cohortsize = 200000
+lastcohort = 2060
 dirweb = '/home/jamietam/web-interface-shg-policy/'# Directory contains age eff$
 dirresults = '/home/jamietam/taxes_results/'
 
@@ -82,7 +84,8 @@ def policyrun (initprice_set,tax_set,years_set,directory):
         cmd1=cmd1+dirinputs+"policies.csv"
         os.system(cmd1)
         os.chdir(dirinputs)
-        os.system("cp demographics_males_200000.csv demographics.csv")
+        demoM ="cp "+dirweb+"demographics_males_"+cohortsize+"_" +lastcohort+".csv demographics.csv"
+        os.system(demoM)
         os.chdir(dirsim)
 
         runitM = "python policy_shg.py >> ../logM{0}.txt 2>> ../errorM{0}.txt".format(directory) ### NAME THESE AS THE SCENARIO
@@ -97,7 +100,8 @@ def policyrun (initprice_set,tax_set,years_set,directory):
         cmd3=cmd3+dirinputs+"policies.csv"
         os.system(cmd3)
         os.chdir(dirinputs)
-        os.system("cp demographics_females_200000.csv demographics.csv")
+        demoF ="cp "+dirweb+"demographics_females_"+cohortsize+"_"+lastcohort+".csv demographics.csv"
+        os.system(demoF)
         os.chdir(dirsim)
 
         runitF = "python policy_shg.py >> ../logF{0}.txt 2>> ../errorF{0}.txt".format(directory)

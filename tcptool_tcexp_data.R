@@ -39,3 +39,18 @@ system(paste0("mv results_initexp*.csv ", mainDir,"US/tcexp/results"))
 
 ## NEXT STEP: Generate state-level files with state_files_tcexp.R
 
+## Run state-level functions
+
+source('state_files_tcexp.R')
+
+# LOOP THROUGH AND GENERATE STATE LEVEL FILES
+allstates <- c("AL","AK", "AZ", "AR", "CA", "CO","CT", "DE", "DC","FL", "GA","HI","ID","IL","IN","IA","KS","KY","LA","ME",
+"MD","MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI",
+"SC", "SD", "TN", "TX", "UT", "VT","VA", "WA","WV","WI", "WY" )
+
+for (i in c(1:length(allstates))){
+  createresultsfiles(allstates[i]) # generates the results file for the state specified using the createresultsfile$
+  createdeathsfiles(allstates[i]) # generates the deaths file for the state specified
+ createlygfiles(allstates[i]) # generates the lyg file for the state specified
+}
+

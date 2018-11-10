@@ -9,13 +9,6 @@ prevfiles = '/home/jamietam/airlaws_results/prevsSept2018/'
 mainDir <- "/home/jamietam/source_dataAug2018/"
 inputsDir <- "/home/jamietam/web-interface-shg-policy/"
 
-#Iwp_set =c(1)
-#Ir_set =c(1)
-#Ib_set =c(1)
-#pacwp_set = c(0.75)
-#pacr_set = c(0.75)
-#pacb_set = c(0.75)
-
 Iwp_set =c(0,1)
 Ir_set =c(0,1)
 Ib_set =c(0,1)
@@ -65,4 +58,20 @@ system(paste0("mv lyg_w*_r*_b*.csv ", mainDir,"US/airlaws/lyg"))
 system(paste0("mv results_w*_r*_b*.csv ", mainDir,"US/airlaws/results"))
 
 ## NEXT STEP: Generate state-level files with state_files_airlaws.R 
+
+## Run state-level functions
+
+source('state_files_airlaws.R')
+
+## LOOP THROUGH AND GENERATE STATE LEVEL FILES
+allstates <- c("AL","AK", "AZ", "AR", "CA", "CO","CT", "DE", "DC","FL", "GA","HI","ID","IL","IN","IA","KS","KY","LA","ME",
+"MD","MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI",
+"SC", "SD", "TN", "TX", "UT", "VT","VA", "WA","WV","WI", "WY" )
+
+for (i in c(1:length(allstates))){
+  createresultsfiles(allstates[i]) # generates the results file for the state specified using the createresultsfile$
+  createdeathsfiles(allstates[i]) # generates the deaths file for the state specified
+ createlygfiles(allstates[i]) # generates the lyg file for the state specified
+}
+
 

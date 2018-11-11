@@ -6,8 +6,14 @@ library(data.table)
 
 setwd("/home/jamietam/web-interface-shg-policy/")
 prevfiles = '/home/jamietam/tcexp_results/prevsSept2018/'
-mainDir <- "/home/jamietam/source_dataAug2018/"
+mainDir <- "/home/jamietam/source_dataNov2018/"
 inputsDir <- "/home/jamietam/web-interface-shg-policy/"
+
+startingyear = 2010
+endingyear = 2060 
+cohortsize = 500000
+enactpolicy = c(2016,2017,2018,2019,2020) # Select policy years to include in final file
+cohorts = c(1970,1980,1990,2000,2010)
 
 initexp <- c(0.00,0.10,0.20,0.30,0.40,0.50,0.60,0.70,0.80,0.90)
 finalexp <- c(0.00,0.10,0.20,0.30,0.40,0.50,0.60,0.70,0.80,0.90,1.00)
@@ -19,10 +25,6 @@ for (v1 in initexp) {
     final = as.numeric(v2)
 
     name = paste0('initexp',format(init,nsmall=2),'_policyexp',format(final,nsmall=2))
-    enactpolicy = c(2016,2017,2018,2019,2020) # Select policy years to include in final file
-    cohorts = c(1970,1980,1990,2000,2010)
-    startingyear = 2010
-    endingyear = 2060 
     source('make_results_lyg_deaths_files.R', echo=FALSE)
   }
 }

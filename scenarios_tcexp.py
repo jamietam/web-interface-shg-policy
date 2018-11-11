@@ -7,7 +7,9 @@ from itertools import product
 import multiprocessing as mp
 import time
 
-dirweb = '/home/jamietam/web-interface-shg-policy/'# Directory contains age effects files
+cohortsize = 50
+lastcohort = 2060
+dirweb = '/home/jamietam/web-interface-shg-policy/'
 dirresults = '/home/jamietam/tcexp_results/'
 
 scenarioDict = {'0':{'initexp':[0.00],
@@ -89,9 +91,7 @@ scenarioDict = {'0':{'initexp':[0.00],
 def policyrun (initexp_set,policyexp_set,years_set,directory):
     combos = product(initexp_set,policyexp_set,years_set)
     numscenarios = 0
-    combos_list=list(combos)
-    print "We have {} scenarios".format(len(combos_list))
-    for scen in combos_list:
+    for scen in list(combos):
 	dirsim = '/home/jamietam/shg-policy-module_parallel_{}/'.format(directory) # Directory contains 'policy_shg.py'
 	dirinputs = dirsim + 'inputs/' # Directory contains 'policies.csv' and 'demographics.csv'
     	# Create policy inputs file
@@ -101,10 +101,10 @@ def policyrun (initexp_set,policyexp_set,years_set,directory):
     	## Males
     	cmd1="mv inputstcexp_males_initexp%0.2f_policyexp%0.2f_%s.csv " % scen # move file to policy module inputs folder
     	cmd1=cmd1+dirinputs+"policies.csv"
-    	os.system(cmd1)
-    	os.chdir(dirinputs)
-    	os.system("cp demographics_males_200000.csv demographics.csv")
-    	os.chdir(dirsim)
+        os.system(cmd1)
+        demoM ="cp "+dirweb+"demographics_males_"+str(cohortsize)+"_" +str(lastcohort)+".csv "+dirinputs+"demographics.csv"
+        os.system(demoM)
+        os.chdir(dirsim)
 
     	runitM = "python policy_shg.py >> ../logM{0}.txt 2>> ../errorM{0}.txt".format(directory) ### NAME THESE AS THE SCENARIO
     	os.system(runitM) # run policy module
@@ -116,13 +116,14 @@ def policyrun (initexp_set,policyexp_set,years_set,directory):
     	os.chdir(dirweb)
     	cmd3="mv inputstcexp_females_initexp%0.2f_policyexp%0.2f_%s.csv " % scen
     	cmd3=cmd3+dirinputs+"policies.csv"
-    	os.system(cmd3)
-    	os.chdir(dirinputs)
-    	os.system("cp demographics_females_200000.csv demographics.csv")
-    	os.chdir(dirsim)
+        os.system(cmd3)
+        demoF ="cp "+dirweb+"demographics_females_"+str(cohortsize)+"_" +str(lastcohort)+".csv "+dirinputs+"demographics.csv"
+        os.system(demoF)
+        os.chdir(dirsim)
 
     	runitF = "python policy_shg.py >> ../logF{0}.txt 2>> ../errorF{0}.txt".format(directory)
     	os.system(runitF) # run policy module
+
 	cmd4="mv prevalences.csv "+dirresults+"prevalences_females_initexp%0.2f_policyexp%0.2f_%s.csv" % scen
     	os.system(cmd4)
 	numscenarios = numscenarios+1
@@ -136,6 +137,7 @@ if __name__ == '__main__':
     # cpus = mp.cpu_count()
     pool = mp.Pool(processes=18)
     for key, scenario in scenarioDict.items():
+## NEXT STEP: Generate TCP tool files at US-level with tcptool_airlaws_data.R
         directory = key
         print("ITERATION: "+ directory)
 
@@ -146,3 +148,6 @@ if __name__ == '__main__':
 
     pool.close() #closes the pool and prevents you from submitting any more jobs
     pool.join() # waits for all the jobs to finish before moving onto the next line of code
+
+## NEXT STEP: Generate TCP tool files at US-level with tcptool_tcexp_data.R
+

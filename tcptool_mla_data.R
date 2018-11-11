@@ -5,17 +5,19 @@ library(reshape)
 library(data.table)
 
 setwd("/home/jamietam/web-interface-shg-policy/")
-prevfiles = '/home/jamietam/mla_results/prevsJuly2017/'
-mainDir <- "/home/jamietam/source_data/"
+prevfiles = '/home/jamietam/mla_results/prevsNov2018/'
+mainDir <- "/home/jamietam/source_dataNov2018/"
 inputsDir <- "/home/jamietam/web-interface-shg-policy/"
 
-minages <- c(19)
-pac19_set <- c(0.00)
-pac21_set <- c(0.00)
+startingyear = 2010
+endingyear = 2100
+cohortsize = 500000
+enactpolicy = c(2016,2017,2018,2019,2020)
+cohorts = c(2000,2010,2020)
 
-# minages <- c(19,21,25)
-# pac19_set <- c(0.00, 0.25, 0.50, 0.75,1.00)
-# pac21_set <- c(0.00, 0.25, 0.50, 0.75,1.00)
+minages <- c(19,21,25)
+pac19_set <- c(0.00, 0.25, 0.50, 0.75,1.00)
+pac21_set <- c(0.00, 0.25, 0.50, 0.75,1.00)
 
 for (v1 in minages) {
   for (v2 in pac19_set) {
@@ -27,10 +29,6 @@ for (v1 in minages) {
       pac21 = as.numeric(v3) 
 
       name = paste0(format(mla_age),'_pac19_',format(pac19,nsmall=2),'_pac21_',format(pac21,nsmall=2))
-      enactpolicy = c(2016,2017,2018,2019,2020) # Select policy years to include in final file
-      cohorts = c(2000,2010,2020)
-      startingyear = 2010
-      endingyear = 2100
       source('make_results_lyg_deaths_files.R', echo=FALSE)
     }
   }

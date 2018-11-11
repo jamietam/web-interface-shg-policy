@@ -6,8 +6,14 @@ library(data.table)
 
 setwd("/home/jamietam/web-interface-shg-policy/")
 prevfiles = '/home/jamietam/taxes_results/prevsSept2018/'
-mainDir <- "/home/jamietam/source_dataAug2018/"
+mainDir <- "/home/jamietam/source_dataNov2018/"
 inputsDir <- "/home/jamietam/web-interface-shg-policy/"
+
+startingyear = 2010
+endingyear = 2060 
+cohortsize = 500000
+enactpolicy = c(2016,2017,2018,2019,2020) # Select policy years to include in final file
+cohorts = c(1970,1980,1990,2000,2010)
 
 initprices <- c(4.00,4.50,5.00,5.50,6.00,6.50,7.00,7.50,8.00,8.50,9.00,9.50,10.00,10.50)
 taxes <- c(0.00,1.00,1.50,2.00,2.50,3.00,3.50,4.00,4.50,5.00)
@@ -19,10 +25,6 @@ for (v1 in initprices) {
     tax = as.numeric(v2)
 
     name = paste0(format(initprice,nsmall=2),'_t',format(tax,nsmall=2))
-    enactpolicy = c(2016,2017,2018,2019,2020) # Select policy years to include in final file
-    cohorts = c(1970,1980,1990,2000,2010)
-    startingyear = 2010
-    endingyear = 2060 
     source('make_results_lyg_deaths_files.R', echo=FALSE)
   }
 }

@@ -6,8 +6,14 @@ library(data.table)
 
 setwd("/home/jamietam/web-interface-shg-policy/")
 prevfiles = '/home/jamietam/airlaws_results/prevsSept2018/'
-mainDir <- "/home/jamietam/source_dataAug2018/"
+mainDir <- "/home/jamietam/source_dataNov2018/"
 inputsDir <- "/home/jamietam/web-interface-shg-policy/"
+
+startingyear = 2010
+endingyear = 2060 
+cohortsize = 500000
+enactpolicy = c(2016,2017,2018,2019,2020) # Select policy years to include in final file
+cohorts = c(1970,1980,1990,2000,2010)
 
 Iwp_set =c(0,1)
 Ir_set =c(0,1)
@@ -35,10 +41,6 @@ for (v1 in Iwp_set) {
             pacb=as.numeric(args[6])   ### percentage already covered by bars clean air laws
 
             name = paste0('w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2))
-            enactpolicy = c(2016,2017,2018,2019,2020) # Select policy years to include in final file
-            cohorts = c(1970,1980,1990,2000,2010)
-            startingyear = 2010
-            endingyear = 2060 
             source('make_results_lyg_deaths_files.R', echo=FALSE)
           }  
         }

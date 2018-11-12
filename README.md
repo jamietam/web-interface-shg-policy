@@ -25,20 +25,26 @@ The code in this repository is currently set up to run policy scenarios in paral
   - `taxes`: raise the price of a pack of cigarettes via taxes (635 possible scenarios)
   - `tcexp`: increase the level of tobacco control program expenditures (280 possible scenarios)
   - `mla`: raise the minimum age of legal access to tobacco (225 possible scenarios)
-    
-<strong>2) Run the shg policy module for every scenario for your selected policy</strong>
-  - `airlaws`: run `python scenarios_airlaws.py` 
   
-<strong>3) Generate national and state-level results under every scenario</strong> 
-  - `airlaws`: run `Rscript tcptool_airlaws_data.R`
-    - smoking prevalence (`results_w1_r1_b1_pacw0.00_pacr0.00_pacb0.00.csv`)
-    - premature deaths avoided (`deaths_w1_r1_b1_pacw0.00_pacr0.00_pacb0.00.csv`)
-    - life-years gained (`lyg_w1_r1_b1_pacw0.00_pacr0.00_pacb0.00.csv`)
-  
-<strong>4) Repeat steps 1-3 for remaining tobacco control policies</strong>
-  - `taxes`: run `python scenarios_taxes.py`, `Rscript tcptool_taxes_data.R`
-  - `tcexp`: run `python scenarios_tcexp.py`, `Rscript tcptool_tcexp_data.R`
-  - `mla`: run `python scenarios_mla.py`, `Rscript tcptool_mla_data.R`
+<strong>2) Run the policy module</strong> `python policy_shg.py`
+  - change `cohortsize` to reflect number of individuals simulated per birth cohort (500000 or 50 for test runs)
+  - change `lastcohort` to reflect the final birth cohort of individuals to simulate (2060 or 2100)
+  - this step is the time-limiting step, so be sure your machine has sufficient cores to run all scenarios
+  - the `screen` command is helpful for avoiding interruptions to this command when you are away from the machine.
+
+<strong>3) Generate national and state-level results under every scenario</strong> `Rscript tcptool_airlaws_data.R`
+  - be sure that `prevfiles` point to the correct directory where your scenarios from step 2 were generated
+  - be sure that `mainDir` points to a new `source_data` directory where you want your final dataset to be located
+  - change `cohortsize` to reflect number of individuals simulated per birth cohort (500000 or 200000)
+  - smoking prevalence (results_w1_r1_b1_pacw0.00_pacr0.00_pacb0.00.csv)
+  - premature deaths avoided (deaths_w1_r1_b1_pacw0.00_pacr0.00_pacb0.00.csv)
+  - life-years gained (lyg_w1_r1_b1_pacw0.00_pacr0.00_pacb0.00.csv)
+
+<strong>4) Check for errors in the results files</strong> `Rscript check_files_for_errors.R`
+  - missing policy scenarios
+  - missing rows of data
+  - negative sum of deaths avoided across all cohorts
+  - ratio of deaths avoided between men and women is greater than 2
 
 <strong>5) Check for errors across the results files</strong> 
   - run `Rscript check_files_for_errors.R` to check results in the `source_data` directory for missing policy scenarios, missing rows of data, negative sum of deaths avoided across all cohorts, and whether the ratio of deaths avoided between men and women is greater than 2
@@ -69,3 +75,4 @@ The code in this repository is currently set up to run policy scenarios in paral
     - percent of population already covered by MLA 19? 0%, 25%, 50%, 75%, or 100%
     - percent of population already covered by MLA 21? 0%, 25%, 50%, 75%, or 100%
     - percent of population already covered by MLA 21? 0%, 25%, 50%, 75%, or 100%
+

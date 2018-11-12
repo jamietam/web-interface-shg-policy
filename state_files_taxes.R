@@ -8,10 +8,11 @@ createresultsfiles <- function(stateabbrev){
   setwd(file.path(mainDir))
   for (v1 in initprices) {
     for (v2 in taxes) {
-      args <- c(v1, v2)
+      if (v1>4.00 & v2==0) next # only run baseline scenario once
+
       # Specify tax policy parameters
-      initprice = as.numeric(args[1]) # initial price per pack
-      tax = as.numeric(args[2]) # federal tax increase
+      initprice = as.numeric(v1) # initial price per pack
+      tax = as.numeric(v2) # federal tax increase
       
       # Read in data
       data <- read.csv(paste0(inputsDir,'prevalence2015.csv'),check.names=FALSE,row.names=1)
@@ -145,11 +146,12 @@ createdeathsfiles <- function(stateabbrev){
   setwd(file.path(mainDir))
   for (v1 in initprices) {
     for (v2 in taxes) {
-      args <- c(v1, v2)
+      if (v1>4.00 & v2==0) next # only run baseline scenario once
+
       # Specify tax policy parameters
-      initprice = as.numeric(args[1]) # initial price per pack
-      tax = as.numeric(args[2]) # federal tax increase
-      
+      initprice = as.numeric(v1) # initial price per pack
+      tax = as.numeric(v2) # federal tax increase
+
       # Read in data
       data <- read.csv(paste0(inputsDir,'popsizes.csv'),check.names=FALSE,row.names=1)
       state <- read.csv(paste0(mainDir,'US/taxes/deaths/deaths_',format(initprice,nsmall=2),'_t',format(tax,nsmall=2),'.csv'),check.names=FALSE,sep=",")
@@ -176,10 +178,11 @@ createlygfiles <- function(stateabbrev){
   setwd(file.path(mainDir))
   for (v1 in initprices) {
     for (v2 in taxes) {
-      args <- c(v1, v2)
+      if (v1>4.00 & v2==0) next # only run baseline scenario once
+
       # Specify tax policy parameters
-      initprice = as.numeric(args[1]) # initial price per pack
-      tax = as.numeric(args[2]) # federal tax increase
+      initprice = as.numeric(v1) # initial price per pack
+      tax = as.numeric(v2) # federal tax increase
 
       # Read in data
       data <- read.csv(paste0(inputsDir,'popsizes.csv'),row.names=1,check.names=FALSE)

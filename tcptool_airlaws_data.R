@@ -6,15 +6,14 @@ library(data.table)
 
 setwd("/home/jamietam/web-interface-shg-policy/")
 prevfiles = '/home/jamietam/airlaws_results/prevsSept2018/'
-mainDir <- "/home/jamietam/source_dataAug2018/"
+mainDir <- "/home/jamietam/source_dataNov2018/"
 inputsDir <- "/home/jamietam/web-interface-shg-policy/"
 
-#Iwp_set =c(1)
-#Ir_set =c(1)
-#Ib_set =c(1)
-#pacwp_set = c(0.75)
-#pacr_set = c(0.75)
-#pacb_set = c(0.75)
+startingyear = 2010
+endingyear = 2060 
+cohortsize = 500000
+enactpolicy = c(2016,2017,2018,2019,2020) # Select policy years to include in final file
+cohorts = c(1970,1980,1990,2000,2010)
 
 Iwp_set =c(0,1)
 Ir_set =c(0,1)
@@ -42,10 +41,6 @@ for (v1 in Iwp_set) {
             pacb=as.numeric(args[6])   ### percentage already covered by bars clean air laws
 
             name = paste0('w',Iwp,'_r',Ir,'_b',Ib,'_w',format(pacwp,nsmall=2),'_r',format(pacr,nsmall=2), '_b',format(pacb,nsmall=2))
-            enactpolicy = c(2016,2017,2018,2019,2020) # Select policy years to include in final file
-            cohorts = c(1970,1980,1990,2000,2010)
-            startingyear = 2010
-            endingyear = 2060 
             source('make_results_lyg_deaths_files.R', echo=FALSE)
           }  
         }
@@ -65,4 +60,20 @@ system(paste0("mv lyg_w*_r*_b*.csv ", mainDir,"US/airlaws/lyg"))
 system(paste0("mv results_w*_r*_b*.csv ", mainDir,"US/airlaws/results"))
 
 ## NEXT STEP: Generate state-level files with state_files_airlaws.R 
+
+## Run state-level functions
+
+source('state_files_airlaws.R')
+
+## LOOP THROUGH AND GENERATE STATE LEVEL FILES
+allstates <- c("AL","AK", "AZ", "AR", "CA", "CO","CT", "DE", "DC","FL", "GA","HI","ID","IL","IN","IA","KS","KY","LA","ME",
+"MD","MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI",
+"SC", "SD", "TN", "TX", "UT", "VT","VA", "WA","WV","WI", "WY" )
+
+for (i in c(1:length(allstates))){
+  createresultsfiles(allstates[i]) # generates the results file for the state specified using the createresultsfile$
+  createdeathsfiles(allstates[i]) # generates the deaths file for the state specified
+ createlygfiles(allstates[i]) # generates the lyg file for the state specified
+}
+
 

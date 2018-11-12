@@ -5,7 +5,9 @@ from itertools import product
 import multiprocessing as mp
 import time
 
-dirweb = '/home/jamietam/web-interface-shg-policy/'# Directory contains age eff$
+cohortsize = 50
+lastcohort = 2060
+dirweb = '/home/jamietam/web-interface-shg-policy/'
 dirresults = '/home/jamietam/mla_results/'
 
 scenarioDict = {'0':{'mla_age':[19],
@@ -100,8 +102,8 @@ def policyrun (mla_age_set,pac19_set,pac21_set,years_set,directory):
         cmd1="mv inputsmla_males_%s_pac19_%0.2f_pac21_%0.2f_%s.csv " % scen
         cmd1=cmd1+dirinputs+"policies.csv"
         os.system(cmd1)
-        os.chdir(dirinputs)
-        os.system("cp demographics_males_200000_2100.csv demographics.csv")
+        demoM ="cp "+dirweb+"demographics_males_"+str(cohortsize)+"_" +str(lastcohort)+".csv "+dirinputs+"demographics.csv"
+        os.system(demoM)
         os.chdir(dirsim)
 
         runitM = "python policy_shg.py >> ../logM{0}.txt 2>> ../errorM{0}.txt".format(directory) ### NAME THESE AS THE SCENARIO
@@ -115,12 +117,13 @@ def policyrun (mla_age_set,pac19_set,pac21_set,years_set,directory):
         cmd3="mv inputsmla_females_%s_pac19_%0.2f_pac21_%0.2f_%s.csv " % scen
         cmd3=cmd3+dirinputs+"policies.csv"
         os.system(cmd3)
-        os.chdir(dirinputs)
-        os.system("cp demographics_females_200000_2100.csv demographics.csv")
+        demoF ="cp "+dirweb+"demographics_females_"+str(cohortsize)+"_" +str(lastcohort)+".csv "+dirinputs+"demographics.csv"
+        os.system(demoF)
         os.chdir(dirsim)
 
         runitF = "python policy_shg.py >> ../logF{0}.txt 2>> ../errorF{0}.txt".format(directory)
         os.system(runitF) # run policy module
+
         cmd4="mv prevalences.csv "+dirresults+"prevalences_females_%s_pac19_%0.2f_pac21_%0.2f_%s.csv" % scen
         os.system(cmd4)
         numscenarios = numscenarios+1
@@ -143,4 +146,6 @@ if __name__ == '__main__':
 
     pool.close() #closes the pool and prevents you from submitting any more jobs
     pool.join() # waits for all the jobs to finish before moving onto the next line of code
+
+## NEXT STEP: Generate TCP tool files at US-level with tcptool_mla_data.R
 

@@ -102,7 +102,7 @@ def policyrun (mla_age_set,pac19_set,pac21_set,years_set,directory):
         cmd1="mv inputsmla_males_%s_pac19_%0.2f_pac21_%0.2f_%s.csv " % scen
         cmd1=cmd1+dirinputs+"policies.csv"
         os.system(cmd1)
-        demoM ="cp "+dirweb+"demographics_males_"+str(cohortsize)+"_" +str(lastcohort)+".csv "+dirinputs+"demographics.csv"
+        demoM ="cp "+dirweb+"demographics/demographics_males_"+str(cohortsize)+"_" +str(lastcohort)+".csv "+dirinputs+"demographics.csv"
         os.system(demoM)
         os.chdir(dirsim)
 
@@ -117,7 +117,7 @@ def policyrun (mla_age_set,pac19_set,pac21_set,years_set,directory):
         cmd3="mv inputsmla_females_%s_pac19_%0.2f_pac21_%0.2f_%s.csv " % scen
         cmd3=cmd3+dirinputs+"policies.csv"
         os.system(cmd3)
-        demoF ="cp "+dirweb+"demographics_females_"+str(cohortsize)+"_" +str(lastcohort)+".csv "+dirinputs+"demographics.csv"
+        demoF ="cp "+dirweb+"demographics/demographics_females_"+str(cohortsize)+"_" +str(lastcohort)+".csv "+dirinputs+"demographics.csv"
         os.system(demoF)
         os.chdir(dirsim)
 

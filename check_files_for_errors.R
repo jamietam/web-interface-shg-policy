@@ -4,7 +4,7 @@
 ## 3) whether the sum of deaths avoided for all cohorts is negative under 2016 policy scenarios
 ## 4) whether the ratio of deaths avoided between men and women is greater than 2
 
-where =  paste0("/home/jamietam/source_dataAug2018/US")
+where =  paste0("/home/jamietam/source_dataNov2018/US")
 setwd(where)
 
 print("AIRLAWS CHECK")
@@ -112,7 +112,6 @@ for (v1 in initexp) {
   for (v2 in finalexp) {
      if(v1>=v2) next
      name = paste0('initexp',format(v1,nsmall=2),'_policyexp',format(v2,nsmall=2))
-     print(name)
 
      dtest <- read.csv(paste0(where,'/tcexp/deaths/deaths_',name,'.csv'))
      ltest <- read.csv(paste0(where,'/tcexp/lyg/lyg_',name,'.csv'))
@@ -127,17 +126,11 @@ for (v1 in initexp) {
      if (sum(as.numeric(dtest[,'deaths_avoided_females']))<0 | sum(as.numeric(dtest[,'deaths_avoided_males']))<0){
        print(paste0(name," NEGATIVE TOTAL DEATHS"))
      }
-     if (v1>=0.00) {
-     print(paste0("females:",as.numeric(dtest[51,'deaths_avoided_females']),"|males:",as.numeric(dtest[51,'deaths_avoided_males'])))
+     if ((2*sum(as.numeric(dtest[,'deaths_avoided_females'])))< sum(dtest[,'deaths_avoided_males'])){
+       print(paste0(name, " DEATH RATIO > 2"))
      }
   }
 }
-
-  # if ((2*sum(as.numeric(dtest[,'deaths_avoided_females'])))< sum(dtest[,'deaths_avoided_males'])){
-    # print(paste0(name, " DEATH RATIO > 2"))
-       print(paste0("females:",sum(as.numeric(dtest[,'deaths_avoided_females'])),"|males:",sum(as.numeric(dtest[,'deaths_avoided_males'])))
-    # }
-
 
 print("MLA CHECK")
 

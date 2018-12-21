@@ -2,16 +2,17 @@
 # CREATE CSV FILES FOR SHG POLICY MODULE WEB INTERFACE --------------------
 #  ------------------------------------------------------------------------
 library(reshape)
+library(reshape2)
 library(data.table)
 
-setwd("/home/jamietam/web-interface-shg-policy/")
-prevfiles = '/home/jamietam/airlaws_results/prevsSept2018/'
-mainDir <- "/home/jamietam/source_dataNov2018/"
-inputsDir <- "/home/jamietam/web-interface-shg-policy/"
+setwd("/home/jhjeon/web-interface-shg-policy/")
+prevfiles = '/home/jhjeon/airlaws_results/'
+mainDir <- "/home/jhjeon/source_dataDec2018/"
+inputsDir <- "/home/jhjeon/web-interface-shg-policy/"
 
 startingyear = 2010
 endingyear = 2060 
-cohortsize = 500000
+cohortsize = 50
 enactpolicy = c(2016,2017,2018,2019,2020) # Select policy years to include in final file
 cohorts = c(1970,1980,1990,2000,2010)
 
@@ -63,6 +64,7 @@ system(paste0("mv results_w*_r*_b*.csv ", mainDir,"US/airlaws/results"))
 
 ## Run state-level functions
 
+setwd("/home/jhjeon/web-interface-shg-policy/")
 source('state_files_airlaws.R')
 
 ## LOOP THROUGH AND GENERATE STATE LEVEL FILES
@@ -75,5 +77,6 @@ for (i in c(1:length(allstates))){
   createdeathsfiles(allstates[i]) # generates the deaths file for the state specified
  createlygfiles(allstates[i]) # generates the lyg file for the state specified
 }
+
 
 

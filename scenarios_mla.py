@@ -17,7 +17,7 @@ dirsim_base=this_dir+'/dirsim_'
 policy_script_py=os.path.join(this_dir,'policy_shg.py')
 
 create_mla_params_rscript='Rscript ' + this_dir + '/create_mla_params_file.R'
-csv_inputs_dir=this_dir + '/csv_inputs'
+csv_inputs_dir=this_dir + '/demographics'
 
 scenarioDicts= [    
                     {'mla_age':[19],                         

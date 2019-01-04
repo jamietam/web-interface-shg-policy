@@ -19,82 +19,83 @@ policy_script_py=os.path.join(this_dir,'policy_shg.py')
 create_mla_params_rscript='Rscript ' + this_dir + '/create_mla_params_file.R'
 csv_inputs_dir=this_dir + '/csv_inputs'
 
-scenarioDict = {'0':{'mla_age':[19],                         
+scenarioDicts= [    
+                    {'mla_age':[19],                         
                       'pac19':[0.00,0.25,0.50,0.75,1.00],    
                       'pac21':[0.00],                        
                       'years':[2016,2017,2018,2019,2020]     
                       },                                     
-               '1':{'mla_age':[19],                          
+                   {'mla_age':[19],                          
                       'pac19':[0.00,0.25,0.50,0.75],         
                       'pac21':[0.25],                        
                       'years':[2016,2017,2018,2019,2020]     
                       },                                     
-               '2':{'mla_age':[19],                          
+                   {'mla_age':[19],                          
                       'pac19':[0.00,0.25,0.50],              
                       'pac21':[0.50],                        
                       'years':[2016,2017,2018,2019,2020]     
                       },                                     
-               '3':{'mla_age':[19],                          
+                   {'mla_age':[19],                          
                       'pac19':[0.00,0.25],                   
                       'pac21':[0.75],                        
                       'years':[2016,2017,2018,2019,2020]     
                       },                                     
-               '4':{'mla_age':[19],                          
+                   {'mla_age':[19],                          
                       'pac19':[0.00],                        
                       'pac21':[1.00],                        
                       'years':[2016,2017,2018,2019,2020]     
                       },                                     
-                '5':{'mla_age':[21],                         
+                    {'mla_age':[21],                         
                       'pac19':[0.00,0.25,0.50,0.75,1.00],    
                       'pac21':[0.00],                        
                       'years':[2016,2017,2018,2019,2020]     
                       },                                     
-               '6':{'mla_age':[21],                          
+                   {'mla_age':[21],                          
                       'pac19':[0.00,0.25,0.50,0.75],         
                       'pac21':[0.25],                        
                       'years':[2016,2017,2018,2019,2020]     
                       },                                     
-               '7':{'mla_age':[21],                          
+                   {'mla_age':[21],                          
                       'pac19':[0.00,0.25,0.50],              
                       'pac21':[0.50],                        
                       'years':[2016,2017,2018,2019,2020]     
                       },                                     
-               '8':{'mla_age':[21],                          
+                   {'mla_age':[21],                          
                       'pac19':[0.00,0.25],                   
                       'pac21':[0.75],                        
                       'years':[2016,2017,2018,2019,2020]     
                       },                                     
-               '9':{'mla_age':[21],                          
+                   {'mla_age':[21],                          
                       'pac19':[0.00],                        
                       'pac21':[1.00],                        
                       'years':[2016,2017,2018,2019,2020]     
                       },                                     
-                '10':{'mla_age':[25],                        
+                     {'mla_age':[25],                        
                       'pac19':[0.00,0.25,0.50,0.75,1.00],    
                       'pac21':[0.00],                        
                       'years':[2016,2017,2018,2019,2020]     
                       },                                     
-               '11':{'mla_age':[25],                         
+                    {'mla_age':[25],                         
                       'pac19':[0.00,0.25,0.50,0.75],         
                       'pac21':[0.25],                        
                       'years':[2016,2017,2018,2019,2020]     
                       },                                     
-               '12':{'mla_age':[25],                         
+                    {'mla_age':[25],                         
                       'pac19':[0.00,0.25,0.50],              
                       'pac21':[0.50],                        
                       'years':[2016,2017,2018,2019,2020]     
                       },                                     
-               '13':{'mla_age':[25],                         
+                    {'mla_age':[25],                         
                       'pac19':[0.00,0.25],                   
                       'pac21':[0.75],                        
                       'years':[2016,2017,2018,2019,2020]     
                       },                                     
-               '14':{'mla_age':[25],                         
+                    {'mla_age':[25],                         
                       'pac19':[0.00],                        
                       'pac21':[1.00],                        
                       'years':[2016,2017,2018,2019,2020]     
-                      }                                         
-}                                                            
+                      },
+]                                                            
 
 def run_system(cmd):
     """Run a command `cmd` via system(), raise exception if the return code is not zero"""
@@ -163,8 +164,8 @@ if __name__ == '__main__':
     if (do_parallel):
         pool = mp.Pool(processes=15) # (FIXME: make it an input argument)
     
-    for key, scenario in scenarioDict.items():
-        directory = key
+    for key, scenario in enumerate(scenarioDicts):
+        directory = str(key)
         print("ITERATION: "+ directory)
         
         mla_age_set = scenario['mla_age']

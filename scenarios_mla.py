@@ -158,11 +158,13 @@ def policyrun (mla_age_set,pac19_set,pac21_set,years_set,directory):
 # cpus = mp.cpu_count()
 
 if __name__ == '__main__':
-    do_parallel=False # Set to True to run in parallel (FIXME: make it an input argument)
-
+    ncpus=0  # set to >0 to run in parallel # (FIXME: make it an input argument)
+    # e.g.:
+    # ncpus=15
+    
     pool=None 
-    if (do_parallel):
-        pool = mp.Pool(processes=15) # (FIXME: make it an input argument)
+    if ncpus>0:
+        pool = mp.Pool(processes=ncpus) 
     
     for key, scenario in enumerate(scenarioDicts):
         directory = str(key)

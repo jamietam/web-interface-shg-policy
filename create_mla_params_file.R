@@ -78,10 +78,11 @@ for (y in 1:length(sexes)){
   
   filehead='init_modifier; cess_modifier; init_decay_rate; cess_decay_rate; init_age_modifier; cess_age_modifier; init_age_lower_limit; init_age_upper_limit; cess_age_lower_limit; cess_age_upper_limit; init_policy_deploy_year; cess_policy_deploy_year'
   policyscenario=paste(initmod,'; ',cessmod,'; ',inidecayrate,'; ',cessdecayrate,'; ',initagemod,'; ',cessagemod,'; ',initagelower,'; ',initageupper,'; ',cessagelower,'; ',cessageupper,'; ',initdeploy,'; ',cessdeploy,sep="")
-  
-  write.table(filehead,paste0('inputsmla_',(sexes[y]),'_',format(args[1]),'_pac19_',format(pac19,nsmall=2),'_pac21_',format(pac21,nsmall=2),'_',year,'.csv'),col.names=FALSE,row.names=FALSE,quote=FALSE,eol='\n',)
-  write.table(policyscenario,paste0('inputsmla_',(sexes[y]),'_',format(args[1]),'_pac19_',format(pac19,nsmall=2),'_pac21_',format(pac21,nsmall=2),'_',year,'.csv'),col.names=FALSE,row.names=FALSE,quote=FALSE,eol='',append='TRUE')
-  
-  print(paste0('inputsmla_',(sexes[y]),'_',format(args[1]),'_pac19_',format(pac19,nsmall=2),'_pac21_',format(pac21,nsmall=2),'_',year,'.csv',' has been created.')) 
+
+  filename=paste0('inputsmla_',(sexes[y]),'_',format(args[1]),'_pac19_',format(pac19,nsmall=2),'_pac21_',format(pac21,nsmall=2),'_',year,'.csv')
+  write.table(filehead,filename,col.names=FALSE,row.names=FALSE,quote=FALSE,eol='\n',)
+  write.table(policyscenario,filename,col.names=FALSE,row.names=FALSE,quote=FALSE,eol='',append='TRUE')
+
+  print(paste0(filename,' has been created.'))
 
 }

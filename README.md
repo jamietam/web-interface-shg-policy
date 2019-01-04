@@ -1,3 +1,47 @@
+## This branch (python3) is work in progress
+
+So far, only `scenarios_mla.py` is tested. Recommended actions to run:
+
+1. Obtain `web-interface-shg-policy` directory tree (this project); for example:
+   ```sh
+   $ git clone git@github.com:jamietam/web-interface-shg-policy.git
+   ```
+2. Obtain the `shg-policy-module` directory tree; for example:
+   ```sh
+   $ git clone git@github.com:CSNW/shg-policy-module.git
+   ```
+3. Make a directory to run the simulation in, and change your working directory to it:
+   ```sh
+   $ mkdir my_test_run
+   $ cd my_test_run
+   ```
+4. Create symlinks to the directories containing the input data:
+   ```sh
+   $ ln -s ../shg-policy-module/policy_shg.py .
+   $ ln -s ../shg-policy-module/templates .
+   $ ln -s ../shg-policy-module/executables .
+   $ ln -s ../web-interface-shg-policy/demographics .
+   $ ln -s ../web-interface-shg-policy/create_mla_params_file.R .
+   ```
+5. Run the `scenarios_mla.py` python script:
+   ```sh
+   $ ../web-interface-shg-policy/scenarios_mla.py
+   ```
+
+This will run all MLA (Minimal Legal Age of access) scenarios encoded
+in the beginning of the `scenarios_mla.py` script. To change the
+scenarios, adjust the global list `scenarioDicts` in the script
+accordingly.
+
+To make the script to utilize multiple processors, set `ncpus`
+variable (in the `__main__` section of the script, near line #160) to
+the number of parallel processes you'd like to start. The default
+setting of `0` does not utilize parallel capability. **WARNING:** This
+feature is not well-tested.
+
+
+# The original `README` file follows:
+
 ## The Tobacco Control Policy (TCP) tool
 - This repository is used to run the Smoking History Generator (SHG) Policy Module and generate results for the [TCP tool](http://www.tobaccopolicyeffects.org)
 - The TCP tool is a web-based user interface for a tobacco policy microsimulation model developed by the [Cancer Intervention and Surveillance Modeling Network (CISNET)](http://cisnet.cancer.gov) Lung consortium. 

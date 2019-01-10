@@ -132,7 +132,7 @@ def policyrun (mla_age_set,pac19_set,pac21_set,years_set,directory=None):
 
         os.chdir(dirsim)
 
-        runitM = policy_script_py +" >> logM.txt 2>> errorM.txt"
+        runitM = policy_script_py +" >>logM.txt 2>>errorM.txt"
         ## DEBUG
         #runitM = 'python3 -m pdb '+policy_script_py
 
@@ -152,7 +152,7 @@ def policyrun (mla_age_set,pac19_set,pac21_set,years_set,directory=None):
         run_system("cp {}/demographics_females_{}_{}.csv demographics.csv".format(csv_inputs_dir,cohortsize,lastcohort))
         os.chdir(dirsim)
         
-        runitF = policy_script_py + " >> logF.txt 2>> ../errorF.txt"
+        runitF = policy_script_py + " >>logF.txt 2>>errorF.txt"
         run_system(runitF) # run policy module
         cmd4="mv prevalences.csv "+dirresults+"prevalences_females_%s_pac19_%0.2f_pac21_%0.2f_%s.csv" % scen
         run_system(cmd4)

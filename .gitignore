@@ -41,3 +41,10 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# Backup files on Linux
+*~
+
+# Python compiled/cache files
+__pycache__/
+*.pyc

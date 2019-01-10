@@ -5,6 +5,7 @@ import sys
 from itertools import product
 import multiprocessing as mp
 import time
+import tempfile
 
 cohortsize = 50
 lastcohort = 2060
@@ -12,7 +13,8 @@ lastcohort = 2060
 this_dir=os.getcwd()
 dirweb = this_dir+'/inputdir'
 dirresults = this_dir+'/results'
-dirsim_base=this_dir+'/dirsim_'
+dirsim_base=this_dir
+dirsim_prefix="dirsim_"
 # policy_script_py="/usr/bin/time -a -o "+os.path.join(this_dir,"policy_script.py.timing")+" "+os.path.join(this_dir,'policy_shg.py')
 policy_script_py=os.path.join(this_dir,'policy_shg.py')
 
@@ -104,16 +106,21 @@ def run_system(cmd):
         raise RuntimeError("Command '{}' terminated with return code {}".format(cmd,rc))
     return rc
 
-def policyrun (mla_age_set,pac19_set,pac21_set,years_set,directory): 
+def policyrun (mla_age_set,pac19_set,pac21_set,years_set,directory=None): 
     combos = product(mla_age_set, pac19_set, pac21_set, years_set)
     numscenarios = 0
     combos_list = list(combos)
-    print("DEBUG: We have {} scenarios".format(len(combos_list)))
-    for scen in combos_list:
-        dirsim = dirsim_base+directory+'/'
-        dirinputs = dirsim + 'inputs'
 
-        run_system("mkdir -pv "+dirinputs)
+    if directory is None:
+        dirsim=tempfile.mkdtemp(prefix=dirsim_prefix, dir=dirsim_base)
+    else:
+        dirsim = os.path.join(dirsim_base,dirsim_prefix+directory)
+    print("DEBUG: We have {} scenarios in directory {}".format(len(combos_list), dirsim),
+          file=sys.stderr)
+    dirinputs = os.path.join(dirsim,'inputs')
+    run_system("mkdir -pv "+dirinputs)
+    
+    for scen in combos_list:
         os.chdir(dirinputs)
 
         run_system(create_mla_params_rscript + ' %s %0.2f %0.2f %s' % scen)
@@ -125,7 +132,7 @@ def policyrun (mla_age_set,pac19_set,pac21_set,years_set,directory):
 
         os.chdir(dirsim)
 
-        runitM = policy_script_py +" >> ../logM{0}.txt 2>> ../errorM{0}.txt".format(directory)
+        runitM = policy_script_py +" >> logM.txt 2>> errorM.txt"
         ## DEBUG
         #runitM = 'python3 -m pdb '+policy_script_py
 
@@ -145,14 +152,14 @@ def policyrun (mla_age_set,pac19_set,pac21_set,years_set,directory):
         run_system("cp {}/demographics_females_{}_{}.csv demographics.csv".format(csv_inputs_dir,cohortsize,lastcohort))
         os.chdir(dirsim)
         
-        runitF = policy_script_py + " >> ../logF{0}.txt 2>> ../errorF{0}.txt".format(directory)
+        runitF = policy_script_py + " >> logF.txt 2>> ../errorF.txt"
         run_system(runitF) # run policy module
         cmd4="mv prevalences.csv "+dirresults+"prevalences_females_%s_pac19_%0.2f_pac21_%0.2f_%s.csv" % scen
         run_system(cmd4)
         numscenarios = numscenarios+1
     
-    print("directory " + str(directory)+" = " + str(numscenarios)+ " scenarios")
-    print("Done with all combos={}".format(directory), file=sys.stderr)
+    print("DEBUG: Done with {} scenarios in directory {}".format(numscenarios, dirsim),
+          file=sys.stderr)
     #print(scen)
 
 # cpus = mp.cpu_count()

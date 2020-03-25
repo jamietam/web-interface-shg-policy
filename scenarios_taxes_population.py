@@ -6,8 +6,13 @@ import multiprocessing as mp
 import time
 
 
-dirweb = '/Users/rafaelmeza/Documents/web-interface-shg-policy'
-dirresults = '/Users/rafaelmeza/Documents/taxes_results/'
+#dirweb = '/Users/rafaelmeza/Documents/web-interface-shg-policy'
+#dirresults = '/Users/rafaelmeza/Documents/taxes_results/'
+
+dirs=open('Directories', 'r').readlines()
+dirweb=dirs[1].strip().split('=')[1]  # web interface directory
+dirresults = dirs[3].strip().split('=')[1]  # taxes results directory
+dirtcp=dirs[0].strip().split('=')[1]  ## tcp tool directory
 
 scenarioDict = {'0':{'initprice':[4.00],
                       'tax':[0.00,1.00,1.50,2.00,2.50,3.00,3.50,4.00,4.50,5.00],
@@ -73,7 +78,7 @@ def policyrun (initprice_set,tax_set,years_set,directory):
     numscenarios = 0
     for scen in list(combos):
 #        dirsim = '/home/jamietam/shg-policy-module_parallel_{}/'.format(directory) # Directory contains 'policy_shg.py'
-        dirsim ='/Users/rafaelmeza/Documents/shg-policy-module/'# Directory contains 'policy_shg.py'
+        dirsim =dirtcp# Directory contains 'policy_shg.py'
         dirinputs = dirsim + 'inputs/' # Directory contains 'policies.csv' and 'demographics.csv'
         # Create policy inputs file
         os.chdir(dirweb)

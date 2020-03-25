@@ -7,11 +7,14 @@ rm(list = ls())
 library(reshape)
 library(data.table)
 
+#DIR='/Users/rafaelmeza/Documents/web-interface-shg-policy/'
+dirs <- read.table(paste0(DIR,"Directories"), sep="=",stringsAsFactors=FALSE)
+webdir=dirs[dirs$V1=='dirwebinterface',2]
+prevfiles = dirs[dirs$V1=='dirresultstcexp',2]
+mainDir <- dirs[dirs$V1=='diroutputfiles',2]
 
-setwd("~/Documents/web-interface-shg-policy/")
-prevfiles = '~/Documents/tcexp_results/'
-mainDir <- "~/Documents/PopulationModelFiles/"
-inputsDir <- "~/Documents/web-interface-shg-policy/"
+setwd(webdir)
+inputsDir <- webdir
 
 startingyear = 2010
 endingyear = 2060 
@@ -47,7 +50,7 @@ system(paste0("mv results_initexp*.csv ", mainDir,"US/tcexp/results"))
 
 ## Run state-level functions
 
-setwd("~/Documents/web-interface-shg-policy/")
+setwd(webdir)
 source('state_files_tcexp.R')
 
 # LOOP THROUGH AND GENERATE STATE LEVEL FILES

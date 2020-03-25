@@ -8,10 +8,14 @@ library(reshape)
 library(reshape2)
 library(data.table)
 
-setwd("~/Documents/web-interface-shg-policy/")
-prevfiles = '~/Documents/airlaws_results/'
-mainDir <- "~/Documents/PopulationModelFiles/"
-inputsDir <- "~/Documents/web-interface-shg-policy/"
+#DIR='/Users/rafaelmeza/Documents/web-interface-shg-policy/'
+dirs <- read.table(paste0(DIR,"Directories"), sep="=",stringsAsFactors=FALSE)
+webdir=dirs[dirs$V1=='dirwebinterface',2]
+prevfiles = dirs[dirs$V1=='dirresultsair',2]
+mainDir <- dirs[dirs$V1=='diroutputfiles',2]
+
+setwd(webdir)
+inputsDir <- webdir
 
 startingyear = 2010
 endingyear = 2060 
@@ -67,7 +71,7 @@ system(paste0("mv results_w*_r*_b*.csv ", mainDir,"US/airlaws/results"))
 
 ## Run state-level functions
 
-setwd("~/Documents/web-interface-shg-policy/")
+setwd(webdir)
 source('state_files_airlaws.R')
 
 ## LOOP THROUGH AND GENERATE STATE LEVEL FILES

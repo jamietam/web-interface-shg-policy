@@ -5,8 +5,13 @@ from itertools import product
 import multiprocessing as mp
 import time
 
-dirweb = '/Users/rafaelmeza/Documents/web-interface-shg-policy'
-dirresults = '/Users/rafaelmeza/Documents/airlaws_results/'
+#dirweb = '/Users/rafaelmeza/Documents/web-interface-shg-policy'
+#dirresults = '/Users/rafaelmeza/Documents/airlaws_results/'
+
+dirs=open('Directories', 'r').readlines()
+dirweb=dirs[1].strip().split('=')[1]  # web interface directory
+dirresults = dirs[4].strip().split('=')[1]  # airlaws results directory
+dirtcp=dirs[0].strip().split('=')[1]  ## tcp tool directory
 
 scenarioDict = {'0':{'Iwp':[0,1],
                       'Ir':[0,1],
@@ -25,7 +30,7 @@ def policyrun (Iwp_set,Ir_set,Ib_set,pacwp_set,pacr_set,pacb_set,years_set,direc
     numscenarios = 0
     for scen in list(combos):
 #	dirsim = '/home/jamietam/shg-policy-module_parallel_{}/'.format(directory) # Directory contains 'policy_shg.py'
-      dirsim ='/Users/rafaelmeza/Documents/shg-policy-module/'# Directory contains 'policy_shg.py'
+      dirsim =dirtcp# Directory contains 'policy_shg.py'
       dirinputs = dirsim + 'inputs/' # Directory contains 'policies.csv' and 'demographics.csv'
 
     	# Create policy inputs file

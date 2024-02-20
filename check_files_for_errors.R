@@ -4,7 +4,7 @@
 ## 3) whether the sum of deaths avoided for all cohorts is negative under 2016 policy scenarios
 ## 4) whether the ratio of deaths avoided between men and women is greater than 2
 
-where =  paste0("/home/jamietam/source_dataNov2018/US")
+where =  paste0("~/Documents/PopulationModelFiles/CA")
 setwd(where)
 
 print("AIRLAWS CHECK")

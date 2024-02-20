@@ -17,62 +17,39 @@ createresultsfiles <- function(stateabbrev){
         pac21 = as.numeric(args[3]) # federal tax increase
         
         # Read in data
-        data <- read.csv(paste0(inputsDir,'prevalence2015.csv'),check.names=FALSE,row.names=1)
+        data <- read.csv(paste0(inputsDir,'prevalence2018.csv'),check.names=FALSE,row.names=1)
         state <- read.csv(paste0(mainDir,'US/mla/results/results_',format(mla_age),'_pac19_',format(pac19,nsmall=2),'_pac21_',format(pac21,nsmall=2),'.csv'),check.names=FALSE,sep=",")
         
         ###### Calculate scaling factors for each age group and sex
-        B_BSF18_24<- data[stateabbrev,"18-24"]/ state$both_baseline[(state$year==2015)&(state$age=="18-24")&(state$policy_year==2016)]
-        M_BSF18_24<- data[stateabbrev,"18-24m"]/ state$males_baseline[(state$year==2015)&(state$age=="18-24")&(state$policy_year==2016)]
-        F_BSF18_24<- data[stateabbrev,"18-24f"]/ state$females_baseline[(state$year==2015)&(state$age=="18-24")&(state$policy_year==2016)]
+        B_BSF18_24<- data[stateabbrev,"18-24"]/ state$both_baseline[(state$year==2018)&(state$age=="18-24")&(state$policy_year==2019)]
+        M_BSF18_24<- data[stateabbrev,"18-24m"]/ state$males_baseline[(state$year==2018)&(state$age=="18-24")&(state$policy_year==2019)]
+        F_BSF18_24<- data[stateabbrev,"18-24f"]/ state$females_baseline[(state$year==2018)&(state$age=="18-24")&(state$policy_year==2019)]
       
         #25-44 SF:
-        B_BSF25_44<- data[stateabbrev,"25-44"]/ state$both_baseline[(state$year==2015)&(state$age=="25-44")&(state$policy_year==2016)]
-        M_BSF25_44<- data[stateabbrev,"25-44m"]/ state$males_baseline[(state$year==2015)&(state$age=="25-44")&(state$policy_year==2016)]
-        F_BSF25_44<- data[stateabbrev,"25-44f"]/ state$females_baseline[(state$year==2015)&(state$age=="25-44")&(state$policy_year==2016)]
+        B_BSF25_44<- data[stateabbrev,"25-44"]/ state$both_baseline[(state$year==2018)&(state$age=="25-44")&(state$policy_year==2019)]
+        M_BSF25_44<- data[stateabbrev,"25-44m"]/ state$males_baseline[(state$year==2018)&(state$age=="25-44")&(state$policy_year==2019)]
+        F_BSF25_44<- data[stateabbrev,"25-44f"]/ state$females_baseline[(state$year==2018)&(state$age=="25-44")&(state$policy_year==2019)]
         
         #45-64 SF:
-        B_BSF45_64<- data[stateabbrev,"45-64"]/ state$both_baseline[(state$year==2015)&(state$age=="45-64")&(state$policy_year==2016)]
-        M_BSF45_64<- data[stateabbrev,"45-64m"]/ state$males_baseline[(state$year==2015)&(state$age=="45-64")&(state$policy_year==2016)]
-        F_BSF45_64<- data[stateabbrev,"45-64f"]/ state$females_baseline[(state$year==2015)&(state$age=="45-64")&(state$policy_year==2016)]
+        B_BSF45_64<- data[stateabbrev,"45-64"]/ state$both_baseline[(state$year==2018)&(state$age=="45-64")&(state$policy_year==2019)]
+        M_BSF45_64<- data[stateabbrev,"45-64m"]/ state$males_baseline[(state$year==2018)&(state$age=="45-64")&(state$policy_year==2019)]
+        F_BSF45_64<- data[stateabbrev,"45-64f"]/ state$females_baseline[(state$year==2018)&(state$age=="45-64")&(state$policy_year==2019)]
         
         #65P SF:
-        B_BSF65p<- data[stateabbrev,"65p"]/ state$both_baseline[(state$year==2015)&(state$age=="65p")&(state$policy_year==2016)]
-        M_BSF65p<- data[stateabbrev,"65pm"]/ state$males_baseline[(state$year==2015)&(state$age=="65p")&(state$policy_year==2016)]
-        F_BSF65p<- data[stateabbrev,"65pf"]/ state$females_baseline[(state$year==2015)&(state$age=="65p")&(state$policy_year==2016)]
+        B_BSF65p<- data[stateabbrev,"65p"]/ state$both_baseline[(state$year==2018)&(state$age=="65p")&(state$policy_year==2019)]
+        M_BSF65p<- data[stateabbrev,"65pm"]/ state$males_baseline[(state$year==2018)&(state$age=="65p")&(state$policy_year==2019)]
+        F_BSF65p<- data[stateabbrev,"65pf"]/ state$females_baseline[(state$year==2018)&(state$age=="65p")&(state$policy_year==2019)]
         
         #18-99 SF:
-        B_BSF18_99<- data[stateabbrev,"18-99"]/ state$both_baseline[(state$year==2015)&(state$age=="18-99")&(state$policy_year==2016)]
-        M_BSF18_99<- data[stateabbrev,"18-99m"]/ state$males_baseline[(state$year==2015)&(state$age=="18-99")&(state$policy_year==2016)]
-        F_BSF18_99<- data[stateabbrev,"18-99f"]/ state$females_baseline[(state$year==2015)&(state$age=="18-99")&(state$policy_year==2016)]
+        B_BSF18_99<- data[stateabbrev,"18-99"]/ state$both_baseline[(state$year==2018)&(state$age=="18-99")&(state$policy_year==2019)]
+        M_BSF18_99<- data[stateabbrev,"18-99m"]/ state$males_baseline[(state$year==2018)&(state$age=="18-99")&(state$policy_year==2019)]
+        F_BSF18_99<- data[stateabbrev,"18-99f"]/ state$females_baseline[(state$year==2018)&(state$age=="18-99")&(state$policy_year==2019)]
         
-        policyyears <- c(2016:2020)
+        policyyears <- c(2019:2023)
         #### Using different scaling factor:
         for (y in c(1:length(policyyears))){
           # BY BIRTH COHORT
-          #1970 uses 45_64: 
-          state$both_baseline[(state$cohort=="1970")&(state$policy_year==policyyears[y])]<- B_BSF45_64 *state$both_baseline[(state$cohort=="1970")&(state$policy_year==policyyears[y])]
-          state$both_policy[(state$cohort=="1970")&(state$policy_year==policyyears[y])]<- B_BSF45_64 *state$both_policy[(state$cohort=="1970")&(state$policy_year==policyyears[y])]
-          state$males_baseline[(state$cohort=="1970")&(state$policy_year==policyyears[y])]<- M_BSF45_64 *state$males_baseline[(state$cohort=="1970")&(state$policy_year==policyyears[y])]
-          state$females_baseline[(state$cohort=="1970")&(state$policy_year==policyyears[y])]<- F_BSF45_64 *state$females_baseline[(state$cohort=="1970")&(state$policy_year==policyyears[y])]
-          state$males_policy[(state$cohort=="1970")&(state$policy_year==policyyears[y])]<- M_BSF45_64 *state$males_policy[(state$cohort=="1970")&(state$policy_year==policyyears[y])]
-          state$females_policy[(state$cohort=="1970")&(state$policy_year==policyyears[y])]<- F_BSF45_64 *state$females_policy[(state$cohort=="1970")&(state$policy_year==policyyears[y])]
-          
-          #1980 uses 45_64
-          state$both_baseline[(state$cohort=="1980")&(state$policy_year==policyyears[y])]<- B_BSF45_64 *state$both_baseline[(state$cohort=="1980")&(state$policy_year==policyyears[y])]
-          state$both_policy[(state$cohort=="1980")&(state$policy_year==policyyears[y])]<- B_BSF45_64 *state$both_policy[(state$cohort=="1980")&(state$policy_year==policyyears[y])]
-          state$males_baseline[(state$cohort=="1980")&(state$policy_year==policyyears[y])]<- M_BSF45_64 *state$males_baseline[(state$cohort=="1980")&(state$policy_year==policyyears[y])]
-          state$females_baseline[(state$cohort=="1980")&(state$policy_year==policyyears[y])]<- F_BSF45_64 *state$females_baseline[(state$cohort=="1980")&(state$policy_year==policyyears[y])]
-          state$males_policy[(state$cohort=="1980")&(state$policy_year==policyyears[y])]<- M_BSF45_64 *state$males_policy[(state$cohort=="1980")&(state$policy_year==policyyears[y])]
-          state$females_policy[(state$cohort=="1980")&(state$policy_year==policyyears[y])]<- F_BSF45_64 *state$females_policy[(state$cohort=="1980")&(state$policy_year==policyyears[y])]
-          
-          #1990 uses 25_44
-          state$both_baseline[(state$cohort=="1990")&(state$policy_year==policyyears[y])]<- B_BSF25_44 *state$both_baseline[(state$cohort=="1990")&(state$policy_year==policyyears[y])]
-          state$both_policy[(state$cohort=="1990")&(state$policy_year==policyyears[y])]<- B_BSF25_44 *state$both_policy[(state$cohort=="1990")&(state$policy_year==policyyears[y])]
-          state$males_baseline[(state$cohort=="1990")&(state$policy_year==policyyears[y])]<- M_BSF25_44 *state$males_baseline[(state$cohort=="1990")&(state$policy_year==policyyears[y])]
-          state$females_baseline[(state$cohort=="1990")&(state$policy_year==policyyears[y])]<- F_BSF25_44 *state$females_baseline[(state$cohort=="1990")&(state$policy_year==policyyears[y])]
-          state$males_policy[(state$cohort=="1990")&(state$policy_year==policyyears[y])]<- M_BSF25_44 *state$males_policy[(state$cohort=="1990")&(state$policy_year==policyyears[y])]
-          state$females_policy[(state$cohort=="1990")&(state$policy_year==policyyears[y])]<- F_BSF25_44 *state$females_policy[(state$cohort=="1990")&(state$policy_year==policyyears[y])]
-          
+        
           #2000 uses 18_24
           state$both_baseline[(state$cohort=="2000")&(state$policy_year==policyyears[y])]<- B_BSF18_24 *state$both_baseline[(state$cohort=="2000")&(state$policy_year==policyyears[y])]
           state$both_policy[(state$cohort=="2000")&(state$policy_year==policyyears[y])]<- B_BSF18_24 *state$both_policy[(state$cohort=="2000")&(state$policy_year==policyyears[y])]
@@ -89,6 +66,14 @@ createresultsfiles <- function(stateabbrev){
           state$males_policy[(state$cohort=="2010")&(state$policy_year==policyyears[y])]<- M_BSF18_24 *state$males_policy[(state$cohort=="2010")&(state$policy_year==policyyears[y])]
           state$females_policy[(state$cohort=="2010")&(state$policy_year==policyyears[y])]<- F_BSF18_24 *state$females_policy[(state$cohort=="2010")&(state$policy_year==policyyears[y])]
           
+          #2020 uses 18_24
+          state$both_baseline[(state$cohort=="2020")&(state$policy_year==policyyears[y])]<- B_BSF18_24 *state$both_baseline[(state$cohort=="2020")&(state$policy_year==policyyears[y])]
+          state$both_policy[(state$cohort=="2020")&(state$policy_year==policyyears[y])]<- B_BSF18_24 *state$both_policy[(state$cohort=="2020")&(state$policy_year==policyyears[y])]
+          state$males_baseline[(state$cohort=="2020")&(state$policy_year==policyyears[y])]<- M_BSF18_24 *state$males_baseline[(state$cohort=="2020")&(state$policy_year==policyyears[y])]
+          state$females_baseline[(state$cohort=="2020")&(state$policy_year==policyyears[y])]<- F_BSF18_24 *state$females_baseline[(state$cohort=="2020")&(state$policy_year==policyyears[y])]
+          state$males_policy[(state$cohort=="2020")&(state$policy_year==policyyears[y])]<- M_BSF18_24 *state$males_policy[(state$cohort=="2020")&(state$policy_year==policyyears[y])]
+          state$females_policy[(state$cohort=="2020")&(state$policy_year==policyyears[y])]<- F_BSF18_24 *state$females_policy[(state$cohort=="2020")&(state$policy_year==policyyears[y])]
+
           #NONE Birth Cohorts - use age group specific Scaling factors
           # Assume same scaling factors for ages 12-17 as for ages 18-24
           state$both_baseline[(state$age=="12-17")&(state$policy_year==policyyears[y])]<-B_BSF18_24*state$both_baseline[(state$age=="12-17")&(state$policy_year==policyyears[y])]
